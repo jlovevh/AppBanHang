@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/nav_phone"
+        android:title="@string/phone"
+        android:icon="@drawable/ic_phone_iphone_black_24dp"/>
+    <item android:id="@+id/nav_laptop"
+        android:title="@string/laptop"
+        android:icon="@drawable/ic_laptop_mac_black_24dp"/>
+    <item android:id="@+id/nav_tablet"
+        android:title="@string/tablet"
+        android:icon="@drawable/ic_tablet_mac_black_24dp"/>
+    <item android:id="@+id/nav_pk"
+        android:title="@string/pk"
+        android:icon="@drawable/ic_headset_black_24dp"/>
+    <item android:id="@+id/nav_support"
+        android:title="@string/hotro"
+        android:icon="@drawable/ic_phone_iphone_black_24dp"/>
+
+</menu>

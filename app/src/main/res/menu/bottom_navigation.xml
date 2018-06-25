@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item android:id="@+id/nav_home"
+        android:title="@string/nav_home"
+        android:icon="@drawable/ic_home_red_600_24dp"/>
+    <item android:id="@+id/nav_sanpham"
+        android:title="@string/nav_sanpham"
+        android:icon="@drawable/ic_phone_android_black_24dp"/>
+    <item android:id="@+id/nav_news"
+        android:title="@string/nav_news"
+        android:icon="@drawable/ic_library_books_black_24dp"/>
+    <item android:id="@+id/nav_account"
+        android:title="@string/nav_account"
+        android:icon="@drawable/ic_person_black_24dp"/>
+
+</menu>
