@@ -9,48 +9,27 @@
 
 
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/view_pager3"
-        android:layout_width="match_parent"
-        android:layout_height="250dp">
 
 
-    </android.support.v4.view.ViewPager>
-        <me.relex.circleindicator.CircleIndicator
-            android:id="@+id/indicator"
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            app:ci_drawable="@android:color/black"
-            android:layout_marginTop="240dp">
-
-        </me.relex.circleindicator.CircleIndicator>
+       <android.support.v4.view.ViewPager
+           android:id="@+id/view_pager3"
+           android:layout_width="match_parent"
+           android:layout_height="250dp">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="#5992d2"
-        android:layout_marginTop="250dp">
+       </android.support.v4.view.ViewPager>
+       <me.relex.circleindicator.CircleIndicator
+           android:id="@+id/indicator"
+           android:layout_width="match_parent"
+           android:layout_height="10dp"
+           app:ci_drawable="@android:color/black"
+           android:layout_marginTop="240dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sản phẩm mới nhất"
-            android:layout_margin="5dp"
-            android:textStyle="bold"
-            android:textColor="@android:color/holo_red_dark"
-            android:textSize="20sp"
-            />
+       </me.relex.circleindicator.CircleIndicator>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <include layout="@layout/sp_moi_nhat"/>
 
-        </android.support.v7.widget.RecyclerView>
 
-    </LinearLayout>
 
 
 
