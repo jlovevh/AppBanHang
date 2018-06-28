@@ -15,12 +15,20 @@
     <string name="tablet">MÁY TÍNH BẢNG</string>
     <string name="pk">LINK PHỤ KIỆN</string>
     <string name="hotro"><![CDATA[CHÍNH SÁCH & HỖ TRỢ]]></string>
+    <string name="meohay">MẸO HAY</string>
+    <string name="tinmoi">TIN MỚI</string>
+    <string name="thitruong">THỊ TRƯỜNG</string>
+    <string name="danhgia">ĐÁNH GIÁ</string>
+    <string name="tingame">TIN GAME,APP</string>
 
-    <string-array name="query_suggestions">
-        <item>Android</item>
-        <item>iOS</item>
-        <item>SCALA</item>
-        <item>Ruby</item>
-        <item>JavaScript</item>
+    <string-array name="tentintuc">
+
+        <item>TIN MỚI </item>
+        <item>MẸO HAY </item>
+        <item>THỊ TRƯỜNG </item>
+        <item>ĐÁNH GIÁ </item>
+        <item>TIN GAME,APP </item>
     </string-array>
+
+
 </resources>

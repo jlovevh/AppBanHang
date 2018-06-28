@@ -13,13 +13,24 @@ import com.tvt.projectcuoikhoa.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TaiKhoanFragment extends Fragment {
+public class TTMeoHayFragment extends Fragment {
 
-    public static TaiKhoanFragment newInstance(){
-        return new TaiKhoanFragment();
+
+    private static TTMeoHayFragment meoHayFragment;
+
+    public static TTMeoHayFragment getmeoHayFragment(){
+
+        if(meoHayFragment==null){
+
+            meoHayFragment=new TTMeoHayFragment();
+        }
+
+        return meoHayFragment;
     }
+
+
     @SuppressLint("ValidFragment")
-    private TaiKhoanFragment() {
+    private TTMeoHayFragment() {
         // Required empty public constructor
     }
 
@@ -28,7 +39,7 @@ public class TaiKhoanFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tai_khoan, container, false);
+        return inflater.inflate(R.layout.fragment_ttmeo_hay, container, false);
     }
 
 }

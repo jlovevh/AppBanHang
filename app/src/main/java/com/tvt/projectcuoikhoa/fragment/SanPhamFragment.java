@@ -1,6 +1,7 @@
 package com.tvt.projectcuoikhoa.fragment;
 
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,8 +15,11 @@ import com.tvt.projectcuoikhoa.R;
  */
 public class SanPhamFragment extends Fragment {
 
-
-    public SanPhamFragment() {
+    public  static SanPhamFragment newInstance(){
+        return new SanPhamFragment();
+    }
+    @SuppressLint("ValidFragment")
+    private SanPhamFragment() {
         // Required empty public constructor
     }
 
