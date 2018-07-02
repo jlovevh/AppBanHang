@@ -53,14 +53,12 @@ public class TrangChuFragment extends Fragment {
         bannerQcList=new ArrayList<>();
         adapter=new BannerQcAdapter(getContext(),bannerQcList);
 
-        CircleIndicator indicator =view.findViewById(R.id.indicator);
-        viewPager.setAdapter(adapter);
-        indicator.setViewPager(viewPager);
+
 
         APIUtils.getBannerService().getAllBanner().enqueue(new Callback<List<BannerQc>>() {
             @Override
             public void onResponse(@NonNull Call<List<BannerQc>> call, @NonNull Response<List<BannerQc>> response) {
-                   bannerQcList=response.body();
+                    bannerQcList=response.body();
                     adapter.setData(bannerQcList);
 
 
@@ -72,7 +70,9 @@ public class TrangChuFragment extends Fragment {
             }
         });
 
+        CircleIndicator indicator =view.findViewById(R.id.indicator);
         viewPager.setAdapter(adapter);
+        indicator.setViewPager(viewPager);
         return view;
     }
 

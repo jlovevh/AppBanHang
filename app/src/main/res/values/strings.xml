@@ -20,6 +20,14 @@
     <string name="thitruong">THỊ TRƯỜNG</string>
     <string name="danhgia">ĐÁNH GIÁ</string>
     <string name="tingame">TIN GAME,APP</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_email">Email</string>
+    <string name="btn_login">Login</string>
+    <string name="btn_link_to_register">OR CONNECT WITH</string>
+    <string name="btn_forgot_password">Forgot password</string>
+    <string name="fb">FACEBOOK</string>
+    <string name="gg">Google</string>
+    <string name="title1">ĐIỆN THOẠI KHUYẾN MẠI HOT</string>
 
     <string-array name="tentintuc">
 

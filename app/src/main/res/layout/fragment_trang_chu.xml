@@ -1,37 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.TrangChuFragment">
 
 
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager3"
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+    </android.support.v4.view.ViewPager>
 
+    <me.relex.circleindicator.CircleIndicator
+        android:id="@+id/indicator"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="152dp"
+        app:ci_drawable="@color/colorPrimaryDark"
+        app:ci_drawable_unselected="@android:color/darker_gray">
 
+    </me.relex.circleindicator.CircleIndicator>
 
-
-       <android.support.v4.view.ViewPager
-           android:id="@+id/view_pager3"
-           android:layout_width="match_parent"
-           android:layout_height="250dp">
-
-
-       </android.support.v4.view.ViewPager>
-       <me.relex.circleindicator.CircleIndicator
-           android:id="@+id/indicator"
-           android:layout_width="match_parent"
-           android:layout_height="10dp"
-           app:ci_drawable="@android:color/black"
-           android:layout_marginTop="240dp">
-
-       </me.relex.circleindicator.CircleIndicator>
-
-    <include layout="@layout/sp_moi_nhat"/>
-
-
-
-
+    <include layout="@layout/sp_moi_nhat" />
 
 
 </android.support.design.widget.CoordinatorLayout>
