@@ -30,44 +30,35 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TTTinMoiFragment extends Fragment {
+public class TTTinGameFragment extends Fragment {
 
-    private List<TinTuc> arrTinMoi;
+    private List<TinTuc> arrTinGame ;
+    private RecyclerView recyclerView;
     private RecyclerViewTinTucAdapter adapter;
 
-    @SuppressLint("StaticFieldLeak")
-    private static TTTinMoiFragment tinMoiFragment;
-
-    public static TTTinMoiFragment getTinMoiFragment(){
-
-        if(tinMoiFragment==null){
-
-            tinMoiFragment=new TTTinMoiFragment();
-        }
-
-        return tinMoiFragment;
+    public static TTTinGameFragment TTTinVatFragment;
+    public static TTTinGameFragment newInstance(){
+        return new TTTinGameFragment();
     }
-
-
     @SuppressLint("ValidFragment")
-    private TTTinMoiFragment() {
+    private TTTinGameFragment() {
         // Required empty public constructor
     }
 
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view=inflater.inflate(R.layout.fragment_tt_tin_moi, container, false);
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerTinMoi);
-        arrTinMoi=new ArrayList<>();
-        APIUtils.getJsonReponse().getTinMoi().enqueue(new Callback<List<TinTuc>>() {
+        View view=inflater.inflate(R.layout.fragment_tt_tin_game, container, false);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerTinGame);
+        arrTinGame=new ArrayList<>();
+        APIUtils.getJsonReponse().getTinGame().enqueue(new Callback<List<TinTuc>>() {
             @Override
             public void onResponse(@NonNull Call<List<TinTuc>> call, @NonNull Response<List<TinTuc>> response) {
-                arrTinMoi=response.body();
+                arrTinGame=response.body();
 
-                adapter.setData(arrTinMoi);
+                adapter.setData(arrTinGame);
 
                 adapter.notifyDataSetChanged();
             }
@@ -77,7 +68,7 @@ public class TTTinMoiFragment extends Fragment {
                 Log.d(Const.TAG,"error"+call.toString());            }
         });
 
-        adapter=new RecyclerViewTinTucAdapter(getActivity(),arrTinMoi);
+        adapter=new RecyclerViewTinTucAdapter(getActivity(),arrTinGame);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
         DividerItemDecoration dividerItemDecoration =new DividerItemDecoration(Objects.requireNonNull(getActivity()),LinearLayoutManager.VERTICAL);

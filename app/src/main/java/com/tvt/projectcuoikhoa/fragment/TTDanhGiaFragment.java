@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 import com.tvt.projectcuoikhoa.R;
 import com.tvt.projectcuoikhoa.adapter.RecyclerViewTinTucAdapter;
+import com.tvt.projectcuoikhoa.adapter.TinTucDanhGiaAdapter;
 import com.tvt.projectcuoikhoa.api.APIUtils;
 import com.tvt.projectcuoikhoa.model.TinTuc;
 import com.tvt.projectcuoikhoa.utils.Const;
@@ -30,27 +31,23 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TTTinMoiFragment extends Fragment {
+public class TTDanhGiaFragment extends Fragment {
 
-    private List<TinTuc> arrTinMoi;
-    private RecyclerViewTinTucAdapter adapter;
+    private List<TinTuc> arrDanhGia;
+    private TinTucDanhGiaAdapter adapter;
+    private RecyclerView recyclerView;
 
     @SuppressLint("StaticFieldLeak")
-    private static TTTinMoiFragment tinMoiFragment;
+    private static TTDanhGiaFragment TTDanhGiaFragment;
 
-    public static TTTinMoiFragment getTinMoiFragment(){
-
-        if(tinMoiFragment==null){
-
-            tinMoiFragment=new TTTinMoiFragment();
+    public static com.tvt.projectcuoikhoa.fragment.TTDanhGiaFragment getTTDanhGiaFragment(){
+        if(TTDanhGiaFragment==null){
+            TTDanhGiaFragment=new TTDanhGiaFragment();
         }
-
-        return tinMoiFragment;
+        return TTDanhGiaFragment;
     }
-
-
     @SuppressLint("ValidFragment")
-    private TTTinMoiFragment() {
+    private TTDanhGiaFragment() {
         // Required empty public constructor
     }
 
@@ -59,15 +56,15 @@ public class TTTinMoiFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view=inflater.inflate(R.layout.fragment_tt_tin_moi, container, false);
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerTinMoi);
-        arrTinMoi=new ArrayList<>();
-        APIUtils.getJsonReponse().getTinMoi().enqueue(new Callback<List<TinTuc>>() {
+        View view=inflater.inflate(R.layout.fragment_tt_danh_gia, container, false);
+        recyclerView = view.findViewById(R.id.recyclerDanhGia);
+        arrDanhGia=new ArrayList<>();
+        APIUtils.getJsonReponse().getDanhGia().enqueue(new Callback<List<TinTuc>>() {
             @Override
             public void onResponse(@NonNull Call<List<TinTuc>> call, @NonNull Response<List<TinTuc>> response) {
-                arrTinMoi=response.body();
+                arrDanhGia=response.body();
 
-                adapter.setData(arrTinMoi);
+                adapter.setData(arrDanhGia);
 
                 adapter.notifyDataSetChanged();
             }
@@ -77,7 +74,7 @@ public class TTTinMoiFragment extends Fragment {
                 Log.d(Const.TAG,"error"+call.toString());            }
         });
 
-        adapter=new RecyclerViewTinTucAdapter(getActivity(),arrTinMoi);
+        adapter=new TinTucDanhGiaAdapter(getActivity(),arrDanhGia);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
         DividerItemDecoration dividerItemDecoration =new DividerItemDecoration(Objects.requireNonNull(getActivity()),LinearLayoutManager.VERTICAL);

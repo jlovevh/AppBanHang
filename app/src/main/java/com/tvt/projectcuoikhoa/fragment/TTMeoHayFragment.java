@@ -3,32 +3,48 @@ package com.tvt.projectcuoikhoa.fragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.tvt.projectcuoikhoa.R;
+import com.tvt.projectcuoikhoa.adapter.RecyclerViewTinTucAdapter;
+import com.tvt.projectcuoikhoa.api.APIUtils;
+import com.tvt.projectcuoikhoa.model.TinTuc;
+import com.tvt.projectcuoikhoa.utils.Const;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class TTMeoHayFragment extends Fragment {
 
+    private List<TinTuc> arrMeoHay ;
+    private RecyclerView recyclerView;
+    private RecyclerViewTinTucAdapter adapter;
 
-    private static TTMeoHayFragment meoHayFragment;
+    @SuppressLint("StaticFieldLeak")
+    private static TTMeoHayFragment MeoHayFragment;
 
-    public static TTMeoHayFragment getmeoHayFragment(){
-
-        if(meoHayFragment==null){
-
-            meoHayFragment=new TTMeoHayFragment();
+    public static TTMeoHayFragment getMeoHayFragment(){
+        if(MeoHayFragment==null){
+            MeoHayFragment=new TTMeoHayFragment();
         }
-
-        return meoHayFragment;
+        return MeoHayFragment;
     }
-
-
     @SuppressLint("ValidFragment")
     private TTMeoHayFragment() {
         // Required empty public constructor
@@ -36,10 +52,33 @@ public class TTMeoHayFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ttmeo_hay, container, false);
+        View view=inflater.inflate(R.layout.fragment_tt_meohay, container, false);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerMeoHay);
+        arrMeoHay=new ArrayList<>();
+        APIUtils.getJsonReponse().getMeoHay().enqueue(new Callback<List<TinTuc>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<TinTuc>> call, @NonNull Response<List<TinTuc>> response) {
+                arrMeoHay=response.body();
+
+                adapter.setData(arrMeoHay);
+
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<TinTuc>> call, @NonNull Throwable t) {
+                Log.d(Const.TAG,"error"+call.toString());            }
+        });
+
+        adapter=new RecyclerViewTinTucAdapter(getActivity(),arrMeoHay);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
+        DividerItemDecoration dividerItemDecoration =new DividerItemDecoration(Objects.requireNonNull(getActivity()),LinearLayoutManager.VERTICAL);
+        recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView.setAdapter(adapter);
+        return view;
     }
 
 }

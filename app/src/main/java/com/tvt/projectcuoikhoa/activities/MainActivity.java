@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 //        });
 
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(this);
 
     }
 
@@ -106,27 +107,48 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         switch (item.getItemId()) {
 
-            case R.id.nav_home:
+            case R.id.bnav_home:
 
                 Fragment fragment=TrangChuFragment.newInstance();
                 loadFragment(fragment);
                 break;
-            case R.id.nav_sanpham:
+            case R.id.bnav_sanpham:
 
                 Fragment fragment1=SanPhamFragment.newInstance();
                 loadFragment(fragment1);
                 break;
 
-            case R.id.nav_news:
+            case R.id.bnav_news:
 
                 Fragment fragment2=TinTucFragment.newInstance();
                 loadFragment(fragment2);
                 break;
 
-            case R.id.nav_account:
+            case R.id.bnav_account:
 
                 Fragment fragment3=TaiKhoanFragment.newInstance();
                 loadFragment(fragment3);
+                break;
+            case R.id.nav_home:
+
+
+                break;
+            case R.id.nav_phone:
+
+
+                break;
+            case R.id.nav_laptop:
+
+
+                break;
+            case R.id.nav_tablet:
+
+
+                break;
+
+            case R.id.nav_pk:
+
+
                 break;
 
         }

@@ -35,8 +35,8 @@ public class TrangChuFragment extends Fragment {
     private BannerQcAdapter adapter;
     private List<BannerQc> bannerQcList;
 
-    public static TrangChuFragment newInstance(){
-        return  new TrangChuFragment();
+    public static TrangChuFragment newInstance() {
+        return new TrangChuFragment();
     }
 
     private TrangChuFragment() {
@@ -48,30 +48,34 @@ public class TrangChuFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =inflater.inflate(R.layout.fragment_trang_chu, container, false);
-        ViewPager viewPager = view.findViewById(R.id.view_pager3);
-        bannerQcList=new ArrayList<>();
-        adapter=new BannerQcAdapter(getContext(),bannerQcList);
+        View view = inflater.inflate(R.layout.fragment_trang_chu, container, false);
+        final ViewPager viewPager = view.findViewById(R.id.view_pager3);
+        CircleIndicator indicator = view.findViewById(R.id.indicator);
+        bannerQcList = new ArrayList<>();
 
 
-
-        APIUtils.getBannerService().getAllBanner().enqueue(new Callback<List<BannerQc>>() {
+        APIUtils.getJsonReponse().getAllBanner().enqueue(new Callback<List<BannerQc>>() {
             @Override
             public void onResponse(@NonNull Call<List<BannerQc>> call, @NonNull Response<List<BannerQc>> response) {
-                    bannerQcList=response.body();
-                    adapter.setData(bannerQcList);
+                Log.d(Const.TAG, response.toString());
+
+                bannerQcList = response.body();
+                adapter = new BannerQcAdapter(getContext(), bannerQcList);
+                viewPager.setAdapter(adapter);
+//                    adapter.setData(bannerQcList);
+
+
+                Log.d(Const.TAG, "Size: " + bannerQcList.size());
 
 
             }
 
             @Override
             public void onFailure(@NonNull Call<List<BannerQc>> call, @NonNull Throwable t) {
-                Toast.makeText(getContext(), "error", Toast.LENGTH_SHORT).show();
+                Log.d(Const.TAG, call.toString());
             }
         });
 
-        CircleIndicator indicator =view.findViewById(R.id.indicator);
-        viewPager.setAdapter(adapter);
         indicator.setViewPager(viewPager);
         return view;
     }

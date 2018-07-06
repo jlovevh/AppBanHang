@@ -4,7 +4,7 @@ import com.tvt.projectcuoikhoa.utils.Const;
 
 public class APIUtils {
 
-    public static JsonReponse getBannerService(){
+    public static JsonReponse getJsonReponse(){
         return RetrofitClient.getClient(Const.BASE_URL).create(JsonReponse.class);
     }
 }

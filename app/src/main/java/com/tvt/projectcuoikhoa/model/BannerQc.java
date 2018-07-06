@@ -5,24 +5,24 @@ import com.google.gson.annotations.SerializedName;
 
 public class BannerQc {
 
-    @SerializedName("id_bannerqc")
+    @SerializedName("idBannerqc")
     @Expose
-    private Integer idBannerqc;
+    private String idBannerqc;
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("url_banner")
+    @SerializedName("urlBanner")
     @Expose
     private String urlBanner;
-    @SerializedName("create_at")
+    @SerializedName("createAt")
     @Expose
     private String createAt;
 
-    public Integer getIdBannerqc() {
+    public String getIdBannerqc() {
         return idBannerqc;
     }
 
-    public void setIdBannerqc(Integer idBannerqc) {
+    public void setIdBannerqc(String idBannerqc) {
         this.idBannerqc = idBannerqc;
     }
 
@@ -50,10 +50,4 @@ public class BannerQc {
         this.createAt = createAt;
     }
 
-    public BannerQc(Integer idBannerqc, String name, String urlBanner, String createAt) {
-        this.idBannerqc = idBannerqc;
-        this.name = name;
-        this.urlBanner = urlBanner;
-        this.createAt = createAt;
-    }
 }

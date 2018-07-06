@@ -51,11 +51,11 @@ public class TinTucFragment extends Fragment {
     private void setUpViewPager(ViewPager viewPager) {
         adapter=new TinTucAdapter(getChildFragmentManager());
         adapter.addFragment(TTTinMoiFragment.getTinMoiFragment(),"TIN MỚI");
-        adapter.addFragment(TTSapRaMatFragment.getsapRaMatFragment(),"SẮP RA MẮT");
-        adapter.addFragment(TTReviewFragment.getreViewFragment(),"REVIEW-ĐẬP HỘP");
-        adapter.addFragment(TinTucTuVanFragment.gettuVanFragment(),"TƯ VẤN");
-        adapter.addFragment(TTMeoHayFragment.getmeoHayFragment(),"MẸO HAY");
-        adapter.addFragment(TTTinVatFragment.newInstance(),"TIN VẶT");
+        adapter.addFragment(TTDanhGiaFragment.getTTDanhGiaFragment(),"ĐÁNH GIÁ");
+        adapter.addFragment(TTMeoHayFragment.getMeoHayFragment(),"MẸO HAY");
+        adapter.addFragment(TTThiTruongFragment.getthiTruongFragment(),"THỊ TRƯỜNG");
+        adapter.addFragment(TTCuocSongFragment.getttCuocSongFragment(),"CUỘC SỐNG SỐ");
+        adapter.addFragment(TTTinGameFragment.newInstance(),"TIN GAME-APP");
         viewPager.setAdapter(adapter);
     }
 

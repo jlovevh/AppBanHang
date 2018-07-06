@@ -1,7 +1,6 @@
 package com.tvt.projectcuoikhoa.fragment;
 
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,18 +12,10 @@ import com.tvt.projectcuoikhoa.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TinTucTuVanFragment extends Fragment {
+public class LapTopFragment extends Fragment {
 
-    private static TinTucTuVanFragment tuVanFragment;
 
-    public static TinTucTuVanFragment gettuVanFragment(){
-        if(tuVanFragment==null){
-            tuVanFragment=new TinTucTuVanFragment();
-        }
-        return tuVanFragment;
-    }
-    @SuppressLint("ValidFragment")
-    private TinTucTuVanFragment() {
+    public LapTopFragment() {
         // Required empty public constructor
     }
 
@@ -33,7 +24,7 @@ public class TinTucTuVanFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tin_tuc_tu_van, container, false);
+        return inflater.inflate(R.layout.fragment_lap_top, container, false);
     }
 
 }
