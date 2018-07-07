@@ -3,7 +3,7 @@
     <color name="colorPrimary">@android:color/holo_blue_light</color>
     <color name="colorPrimaryDark">@android:color/holo_blue_dark</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="item_nav_bottom">#59818E</color>
+    <color name="item_nav_bottom">#ffffff</color>
     <color name="black">#000000</color>
     <color name="gray">@android:color/darker_gray</color>
     <color name="dark_gray">#757575</color>

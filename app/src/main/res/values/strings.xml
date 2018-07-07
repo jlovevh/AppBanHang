@@ -30,6 +30,9 @@
     <string name="title1">ĐIỆN THOẠI KHUYẾN MẠI HOT</string>
     <string name="home">TRANG CHỦ</string>
 
+    <string name="facebook_app_id">261629417938531</string>
+    <string name="facebook_login_protocol_scheme">fb261629417938531</string>
+
     <string-array name="tentintuc">
 
         <item>TIN MỚI </item>

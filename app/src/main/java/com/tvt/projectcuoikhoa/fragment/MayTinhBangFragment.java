@@ -1,6 +1,7 @@
 package com.tvt.projectcuoikhoa.fragment;
 
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,10 +16,13 @@ import com.tvt.projectcuoikhoa.R;
 public class MayTinhBangFragment extends Fragment {
 
 
-    public MayTinhBangFragment() {
+    @SuppressLint("ValidFragment")
+    private MayTinhBangFragment() {
         // Required empty public constructor
     }
-
+    public static Fragment newInstance() {
+        return new MayTinhBangFragment();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -26,5 +30,6 @@ public class MayTinhBangFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_may_tinh_bang, container, false);
     }
+
 
 }

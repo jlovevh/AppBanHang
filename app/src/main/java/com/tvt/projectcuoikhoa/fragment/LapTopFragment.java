@@ -1,6 +1,7 @@
 package com.tvt.projectcuoikhoa.fragment;
 
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,8 +16,12 @@ import com.tvt.projectcuoikhoa.R;
 public class LapTopFragment extends Fragment {
 
 
-    public LapTopFragment() {
+    @SuppressLint("ValidFragment")
+    private LapTopFragment() {
         // Required empty public constructor
+    }
+    public static Fragment newInstance() {
+        return new LapTopFragment();
     }
 
 
@@ -26,5 +31,6 @@ public class LapTopFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_lap_top, container, false);
     }
+
 
 }

@@ -23,7 +23,7 @@
 
     </me.relex.circleindicator.CircleIndicator>
 
-    <!--<include layout="@layout/sp_moi_nhat" />-->
+    <include layout="@layout/sp_moi_nhat" />
 
 
 </android.support.design.widget.CoordinatorLayout>

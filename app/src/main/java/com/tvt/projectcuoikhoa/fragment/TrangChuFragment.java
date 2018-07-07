@@ -57,7 +57,7 @@ public class TrangChuFragment extends Fragment {
         APIUtils.getJsonReponse().getAllBanner().enqueue(new Callback<List<BannerQc>>() {
             @Override
             public void onResponse(@NonNull Call<List<BannerQc>> call, @NonNull Response<List<BannerQc>> response) {
-                Log.d(Const.TAG, response.toString());
+//                Log.d(Const.TAG, response.toString());
 
                 bannerQcList = response.body();
                 adapter = new BannerQcAdapter(getContext(), bannerQcList);
@@ -65,7 +65,7 @@ public class TrangChuFragment extends Fragment {
 //                    adapter.setData(bannerQcList);
 
 
-                Log.d(Const.TAG, "Size: " + bannerQcList.size());
+//                Log.d(Const.TAG, "Size: " + bannerQcList.size());
 
 
             }

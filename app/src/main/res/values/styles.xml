@@ -34,8 +34,17 @@
     <item name="android:hint">@string/search_hint</item>
 </style>
 
+    <style name="FacebookLoginButton">
+        <item name="android:textSize">@dimen/smallTxtSize</item>
+        <!--<item name="android:background">@drawable/facebook_signin_btn</item>-->
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+
     <style name="ToolbarColoredBackArrow" parent="AppTheme">
         <item name="android:textColorSecondary">@color/dark_gray</item>
     </style>
 
+    <dimen name="smallTxtSize">20sp</dimen>
 </resources>

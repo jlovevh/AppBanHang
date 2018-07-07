@@ -1,5 +1,6 @@
 package com.tvt.projectcuoikhoa.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -7,24 +8,39 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.squareup.picasso.Picasso;
 import com.tvt.projectcuoikhoa.R;
 import com.tvt.projectcuoikhoa.adapter.ViewPagerAdapter;
+import com.tvt.projectcuoikhoa.fragment.LapTopFragment;
+import com.tvt.projectcuoikhoa.fragment.MayTinhBangFragment;
 import com.tvt.projectcuoikhoa.fragment.SanPhamFragment;
 import com.tvt.projectcuoikhoa.fragment.TaiKhoanFragment;
 import com.tvt.projectcuoikhoa.fragment.TinTucFragment;
 import com.tvt.projectcuoikhoa.fragment.TrangChuFragment;
 import com.tvt.projectcuoikhoa.helper.BottomNavigationBehavior;
 import com.tvt.projectcuoikhoa.helper.BottomNavigationViewHelper;
+import com.tvt.projectcuoikhoa.utils.Const;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, NavigationView.OnNavigationItemSelectedListener {
 
@@ -34,6 +50,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private ViewPagerAdapter adapter;
+    private TextView tvName, tvEmail;
+    private ImageView imgHeader;
+    private View header;
 
 
     @Override
@@ -42,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         setContentView(R.layout.activity_main);
         initViews();
 
+        getIntentsFB();
+        getIntentsGG();
 
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer);
         drawerToggle.syncState();
@@ -78,6 +99,97 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     }
 
+    private void getIntentsGG() {
+        Intent intent =getIntent();
+
+        String name = intent.getStringExtra("nameGG");
+        String url = intent.getStringExtra("url_gg");
+        String email = intent.getStringExtra("emailGG");
+        tvEmail.setText(email);
+        tvName.setText(name);
+        Picasso.with(this).load(url).into(imgHeader);
+
+        imgHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Thông báo")
+                        .setMessage("Bạn có muốn đăng xuất không?")
+                        .setNegativeButton("Có", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                LoginActivity.googleSignInClient.signOut().addOnCompleteListener(MainActivity.this, new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        tvName.setText("Lee Ji-eun");
+                                        tvEmail.setText("I love IU");
+                                        imgHeader.setImageResource(R.drawable.iu);
+                                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                        startActivity(intent);
+                                    }
+                                });
+
+                            }
+                        })
+                        .setPositiveButton("Không", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+
+                            }
+                        });
+
+                builder.show();
+
+
+            }
+        });
+    }
+
+    private void getIntentsFB() {
+
+        String name = getIntent().getExtras().getString("name");
+        String url = getIntent().getExtras().getString("url");
+        String email = getIntent().getExtras().getString("email");
+        Log.d(Const.TAG,"ccc: " +name);
+        Log.d(Const.TAG,"ccc: " +email);
+        Log.d(Const.TAG,"ccc: " +url);
+        tvEmail.setText(email);
+        tvName.setText(name);
+        Picasso.with(this).load(url).error(R.mipmap.ic_launcher).into(imgHeader);
+
+        imgHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Thông báo")
+                        .setMessage("Bạn có muốn đăng xuất không?")
+                        .setNegativeButton("Có", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                LoginManager.getInstance().logOut();
+                                tvName.setText("Lee Ji-eun");
+                                tvEmail.setText("I love IU");
+                                imgHeader.setImageResource(R.drawable.iu);
+                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                            }
+                        })
+                        .setPositiveButton("Không", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+
+                            }
+                        });
+
+                builder.show();
+
+
+            }
+        });
+    }
+
 //    private void setupViewPager(ViewPager viewPager) {
 //        adapter=new ViewPagerAdapter(getSupportFragmentManager());
 //        adapter.addFragment(TrangChuFragment.newInstance());
@@ -98,52 +210,62 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
         setSupportActionBar(toolbar);
+        header= navigationView.getHeaderView(0);
+        tvName = header.findViewById(R.id.name_header);
+        tvEmail = header.findViewById(R.id.email_header);
+        imgHeader = header.findViewById(R.id.img_header);
     }
-
 
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
+        Fragment fragment;
         switch (item.getItemId()) {
 
             case R.id.bnav_home:
 
-                Fragment fragment=TrangChuFragment.newInstance();
+                fragment = TrangChuFragment.newInstance();
                 loadFragment(fragment);
                 break;
             case R.id.bnav_sanpham:
 
-                Fragment fragment1=SanPhamFragment.newInstance();
-                loadFragment(fragment1);
+                fragment = SanPhamFragment.newInstance();
+                loadFragment(fragment);
                 break;
 
             case R.id.bnav_news:
 
-                Fragment fragment2=TinTucFragment.newInstance();
-                loadFragment(fragment2);
+                fragment = TinTucFragment.newInstance();
+                loadFragment(fragment);
                 break;
 
             case R.id.bnav_account:
 
-                Fragment fragment3=TaiKhoanFragment.newInstance();
-                loadFragment(fragment3);
+                fragment = TaiKhoanFragment.newInstance();
+                loadFragment(fragment);
                 break;
             case R.id.nav_home:
-
-
+                fragment = TrangChuFragment.newInstance();
+                loadFragment(fragment);
+                bottomNavigationView.getMenu().getItem(0).setChecked(true);
                 break;
             case R.id.nav_phone:
-
+                fragment = SanPhamFragment.newInstance();
+                loadFragment(fragment);
+                bottomNavigationView.getMenu().getItem(1).setChecked(true);
 
                 break;
             case R.id.nav_laptop:
 
-
+                fragment = LapTopFragment.newInstance();
+                loadFragment(fragment);
+                bottomNavigationView.getMenu().getItem(1).setChecked(true);
                 break;
             case R.id.nav_tablet:
 
-
+                fragment = MayTinhBangFragment.newInstance();
+                loadFragment(fragment);
+                bottomNavigationView.getMenu().getItem(1).setChecked(true);
                 break;
 
             case R.id.nav_pk:
@@ -152,12 +274,16 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 break;
 
         }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.draw_layout);
+        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    private void loadFragment(Fragment fragment){
-        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.layout,fragment);
+
+    private void loadFragment(Fragment fragment) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.layout, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }

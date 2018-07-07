@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "431574024447",
+    "firebase_url": "https://exalted-summer-209418.firebaseio.com",
+    "project_id": "exalted-summer-209418",
+    "storage_bucket": "exalted-summer-209418.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:431574024447:android:4b49cc085e0a0be9",
+        "android_client_info": {
+          "package_name": "com.tvt.projectcuoikhoa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "431574024447-ruhnrke7vcs98a9jgvb9t13ed1pdk8ln.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tvt.projectcuoikhoa",
+            "certificate_hash": "408751fde86440583a27cfc454a6c8f2b5927808"
+          }
+        },
+        {
+          "client_id": "431574024447-mf9q0n4h105fo9imji20a5r43t0mipb2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjMg3X63PQ313TwkNl2Zbic18D2svMM_E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "431574024447-mf9q0n4h105fo9imji20a5r43t0mipb2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

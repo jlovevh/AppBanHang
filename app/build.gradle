@@ -43,7 +43,10 @@ dependencies {
     implementation('cn.trinea.android.view.autoscrollviewpager:android-auto-scroll-view-pager:1.1.2') {
         exclude module: 'support-v4'
     }
-    implementation 'com.facebook.android:facebook-android-sdk:4.28.0'
-//    implementation 'com.google.android.gms:play-services-auth:15.0.1'
-//    implementation 'com.google.android.gms:play-services-play:12.0.1'
+    implementation 'com.facebook.android:facebook-android-sdk:4.34.0'
+    implementation 'org.sufficientlysecure:html-textview:3.5'
+    implementation 'com.google.android.gms:play-services-auth:15.0.1'
+    implementation 'com.google.firebase:firebase-core:16.0.0'
+
 }
+apply plugin: 'com.google.gms.google-services'

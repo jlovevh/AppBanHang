@@ -14,6 +14,7 @@
         android:layout_marginTop="50dp"/>
 
     <TextView
+        android:id="@+id/name_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Minh Tien Pro"
@@ -22,6 +23,7 @@
         android:textSize="20sp"
         android:layout_marginBottom="30dp"/>
     <TextView
+        android:id="@+id/email_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="trantien1596@gmail.com"
