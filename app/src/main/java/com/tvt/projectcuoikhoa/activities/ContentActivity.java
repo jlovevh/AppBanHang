@@ -16,6 +16,7 @@ public class ContentActivity extends AppCompatActivity {
 
     private TextView tvTitle,tvCreate;
     private WebView webView;
+
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {

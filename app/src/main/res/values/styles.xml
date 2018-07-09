@@ -35,16 +35,23 @@
 </style>
 
     <style name="FacebookLoginButton">
-        <item name="android:textSize">@dimen/smallTxtSize</item>
-        <!--<item name="android:background">@drawable/facebook_signin_btn</item>-->
-        <item name="android:layout_marginTop">10dp</item>
-        <item name="android:layout_marginBottom">10dp</item>
-        <item name="android:layout_gravity">center_horizontal</item>
+
+        <item name="android:padding">20dp</item>
     </style>
 
     <style name="ToolbarColoredBackArrow" parent="AppTheme">
         <item name="android:textColorSecondary">@color/dark_gray</item>
     </style>
 
-    <dimen name="smallTxtSize">20sp</dimen>
+    <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/black</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:background">@color/dark_gray</item>
+    </style>
+
+
+
+    <style name="SplashscreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/bg_splashscreen</item>
+    </style>
 </resources>

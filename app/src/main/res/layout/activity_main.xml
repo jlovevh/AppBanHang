@@ -35,6 +35,9 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
+        app:itemTextColor="@drawable/item_nav_selector1"
+        app:itemIconTint="@drawable/item_nav_selector"
+        app:itemBackground="@android:color/transparent"
         app:headerLayout="@layout/navigation_header"
         app:menu="@menu/navigation">
 

@@ -2,6 +2,7 @@ package com.tvt.projectcuoikhoa.fragment;
 
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -60,11 +61,15 @@ public class TTTinMoiFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_tt_tin_moi, container, false);
+        final ProgressDialog progressDialog=new ProgressDialog(getContext(),R.style.AppCompatAlertDialogStyle);
+        progressDialog.setMessage("Loading....");
+        progressDialog.show();
         RecyclerView recyclerView = view.findViewById(R.id.recyclerTinMoi);
         arrTinMoi=new ArrayList<>();
         APIUtils.getJsonReponse().getTinMoi().enqueue(new Callback<List<TinTuc>>() {
             @Override
             public void onResponse(@NonNull Call<List<TinTuc>> call, @NonNull Response<List<TinTuc>> response) {
+                progressDialog.dismiss();
                 arrTinMoi=response.body();
 
                 adapter.setData(arrTinMoi);
@@ -80,7 +85,7 @@ public class TTTinMoiFragment extends Fragment {
         adapter=new RecyclerViewTinTucAdapter(getActivity(),arrTinMoi);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
-        DividerItemDecoration dividerItemDecoration =new DividerItemDecoration(Objects.requireNonNull(getActivity()),LinearLayoutManager.VERTICAL);
+        DividerItemDecoration dividerItemDecoration =new DividerItemDecoration(getActivity(),LinearLayoutManager.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setAdapter(adapter);
         return view;

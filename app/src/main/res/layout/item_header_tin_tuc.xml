@@ -15,7 +15,7 @@
         android:id="@+id/tv_title_header_tin_tuc"
         android:layout_width="match_parent"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         android:layout_marginTop="8dp"
         android:layout_height="wrap_content" />

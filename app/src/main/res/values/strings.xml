@@ -32,6 +32,14 @@
 
     <string name="facebook_app_id">261629417938531</string>
     <string name="facebook_login_protocol_scheme">fb261629417938531</string>
+    <string name="manhinh">Màn Hình: </string>
+    <string name="ram">Ram:</string>
+    <string name="vga">VGA:</string>
+    <string name="hdh">HĐH</string>
+    <string name="cpu">Cpu:</string>
+    <string name="tl">Nặng:</string>
+    <string name="about">ABOUT</string>
+    <string name="exit">EXIT</string>
 
     <string-array name="tentintuc">
 

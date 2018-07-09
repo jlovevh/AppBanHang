@@ -2,6 +2,7 @@ package com.tvt.projectcuoikhoa.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
@@ -23,18 +24,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.squareup.picasso.Picasso;
 import com.tvt.projectcuoikhoa.R;
 import com.tvt.projectcuoikhoa.adapter.ViewPagerAdapter;
 import com.tvt.projectcuoikhoa.fragment.LapTopFragment;
-import com.tvt.projectcuoikhoa.fragment.MayTinhBangFragment;
-import com.tvt.projectcuoikhoa.fragment.SanPhamFragment;
+import com.tvt.projectcuoikhoa.fragment.TabletFragment;
+import com.tvt.projectcuoikhoa.fragment.PhoneFragment;
 import com.tvt.projectcuoikhoa.fragment.TaiKhoanFragment;
 import com.tvt.projectcuoikhoa.fragment.TinTucFragment;
 import com.tvt.projectcuoikhoa.fragment.TrangChuFragment;
@@ -52,7 +52,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private ViewPagerAdapter adapter;
     private TextView tvName, tvEmail;
     private ImageView imgHeader;
-    private View header;
+    private String name, email, url, nameGG, emailGG, urlGG, nameU, emailU, urlU;
+    private boolean doubleBackToExitPressedOnce = false;
 
 
     @Override
@@ -61,8 +62,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         setContentView(R.layout.activity_main);
         initViews();
 
+
+        getIntents();
         getIntentsFB();
         getIntentsGG();
+
 
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer);
         drawerToggle.syncState();
@@ -70,44 +74,77 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         layoutParams.setBehavior(new BottomNavigationBehavior());
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
 
+
+        //load default fragment
         loadFragment(TrangChuFragment.newInstance());
 
-//        setupViewPager(viewPager);
-
-//        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-//            @Override
-//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//
-//            }
-//
-//            @Override
-//            public void onPageSelected(int position) {
-//                MenuItem menuItem = null;
-//
-//                bottomNavigationView.getMenu().getItem(position).setChecked(true);
-//
-//            }
-//
-//            @Override
-//            public void onPageScrollStateChanged(int state) {
-//
-//            }
-//        });
 
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         navigationView.setNavigationItemSelectedListener(this);
 
     }
 
-    private void getIntentsGG() {
-        Intent intent =getIntent();
 
-        String name = intent.getStringExtra("nameGG");
-        String url = intent.getStringExtra("url_gg");
-        String email = intent.getStringExtra("emailGG");
+    private void getIntentsFB() {
+
+        Intent intentFB = getIntent();
+        name = intentFB.getStringExtra("name");
+        url = intentFB.getStringExtra("url");
+        email = intentFB.getStringExtra("email");
+
+        Log.d(Const.TAG, "ccc: " + name);
+        Log.d(Const.TAG, "ccc: " + email);
+        Log.d(Const.TAG, "ccc: " + url);
+
         tvEmail.setText(email);
         tvName.setText(name);
-        Picasso.with(this).load(url).into(imgHeader);
+        Picasso.with(this).load(url).placeholder(R.drawable.iu).error(R.mipmap.ic_launcher).into(imgHeader);
+
+        imgHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Thông báo")
+                        .setMessage("Bạn có muốn đăng xuất không?")
+                        .setNegativeButton("Có", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                LoginManager.getInstance().logOut();
+                                tvName.setText("Lee Ji-eun");
+                                tvEmail.setText("I love IU");
+                                imgHeader.setImageResource(R.drawable.iu);
+                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                            }
+                        })
+                        .setPositiveButton("Không", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+
+                            }
+                        });
+
+                builder.show();
+
+
+            }
+        });
+    }
+
+    private void getIntentsGG() {
+
+        Intent intent = getIntent();
+        nameGG = intent.getStringExtra("nameGG");
+        urlGG = intent.getStringExtra("url_gg");
+        emailGG = intent.getStringExtra("emailGG");
+
+        Log.d(Const.TAG, "nameGG: " + nameGG);
+        Log.d(Const.TAG, "urlGG: " + urlGG);
+        Log.d(Const.TAG, "emailGG: " + emailGG);
+        tvEmail.setText(emailGG);
+        tvName.setText(nameGG);
+        Picasso.with(this).load(urlGG).error(R.drawable.iu).into(imgHeader);
 
         imgHeader.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,74 +183,49 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         });
     }
 
-    private void getIntentsFB() {
+    private void getIntents() {
 
-        String name = getIntent().getExtras().getString("name");
-        String url = getIntent().getExtras().getString("url");
-        String email = getIntent().getExtras().getString("email");
-        Log.d(Const.TAG,"ccc: " +name);
-        Log.d(Const.TAG,"ccc: " +email);
-        Log.d(Const.TAG,"ccc: " +url);
-        tvEmail.setText(email);
-        tvName.setText(name);
-        Picasso.with(this).load(url).error(R.mipmap.ic_launcher).into(imgHeader);
+        Intent intentU = getIntent();
+        nameU = intentU.getStringExtra("nameU");
+        urlU = intentU.getStringExtra("urlU");
+        emailU = intentU.getStringExtra("emailU");
 
-        imgHeader.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this)
-                        .setTitle("Thông báo")
-                        .setMessage("Bạn có muốn đăng xuất không?")
-                        .setNegativeButton("Có", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                LoginManager.getInstance().logOut();
-                                tvName.setText("Lee Ji-eun");
-                                tvEmail.setText("I love IU");
-                                imgHeader.setImageResource(R.drawable.iu);
-                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                                startActivity(intent);
-                            }
-                        })
-                        .setPositiveButton("Không", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-
-                            }
-                        });
-
-                builder.show();
-
-
-            }
-        });
+        Log.d(Const.TAG, "nameU: " + nameU);
+        Log.d(Const.TAG, "urlU: " + urlU);
+        Log.d(Const.TAG, "emailU: " + emailU);
+        tvName.setText(nameU);
+        tvEmail.setText(emailU);
+        Picasso.with(this).load(urlU).placeholder(R.drawable.iu).error(R.mipmap.ic_launcher).into(imgHeader);
     }
 
-//    private void setupViewPager(ViewPager viewPager) {
-//        adapter=new ViewPagerAdapter(getSupportFragmentManager());
-//        adapter.addFragment(TrangChuFragment.newInstance());
-//        adapter.addFragment(SanPhamFragment.newInstance());
-//        adapter.addFragment(TinTucFragment.newInstance());
-//        adapter.addFragment(TaiKhoanFragment.newInstance());
-//        viewPager.setAdapter(adapter);
-//    }
+
+    private void setupViewPager(ViewPager viewPager) {
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(TrangChuFragment.newInstance());
+        adapter.addFragment(PhoneFragment.newInstance());
+        adapter.addFragment(TinTucFragment.newInstance());
+        adapter.addFragment(TaiKhoanFragment.newInstance());
+        viewPager.setAdapter(adapter);
+    }
 
 
     private void initViews() {
         toolbar = findViewById(R.id.toolbar);
         drawerLayout = findViewById(R.id.draw_layout);
-        navigationView = findViewById(R.id.nav_layout);
+        navigationView = (NavigationView) findViewById(R.id.nav_layout);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
         setSupportActionBar(toolbar);
-        header= navigationView.getHeaderView(0);
-        tvName = header.findViewById(R.id.name_header);
-        tvEmail = header.findViewById(R.id.email_header);
-        imgHeader = header.findViewById(R.id.img_header);
+
+        View navHeaderView = navigationView.getHeaderView(0);
+        tvEmail = navHeaderView.findViewById(R.id.email_header);
+        tvName = navHeaderView.findViewById(R.id.name_header);
+        imgHeader = navHeaderView.findViewById(R.id.img_header);
+
+
     }
 
 
@@ -229,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 break;
             case R.id.bnav_sanpham:
 
-                fragment = SanPhamFragment.newInstance();
+                fragment = PhoneFragment.newInstance();
                 loadFragment(fragment);
                 break;
 
@@ -250,7 +262,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 bottomNavigationView.getMenu().getItem(0).setChecked(true);
                 break;
             case R.id.nav_phone:
-                fragment = SanPhamFragment.newInstance();
+                fragment = PhoneFragment.newInstance();
                 loadFragment(fragment);
                 bottomNavigationView.getMenu().getItem(1).setChecked(true);
 
@@ -263,13 +275,20 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 break;
             case R.id.nav_tablet:
 
-                fragment = MayTinhBangFragment.newInstance();
+                fragment = TabletFragment.newInstance();
                 loadFragment(fragment);
                 bottomNavigationView.getMenu().getItem(1).setChecked(true);
                 break;
 
             case R.id.nav_pk:
 
+
+                break;
+            case R.id.nav_exit:
+                finish();
+                break;
+
+            case R.id.nav_about:
 
                 break;
 
@@ -330,6 +349,22 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
 
     }
 

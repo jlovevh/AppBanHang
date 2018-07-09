@@ -2,6 +2,7 @@ package com.tvt.projectcuoikhoa.fragment;
 
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -61,15 +62,17 @@ public class TTCuocSongFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_tt_cuoc_song, container, false);
+        final ProgressDialog progressDialog=new ProgressDialog(getContext(),R.style.AppCompatAlertDialogStyle);
+        progressDialog.setMessage("Loading....");
+        progressDialog.show();
         RecyclerView recyclerView = view.findViewById(R.id.recyclerCuocSong);
         arrCuocSong=new ArrayList<>();
         APIUtils.getJsonReponse().getTinTucCuocSong().enqueue(new Callback<List<TinTuc>>() {
             @Override
             public void onResponse(@NonNull Call<List<TinTuc>> call, @NonNull Response<List<TinTuc>> response) {
+               progressDialog.dismiss();
                 arrCuocSong=response.body();
-
                 adapter.setData(arrCuocSong);
-
                 adapter.notifyDataSetChanged();
             }
 
@@ -81,7 +84,7 @@ public class TTCuocSongFragment extends Fragment {
         adapter=new RecyclerViewTinTucAdapter(getActivity(),arrCuocSong);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
-        DividerItemDecoration dividerItemDecoration =new DividerItemDecoration(Objects.requireNonNull(getActivity()),LinearLayoutManager.VERTICAL);
+        DividerItemDecoration dividerItemDecoration =new DividerItemDecoration(getActivity(),LinearLayoutManager.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setAdapter(adapter);
         return view;

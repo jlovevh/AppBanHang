@@ -1,6 +1,9 @@
 package com.tvt.projectcuoikhoa.api;
 
 import com.tvt.projectcuoikhoa.model.BannerQc;
+import com.tvt.projectcuoikhoa.model.LapTop;
+import com.tvt.projectcuoikhoa.model.Phone;
+import com.tvt.projectcuoikhoa.model.Tablet;
 import com.tvt.projectcuoikhoa.model.TinTuc;
 
 import java.util.List;
@@ -30,4 +33,15 @@ public interface JsonReponse {
 
     @GET(value = "tintuc/cuocsong.php")
     Call<List<TinTuc>> getTinTucCuocSong();
+
+
+    @GET(value = "sanpham/dienthoai.php")
+    Call<List<Phone>> getALLPhone();
+
+    @GET(value = "sanpham/laptop.php")
+    Call<List<LapTop>> getALLLapTop();
+
+    @GET(value = "sanpham/tablet.php")
+    Call<List<Tablet>> getAllTablet();
+
 }

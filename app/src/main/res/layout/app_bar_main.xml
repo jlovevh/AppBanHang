@@ -46,4 +46,9 @@
 
     <include layout="@layout/content_main" />
 
+    <ImageView
+        android:id="@+id/img_try"
+        android:layout_gravity="bottom"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
 </android.support.design.widget.CoordinatorLayout>

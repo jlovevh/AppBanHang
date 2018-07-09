@@ -1,35 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="176dp"
+    android:orientation="vertical"
     android:background="@android:color/holo_orange_light">
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_header"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:id="@+id/img_header"
-        android:layout_marginLeft="30dp"
-        android:src="@drawable/iu"
-        android:scaleType="centerCrop"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10sp"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/iu" />
 
     <TextView
         android:id="@+id/name_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Minh Tien Pro"
         android:layout_gravity="bottom"
-        android:layout_marginLeft="28dp"
-        android:textSize="20sp"
-        android:layout_marginBottom="30dp"/>
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10sp"
+        android:textColor="@color/black"
+        android:text="Minh Tien Pro"
+        android:textSize="18sp" />
+
     <TextView
         android:id="@+id/email_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10sp"
         android:text="trantien1596@gmail.com"
-        android:layout_gravity="bottom"
-        android:layout_marginLeft="28dp"
-        android:textSize="16sp"
-        android:layout_marginBottom="10dp"/>
+        android:textSize="15sp" />
 
-</FrameLayout>
+</LinearLayout>
