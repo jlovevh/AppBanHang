@@ -26,11 +26,11 @@ public class BannerQcAdapter extends PagerAdapter {
 
     }
 
-//    public void setData(List<BannerQc> arrBannerQc){
-//        this.arrBannerQc.clear();
-//        this.arrBannerQc.addAll(arrBannerQc);
-//        this.notifyDataSetChanged();
-//    }
+    public void setData(List<BannerQc> arrBannerQc) {
+        this.arrBannerQc.clear();
+        this.arrBannerQc.addAll(arrBannerQc);
+        this.notifyDataSetChanged();
+    }
 
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {

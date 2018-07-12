@@ -3,6 +3,7 @@ package com.tvt.projectcuoikhoa.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -15,15 +16,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.tvt.projectcuoikhoa.R;
-import com.tvt.projectcuoikhoa.adapter.RecyclerViewTinTucAdapter;
+import com.tvt.projectcuoikhoa.activities.TinTucDanhGiaActivity;
 import com.tvt.projectcuoikhoa.adapter.TinTucDanhGiaAdapter;
 import com.tvt.projectcuoikhoa.api.APIUtils;
+import com.tvt.projectcuoikhoa.helper.ItemClickListener;
 import com.tvt.projectcuoikhoa.model.TinTuc;
-import com.tvt.projectcuoikhoa.utils.Const;
+import com.tvt.projectcuoikhoa.utils.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,7 +33,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TTDanhGiaFragment extends Fragment {
+public class TTDanhGiaFragment extends Fragment implements ItemClickListener {
 
     private List<TinTuc> arrDanhGia;
     private TinTucDanhGiaAdapter adapter;
@@ -75,7 +76,8 @@ public class TTDanhGiaFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<List<TinTuc>> call, @NonNull Throwable t) {
-                Log.d(Const.TAG,"error"+call.toString());            }
+                Log.d(Constant.TAG, "error" + call.toString());
+            }
         });
 
         adapter=new TinTucDanhGiaAdapter(getActivity(),arrDanhGia);
@@ -84,7 +86,16 @@ public class TTDanhGiaFragment extends Fragment {
         DividerItemDecoration dividerItemDecoration =new DividerItemDecoration(getActivity(),LinearLayoutManager.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setAdapter(adapter);
+        adapter.setItemClickListener(this);
         return view;
     }
 
+    @Override
+    public void onItemClick(View view, int position) {
+        Intent intent = new Intent(getContext(), TinTucDanhGiaActivity.class);
+        intent.putExtra("title", arrDanhGia.get(position).getTieude());
+        intent.putExtra("baiviet", arrDanhGia.get(position).getBaiviet());
+        intent.putExtra("create", arrDanhGia.get(position).getCreateAt());
+        getActivity().startActivity(intent);
+    }
 }

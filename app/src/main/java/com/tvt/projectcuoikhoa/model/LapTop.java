@@ -41,9 +41,6 @@ public class LapTop {
     @SerializedName("create_at")
     @Expose
     private String createAt;
-    @SerializedName("tenloaisp")
-    @Expose
-    private String tenloaisp;
     @SerializedName("tendanhmuc")
     @Expose
     private String tendanhmuc;
@@ -81,7 +78,7 @@ public class LapTop {
     public LapTop() {
     }
 
-    public LapTop(String id, String name, String price, String status, String image, String evaluation, String promo1, String promo2, String promo3, String gioithieu, String tag, String createAt, String tenloaisp, String tendanhmuc, String urlBanner, String cpu, String ram, String ocung, String manhinh, String dohoa, String ketnoi, String hedieuhanh, String trongluong, String chitietcauhinh) {
+    public LapTop(String id, String name, String price, String status, String image, String evaluation, String promo1, String promo2, String promo3, String gioithieu, String tag, String createAt, String tendanhmuc, String urlBanner, String cpu, String ram, String ocung, String manhinh, String dohoa, String ketnoi, String hedieuhanh, String trongluong, String chitietcauhinh) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -94,7 +91,6 @@ public class LapTop {
         this.gioithieu = gioithieu;
         this.tag = tag;
         this.createAt = createAt;
-        this.tenloaisp = tenloaisp;
         this.tendanhmuc = tendanhmuc;
         this.urlBanner = urlBanner;
         this.cpu = cpu;
@@ -204,13 +200,6 @@ public class LapTop {
         this.createAt = createAt;
     }
 
-    public String getTenloaisp() {
-        return tenloaisp;
-    }
-
-    public void setTenloaisp(String tenloaisp) {
-        this.tenloaisp = tenloaisp;
-    }
 
     public String getTendanhmuc() {
         return tendanhmuc;

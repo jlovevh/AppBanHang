@@ -18,11 +18,10 @@ import com.tvt.projectcuoikhoa.R;
 import com.tvt.projectcuoikhoa.adapter.RecyclerViewTinTucAdapter;
 import com.tvt.projectcuoikhoa.api.APIUtils;
 import com.tvt.projectcuoikhoa.model.TinTuc;
-import com.tvt.projectcuoikhoa.utils.Const;
+import com.tvt.projectcuoikhoa.utils.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -79,7 +78,8 @@ public class TTTinMoiFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<List<TinTuc>> call, @NonNull Throwable t) {
-                Log.d(Const.TAG,"error"+call.toString());            }
+                Log.d(Constant.TAG, "error" + call.toString());
+            }
         });
 
         adapter=new RecyclerViewTinTucAdapter(getActivity(),arrTinMoi);

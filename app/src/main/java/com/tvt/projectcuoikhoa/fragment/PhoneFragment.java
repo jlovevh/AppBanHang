@@ -3,7 +3,9 @@ package com.tvt.projectcuoikhoa.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,13 +14,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.tvt.projectcuoikhoa.R;
 import com.tvt.projectcuoikhoa.adapter.RecyclerPhoneAdapter;
 import com.tvt.projectcuoikhoa.api.APIUtils;
 import com.tvt.projectcuoikhoa.helper.GridDividerDecoration;
 import com.tvt.projectcuoikhoa.model.Phone;
-import com.tvt.projectcuoikhoa.utils.Const;
+import com.tvt.projectcuoikhoa.utils.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +39,7 @@ public class PhoneFragment extends Fragment {
     private List<Phone> arrPhone =new ArrayList<>();
     private RecyclerView recyclerView;
     private ProgressDialog progressDialog;
+    private int page = 1;
 
     public  static PhoneFragment newInstance(){
         return new PhoneFragment();
@@ -55,30 +59,52 @@ public class PhoneFragment extends Fragment {
         progressDialog.setMessage("Loading....");
         progressDialog.show();
         recyclerView=view.findViewById(R.id.recyclerPhone);
-
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
         recyclerView.addItemDecoration(new GridDividerDecoration(getActivity()));
 
+        loadMoreData(page);
 
+        adapter = new RecyclerPhoneAdapter(recyclerView, getContext(), arrPhone);
+        recyclerView.setAdapter(adapter);
+
+//        adapter.setLoadMoreListener(this);
+        return view;
+    }
+
+
+//    @Override
+//    public void onLoadMore(final int page) {
+//      if(arrPhone.size()<=6){
+//          arrPhone.add(null);
+//          adapter.notifyItemInserted(arrPhone.size()-1);
+//          new Handler().postDelayed(new Runnable() {
+//              @Override
+//              public void run() {
+//                  int index=arrPhone.size()-1;
+//                  loadMoreData(page);
+//              }
+//          },5000);
+//      }
+//    }
+
+    private void loadMoreData(int page) {
 
         APIUtils.getJsonReponse().getALLPhone().enqueue(new Callback<List<Phone>>() {
             @Override
-            public void onResponse(@NonNull Call<List<Phone>> call,@NonNull Response<List<Phone>> response) {
+            public void onResponse(@NonNull Call<List<Phone>> call, @NonNull Response<List<Phone>> response) {
                 progressDialog.dismiss();
+//                arrPhone.remove(arrPhone.size());
+//                adapter.notifyItemRemoved(arrPhone.size());
                 arrPhone=response.body();
                 adapter.setData(arrPhone);
                 adapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<Phone>> call,@NonNull Throwable t) {
-                Log.d(Const.TAG,"Error" +call.toString());
+            public void onFailure(@NonNull Call<List<Phone>> call, @NonNull Throwable t) {
+                Log.d(Constant.TAG, "Error" + call.toString());
             }
         });
-        adapter=new RecyclerPhoneAdapter(getContext(),arrPhone);
-        recyclerView.setAdapter(adapter);
-        return view;
     }
-
 }

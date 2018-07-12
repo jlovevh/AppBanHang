@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    app:cardCornerRadius="3dp">
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
+
+        <ImageView
+            android:contentDescription="@string/image"
+            android:id="@+id/img_phone"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="110dp"
+            android:layout_marginTop="10dp"
+            android:layout_height="120dp" />
+
+        <TextView
+            android:id="@+id/tv_name_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="30dp"
+            android:text="@string/dt"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_price_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="10dp"
+            android:textColor="@android:color/holo_red_dark"
+            android:text="@string/gia_lap_top" />
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:textStyle="bold"
+            android:background="@drawable/button_custom"
+            android:layout_marginBottom="5dp"
+            android:textSize="12sp"
+            android:text="@string/tg"
+            android:textColor="@color/white" />
+
+
+    </FrameLayout>
+
+</android.support.v7.widget.CardView>

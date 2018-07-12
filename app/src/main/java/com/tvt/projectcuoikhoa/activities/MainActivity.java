@@ -40,7 +40,7 @@ import com.tvt.projectcuoikhoa.fragment.TinTucFragment;
 import com.tvt.projectcuoikhoa.fragment.TrangChuFragment;
 import com.tvt.projectcuoikhoa.helper.BottomNavigationBehavior;
 import com.tvt.projectcuoikhoa.helper.BottomNavigationViewHelper;
-import com.tvt.projectcuoikhoa.utils.Const;
+import com.tvt.projectcuoikhoa.utils.Constant;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, NavigationView.OnNavigationItemSelectedListener {
 
@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private ViewPagerAdapter adapter;
     private TextView tvName, tvEmail;
     private ImageView imgHeader;
-    private String name, email, url, nameGG, emailGG, urlGG, nameU, emailU, urlU;
     private boolean doubleBackToExitPressedOnce = false;
 
 
@@ -60,13 +59,21 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         initViews();
 
+        Intent intent = getIntent();
 
-        getIntents();
-        getIntentsFB();
-        getIntentsGG();
+        int key = intent.getIntExtra(LoginActivity.key, 0);
+        Log.d(Constant.TAG, "KeyU: " + key);
 
+        if (key == 1) {
+            getIntents();
+        } else if (key == 2) {
+            getIntentsFB();
+        } else if (key == 3) {
+            getIntentsGG();
+        }
 
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer);
         drawerToggle.syncState();
@@ -88,13 +95,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private void getIntentsFB() {
 
         Intent intentFB = getIntent();
-        name = intentFB.getStringExtra("name");
-        url = intentFB.getStringExtra("url");
-        email = intentFB.getStringExtra("email");
+        String name = intentFB.getStringExtra("name");
+        String url = intentFB.getStringExtra("url");
+        String email = intentFB.getStringExtra("email");
 
-        Log.d(Const.TAG, "ccc: " + name);
-        Log.d(Const.TAG, "ccc: " + email);
-        Log.d(Const.TAG, "ccc: " + url);
+        Log.d(Constant.TAG, "ccc: " + name);
+        Log.d(Constant.TAG, "ccc: " + email);
+        Log.d(Constant.TAG, "ccc: " + url);
 
         tvEmail.setText(email);
         tvName.setText(name);
@@ -110,11 +117,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 LoginManager.getInstance().logOut();
-                                tvName.setText("Lee Ji-eun");
-                                tvEmail.setText("I love IU");
+                                String name = "Lee Ji-eun";
+                                tvName.setText(name);
+                                String email = "I love IU";
+                                tvEmail.setText(email);
                                 imgHeader.setImageResource(R.drawable.iu);
+
                                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                                 startActivity(intent);
+
                             }
                         })
                         .setPositiveButton("Không", new DialogInterface.OnClickListener() {
@@ -135,13 +146,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private void getIntentsGG() {
 
         Intent intent = getIntent();
-        nameGG = intent.getStringExtra("nameGG");
-        urlGG = intent.getStringExtra("url_gg");
-        emailGG = intent.getStringExtra("emailGG");
+        String nameGG = intent.getStringExtra("nameGG");
+        String urlGG = intent.getStringExtra("url_gg");
+        String emailGG = intent.getStringExtra("emailGG");
 
-        Log.d(Const.TAG, "nameGG: " + nameGG);
-        Log.d(Const.TAG, "urlGG: " + urlGG);
-        Log.d(Const.TAG, "emailGG: " + emailGG);
+        Log.d(Constant.TAG, "nameGG: " + nameGG);
+        Log.d(Constant.TAG, "urlGG: " + urlGG);
+        Log.d(Constant.TAG, "emailGG: " + emailGG);
         tvEmail.setText(emailGG);
         tvName.setText(nameGG);
         Picasso.with(this).load(urlGG).error(R.drawable.iu).into(imgHeader);
@@ -158,8 +169,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                                 LoginActivity.googleSignInClient.signOut().addOnCompleteListener(MainActivity.this, new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        tvName.setText("Lee Ji-eun");
-                                        tvEmail.setText("I love IU");
+                                        String name = "Lee Ji-eun";
+                                        tvName.setText(name);
+                                        String email = "I love IU";
+                                        tvEmail.setText(email);
                                         imgHeader.setImageResource(R.drawable.iu);
                                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                                         startActivity(intent);
@@ -186,33 +199,33 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private void getIntents() {
 
         Intent intentU = getIntent();
-        nameU = intentU.getStringExtra("nameU");
-        urlU = intentU.getStringExtra("urlU");
-        emailU = intentU.getStringExtra("emailU");
+        String nameU = intentU.getStringExtra("nameU");
+        String urlU = intentU.getStringExtra("urlU");
+        String emailU = intentU.getStringExtra("emailU");
 
-        Log.d(Const.TAG, "nameU: " + nameU);
-        Log.d(Const.TAG, "urlU: " + urlU);
-        Log.d(Const.TAG, "emailU: " + emailU);
+        Log.d(Constant.TAG, "nameU: " + nameU);
+        Log.d(Constant.TAG, "urlU: " + urlU);
+        Log.d(Constant.TAG, "emailU: " + emailU);
         tvName.setText(nameU);
         tvEmail.setText(emailU);
         Picasso.with(this).load(urlU).placeholder(R.drawable.iu).error(R.mipmap.ic_launcher).into(imgHeader);
     }
 
 
-    private void setupViewPager(ViewPager viewPager) {
-        adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(TrangChuFragment.newInstance());
-        adapter.addFragment(PhoneFragment.newInstance());
-        adapter.addFragment(TinTucFragment.newInstance());
-        adapter.addFragment(TaiKhoanFragment.newInstance());
-        viewPager.setAdapter(adapter);
-    }
+//    private void setupViewPager(ViewPager viewPager) {
+//        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+//        adapter.addFragment(TrangChuFragment.newInstance());
+//        adapter.addFragment(PhoneFragment.newInstance());
+//        adapter.addFragment(TinTucFragment.newInstance());
+//        adapter.addFragment(TaiKhoanFragment.newInstance());
+//        viewPager.setAdapter(adapter);
+//    }
 
 
     private void initViews() {
         toolbar = findViewById(R.id.toolbar);
         drawerLayout = findViewById(R.id.draw_layout);
-        navigationView = (NavigationView) findViewById(R.id.nav_layout);
+        navigationView = findViewById(R.id.nav_layout);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

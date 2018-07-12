@@ -12,6 +12,7 @@
         android:padding="8dp">
 
         <ImageView
+            android:contentDescription="@string/image"
             android:id="@+id/img_phone"
             android:layout_width="100dp"
             android:layout_height="120dp"
@@ -23,9 +24,11 @@
             android:id="@+id/tv_name_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="60dp"
-            android:text="I Phone X 256GB"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="40dp"
+            android:text="@string/dt"
             android:textColor="@color/black"
             android:textSize="15sp" />
 
@@ -33,19 +36,21 @@
             android:id="@+id/tv_price_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_marginBottom="10dp"
-            android:text="34.790.000đ" />
+            android:text="@string/gia_lap_top" />
 
         <TextView
             android:id="@+id/tv_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             android:background="@color/redPhone"
             android:padding="3dp"
             android:textSize="14sp"
-            android:text="Trả góp 0%"
+            android:text="@string/tg"
             android:textColor="@color/white" />
 
 

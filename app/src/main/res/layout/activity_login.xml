@@ -63,7 +63,7 @@
 
             <CheckBox
                 android:id="@+id/checkBox"
-                android:text="Remember Me"
+                android:text="@string/ck_user"
                 android:textColor="@color/primary_pink"
                 android:layout_gravity="start"
                 android:layout_width="wrap_content"

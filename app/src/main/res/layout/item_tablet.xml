@@ -1,16 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="250dp">
+    android:layout_height="230dp">
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:padding="8dp">
 
+        <TextView
+            android:id="@+id/tv_status_tablet"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_gravity="end"
+            android:background="@color/redPhone"
+            android:text="@string/tg"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
         <ImageView
+            android:contentDescription="@string/image"
             android:id="@+id/img_tablet"
             android:layout_width="100dp"
             android:layout_height="120dp"
@@ -22,9 +33,7 @@
             android:id="@+id/tv_name_tablet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="60dp"
-            android:text="I Phone X 256GB"
+            android:text="@string/dt"
             android:textColor="@color/black"
             android:textSize="15sp" />
 
@@ -32,22 +41,9 @@
             android:id="@+id/tv_price_tablet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
-            android:layout_marginBottom="10dp"
-            android:text="34.790.000đ" />
-
-        <TextView
-            android:id="@+id/tv_status_tablet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:background="@color/redPhone"
-            android:padding="3dp"
-            android:text="Trả góp 0%"
-            android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:text="@string/gia_lap_top" />
 
 
-    </FrameLayout>
+    </LinearLayout>
 
 </android.support.v7.widget.CardView>

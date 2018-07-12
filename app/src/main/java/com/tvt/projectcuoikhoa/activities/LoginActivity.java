@@ -1,13 +1,11 @@
 package com.tvt.projectcuoikhoa.activities;
 
 import android.annotation.SuppressLint;
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,7 +14,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -28,7 +25,6 @@ import com.facebook.GraphResponse;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -39,7 +35,8 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.Task;
 import com.tvt.projectcuoikhoa.R;
-import com.tvt.projectcuoikhoa.utils.Const;
+import com.tvt.projectcuoikhoa.utils.Connectivity;
+import com.tvt.projectcuoikhoa.utils.Constant;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,7 +47,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
@@ -58,22 +54,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button btnLogin, btnLoginFB;
     private CallbackManager callbackManager;
     public static LoginManager loginManager;
-    private ProgressDialog dialog;
+    private ProgressDialog dialog, progressDialog;
     private SignInButton signInButton;
-    private int keyFB,keyGG;
     private GoogleApiClient googleApiClient;
     public static  boolean isLogin=false;
     @SuppressLint("StaticFieldLeak")
     public static GoogleSignInClient googleSignInClient;
 
     private Collection<String> permissions = Arrays.asList("public_profile ", "email", "user_birthday", "user_friends");
-    public static boolean IsLogin;
+    public static String key = "KeyCCnhe";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         isLoggedInFB();
         setContentView(R.layout.activity_login);
+        Connectivity.isConnected(this);
+        Connectivity.isConnectedMobile(this);
+        Connectivity.isConnectedWifi(this);
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
         initViews();
@@ -133,21 +131,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void updateUI(GoogleSignInAccount account) {
        if(account!=null){
+
            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
            String name = account.getDisplayName();
            String email = account.getEmail();
            String url = null;
           if(account.getPhotoUrl()==null){
-              url=Const.URL_DEFAULT_PROFILE_GOOGLE;
+              url = Constant.URL_DEFAULT_PROFILE_GOOGLE;
           }else {
               url = account.getPhotoUrl().toString();
           }
            intent.putExtra("nameGG", name);
            intent.putExtra("emailGG", email);
            intent.putExtra("url_gg", url);
+           intent.putExtra(key, 3);
            startActivity(intent);
-       }else {
-           Toast.makeText(this, "Máy của bạn chưa đăng nhập google.Xin vui lòng đăng nhập !!", Toast.LENGTH_SHORT).show();
        }
 
 
@@ -166,7 +164,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
 
-                Log.d(Const.TAG, "KeyHash" + Base64.encodeToString(md.digest(), Base64.DEFAULT));
+                Log.d(Constant.TAG, "KeyHash" + Base64.encodeToString(md.digest(), Base64.DEFAULT));
             }
         } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -183,6 +181,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
+            progressDialog.dismiss();
         }
     }
 
@@ -190,12 +189,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             // Signed in successfully, show authenticated UI.
-
             updateUI(account);
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.w(Const.TAG, "signInResult:failed code=" + e.getStatusCode());
+            Log.w(Constant.TAG, "signInResult:failed code=" + e.getStatusCode());
             updateUI(null);
         }
     }
@@ -207,15 +205,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()) {
             case R.id.btn_login:
                 loginUser();
-                IsLogin=true;
                 break;
             case R.id.btn_loginFB:
                 loginFB();
-                isLogin=true;
+
                 break;
 
             case R.id.sign_in_button:
-                isLogin=false;
                 signIn();
                 break;
 
@@ -228,7 +224,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         intent.putExtra("nameU", "Nene");
         intent.putExtra("emailU", "neneIloveyou@gmail.com");
-        intent.putExtra("urlU", Const.URL_DEFAULT_PROFILE_GOOGLE);
+        intent.putExtra("urlU", Constant.URL_DEFAULT_PROFILE_GOOGLE);
+        intent.putExtra(key, 1);
         startActivity(intent);
     }
 
@@ -249,7 +246,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void onCompleted(JSONObject object, GraphResponse response) {
                         dialog.dismiss();
                         getFacebookData(object);
-                        Log.d(Const.TAG, "reponse: " + response.toString());
+//                        Log.d(Constant.TAG, "reponse: " + response.toString());
 
 
                     }
@@ -271,12 +268,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onError(FacebookException error) {
-                        Log.e(Const.TAG,"Error FB: "+error.toString());
+                Log.e(Constant.TAG, "Error FB: " + error.toString());
             }
         });
     }
 
     private void signIn() {
+        progressDialog = new ProgressDialog(this, R.style.AppCompatAlertDialogStyle);
+        progressDialog.setMessage("Retrieving data...");
+        progressDialog.show();
         Intent signInIntent = googleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
 
@@ -304,11 +304,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             intent.putExtra("name", name);
             intent.putExtra("email", email);
             intent.putExtra("url", url);
-            Log.d(Const.TAG, "url: " + url);
-            Log.d(Const.TAG, "name: " + name);
-            Log.d(Const.TAG, "email: " + email);
-            Log.d(Const.TAG, "birthday: " + birthday);
-            Log.d(Const.TAG, "friends: " + friends);
+            intent.putExtra(key, 2);
+//            Log.d(Constant.TAG, "url: " + url);
+//            Log.d(Constant.TAG, "name: " + name);
+//            Log.d(Constant.TAG, "email: " + email);
+//            Log.d(Constant.TAG, "birthday: " + birthday);
+//            Log.d(Constant.TAG, "friends: " + friends);
             startActivity(intent);
 
         } catch (JSONException | MalformedURLException e) {
@@ -321,6 +322,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.d(Const.TAG, connectionResult + "");
+        Log.d(Constant.TAG, connectionResult + "");
     }
 }

@@ -4,18 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.tvt.projectcuoikhoa.R;
-import com.tvt.projectcuoikhoa.activities.ContentActivity;
+import com.tvt.projectcuoikhoa.activities.TinTucActivity;
 import com.tvt.projectcuoikhoa.model.TinTuc;
+import com.tvt.projectcuoikhoa.helper.ItemClickListener;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -56,7 +55,7 @@ public class RecyclerViewTinTucAdapter extends RecyclerView.Adapter<RecyclerView
         ImageView imgTinTuc;
         TextView tvTitle, tvCreateAt;
 
-        private  itemClickListener itemClickListener;
+        private ItemClickListener ItemClickListener;
 
 
         ViewHolderItem(View itemView) {
@@ -68,13 +67,13 @@ public class RecyclerViewTinTucAdapter extends RecyclerView.Adapter<RecyclerView
 
         }
 
-        public  void  setItemClickListener(itemClickListener itemClickListener){
-            this.itemClickListener=itemClickListener;
+        public void setItemClickListener(ItemClickListener ItemClickListener) {
+            this.ItemClickListener = ItemClickListener;
         }
 
         @Override
         public void onClick(View v) {
-                itemClickListener.onItemClick(v,getAdapterPosition());
+            ItemClickListener.onItemClick(v, getAdapterPosition());
         }
     }
 
@@ -82,7 +81,7 @@ public class RecyclerViewTinTucAdapter extends RecyclerView.Adapter<RecyclerView
         ImageView imgHeader;
         TextView titleHeader;
 
-        private  itemClickListener itemClickListener;
+        private ItemClickListener ItemClickListener;
 
         ViewHolderHeader(View itemView) {
             super(itemView);
@@ -90,13 +89,14 @@ public class RecyclerViewTinTucAdapter extends RecyclerView.Adapter<RecyclerView
             titleHeader = itemView.findViewById(R.id.tv_title_header_tin_tuc);
             itemView.setOnClickListener(this);
         }
-        public  void  setItemClickListener(itemClickListener itemClickListener){
-            this.itemClickListener=itemClickListener;
+
+        public void setItemClickListener(ItemClickListener ItemClickListener) {
+            this.ItemClickListener = ItemClickListener;
         }
 
         @Override
         public void onClick(View v) {
-            itemClickListener.onItemClick(v,getAdapterPosition());
+            ItemClickListener.onItemClick(v, getAdapterPosition());
         }
     }
 
@@ -129,10 +129,10 @@ public class RecyclerViewTinTucAdapter extends RecyclerView.Adapter<RecyclerView
             Picasso.with(context).load(tinMoi.getAnhtieude()).error(R.mipmap.ic_launcher).into(holderHeader.imgHeader);
             holderHeader.titleHeader.setText(tinMoi.getTieude());
 
-            holderHeader.setItemClickListener(new itemClickListener() {
+            holderHeader.setItemClickListener(new ItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    Intent intent =new Intent(context, ContentActivity.class);
+                    Intent intent = new Intent(context, TinTucActivity.class);
                     intent.putExtra("title",tinMoi.getTieude());
                     intent.putExtra("baiviet",tinMoi.getBaiviet());
                     intent.putExtra("create",tinMoi.getCreateAt());
@@ -156,10 +156,10 @@ public class RecyclerViewTinTucAdapter extends RecyclerView.Adapter<RecyclerView
                 // look the origin of excption
             }
 
-            holderItem.setItemClickListener(new itemClickListener() {
+            holderItem.setItemClickListener(new ItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    Intent intent =new Intent(context, ContentActivity.class);
+                    Intent intent = new Intent(context, TinTucActivity.class);
                     intent.putExtra("title",tinMoi.getTieude());
                     intent.putExtra("baiviet",tinMoi.getBaiviet());
                     intent.putExtra("create",tinMoi.getCreateAt());
@@ -186,10 +186,5 @@ public class RecyclerViewTinTucAdapter extends RecyclerView.Adapter<RecyclerView
         return position == 0;
     }
 
-    public interface itemClickListener {
 
-        void onItemClick(View view, int position);
-
-
-    }
 }

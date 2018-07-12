@@ -18,7 +18,7 @@ import com.tvt.projectcuoikhoa.adapter.RecyclerTabletAdapter;
 import com.tvt.projectcuoikhoa.api.APIUtils;
 import com.tvt.projectcuoikhoa.helper.GridDividerDecoration;
 import com.tvt.projectcuoikhoa.model.Tablet;
-import com.tvt.projectcuoikhoa.utils.Const;
+import com.tvt.projectcuoikhoa.utils.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +72,7 @@ public class TabletFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<List<Tablet>> call,@NonNull Throwable t) {
-                Log.e(Const.TAG,"error: " +call.toString());
+                Log.e(Constant.TAG, "error: " + call.toString());
             }
         });
         adapter=new RecyclerTabletAdapter(getActivity(),arrTablet);

@@ -1,29 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".fragment.TrangChuFragment">
 
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/view_pager3"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp">
-    </android.support.v4.view.ViewPager>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    <me.relex.circleindicator.CircleIndicator
-        android:id="@+id/indicator"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="152dp"
-        app:ci_drawable="@color/colorPrimaryDark"
-        app:ci_drawable_unselected="@android:color/darker_gray">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    </me.relex.circleindicator.CircleIndicator>
+            <android.support.v4.view.ViewPager
+                android:id="@+id/view_pager3"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"></android.support.v4.view.ViewPager>
 
-    <include layout="@layout/sp_moi_nhat" />
+            <me.relex.circleindicator.CircleIndicator
+                android:id="@+id/indicator"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_gravity="bottom"
+                app:ci_drawable="@color/colorPrimaryDark"
+                app:ci_drawable_unselected="@android:color/darker_gray">
+
+            </me.relex.circleindicator.CircleIndicator>
+
+        </FrameLayout>
+
+        <include
+            layout="@layout/layout_phone_hot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <include
+            layout="@layout/laptop_noi_bat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
 
-</android.support.design.widget.CoordinatorLayout>
+</android.support.v4.widget.NestedScrollView>

@@ -1,6 +1,7 @@
 package com.tvt.projectcuoikhoa.helper;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.ViewCompat;
@@ -14,22 +15,30 @@ import android.widget.FrameLayout;
 
 public class BottomNavigationBehavior extends CoordinatorLayout.Behavior<BottomNavigationView> {
 
+    private int height;
+
     public BottomNavigationBehavior() {
         super();
     }
+
 
     public BottomNavigationBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
     @Override
-    public boolean layoutDependsOn(CoordinatorLayout parent, BottomNavigationView child, View dependency) {
-        boolean dependsOn = dependency instanceof FrameLayout;
-        return dependsOn;
+    public boolean onLayoutChild(CoordinatorLayout parent, BottomNavigationView child, int layoutDirection) {
+        height = child.getHeight();
+        return super.onLayoutChild(parent, child, layoutDirection);
     }
 
     @Override
-    public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout, BottomNavigationView child, View directTargetChild, View target, int nestedScrollAxes) {
+    public boolean layoutDependsOn(CoordinatorLayout parent, BottomNavigationView child, View dependency) {
+        return dependency instanceof FrameLayout;
+    }
+
+    @Override
+    public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull BottomNavigationView child, View directTargetChild, View target, int nestedScrollAxes) {
         return nestedScrollAxes == ViewCompat.SCROLL_AXIS_VERTICAL;
     }
 
@@ -43,10 +52,12 @@ public class BottomNavigationBehavior extends CoordinatorLayout.Behavior<BottomN
     }
 
     private void hideBottomNavigationView(BottomNavigationView view) {
-        view.animate().translationY(view.getHeight());
+        view.clearAnimation();
+        view.animate().translationY(height).setDuration(200);
     }
 
     private void showBottomNavigationView(BottomNavigationView view) {
-        view.animate().translationY(0);
+        view.clearAnimation();
+        view.animate().translationY(0).setDuration(200);
     }
 }

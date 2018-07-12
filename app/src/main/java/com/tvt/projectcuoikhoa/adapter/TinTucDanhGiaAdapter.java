@@ -11,32 +11,36 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.tvt.projectcuoikhoa.R;
+import com.tvt.projectcuoikhoa.helper.ItemClickListener;
 import com.tvt.projectcuoikhoa.model.TinTuc;
 
 import java.util.List;
 
-public class TinTucDanhGiaAdapter extends  RecyclerView.Adapter<TinTucDanhGiaAdapter.ViewHolder> {
-
+public class TinTucDanhGiaAdapter extends RecyclerView.Adapter<TinTucDanhGiaAdapter.ViewHolder> {
 
 
     private Context context;
     private List<TinTuc> arrTinTuc;
+
+    private ItemClickListener itemClickListener;
+
 
     public TinTucDanhGiaAdapter(Context context, List<TinTuc> arrTinTuc) {
         this.context = context;
         this.arrTinTuc = arrTinTuc;
     }
 
-    public void setData(List<TinTuc> arrTinTuc){
+    public void setData(List<TinTuc> arrTinTuc) {
         this.arrTinTuc.clear();
         this.arrTinTuc.addAll(arrTinTuc);
         this.notifyDataSetChanged();
     }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(context).inflate(R.layout.item_tin_tuc_danhgia,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_tin_tuc_danhgia, parent, false);
         return new ViewHolder(view);
     }
 
@@ -44,6 +48,8 @@ public class TinTucDanhGiaAdapter extends  RecyclerView.Adapter<TinTucDanhGiaAda
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Picasso.with(context).load(arrTinTuc.get(position).getAnhtieude()).error(R.mipmap.ic_launcher).into(holder.img);
         holder.tvTitle.setText(arrTinTuc.get(position).getTieude());
+
+
     }
 
     @Override
@@ -51,15 +57,30 @@ public class TinTucDanhGiaAdapter extends  RecyclerView.Adapter<TinTucDanhGiaAda
         return arrTinTuc.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView img;
         private TextView tvTitle;
 
         private ViewHolder(View itemView) {
             super(itemView);
-            img=itemView.findViewById(R.id.img_tin_tuc_danhgia);
-            tvTitle=itemView.findViewById(R.id.tv_title_tin_tuc_danhgia);
+            img = itemView.findViewById(R.id.img_tin_tuc_danhgia);
+            tvTitle = itemView.findViewById(R.id.tv_title_tin_tuc_danhgia);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemClickListener.onItemClick(v, getAdapterPosition());
+
+                }
+            });
         }
+
+
+    }
+
+
+    public void setItemClickListener(ItemClickListener ItemClickListener) {
+        this.itemClickListener = ItemClickListener;
     }
 }
