@@ -6,6 +6,7 @@
     app:cardCornerRadius="3dp">
 
     <LinearLayout
+        android:background="#F7FDFA"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -15,7 +16,8 @@
         <ImageView
             android:contentDescription="@string/image"
             android:id="@+id/img_laptop_new"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
             android:layout_height="200dp"
             android:src="@drawable/iu" />
 

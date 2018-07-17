@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.tvt.projectcuoikhoa.R;
+import com.tvt.projectcuoikhoa.helper.ItemClickListener;
 import com.tvt.projectcuoikhoa.model.LapTop;
 import com.tvt.projectcuoikhoa.model.LaptopNew;
 
@@ -20,7 +21,13 @@ import java.util.List;
 public class RecyclerLaptopNewAdapter extends RecyclerView.Adapter<RecyclerLaptopNewAdapter.ViewHolder> {
 
     private Context context;
-    private List<LaptopNew> arrLapTop = new ArrayList<>();
+    private List<LaptopNew> arrLapTop;
+
+    private ItemClickListenerLapTop itemClickListener;
+
+    public void setItemClickListener(ItemClickListenerLapTop itemClickListener) {
+        this.itemClickListener = itemClickListener;
+    }
 
     public RecyclerLaptopNewAdapter(Context context, List<LaptopNew> arrLapTop) {
         this.context = context;
@@ -80,6 +87,18 @@ public class RecyclerLaptopNewAdapter extends RecyclerView.Adapter<RecyclerLapto
             tvPrice = itemView.findViewById(R.id.tv_price_laptop_new);
             tvOCung = itemView.findViewById(R.id.tv_ocung);
             tvRam = itemView.findViewById(R.id.tv_ram);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemClickListener.onItemClickLaptop(v, getAdapterPosition());
+                }
+            });
         }
+    }
+
+    public interface ItemClickListenerLapTop {
+
+        void onItemClickLaptop(View view, int position);
     }
 }

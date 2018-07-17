@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.tvt.projectcuoikhoa.R;
+import com.tvt.projectcuoikhoa.helper.ItemClickListener;
 import com.tvt.projectcuoikhoa.model.Phone;
 
 import java.util.ArrayList;
@@ -24,7 +25,13 @@ public class RecyclerPhoneAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     private List<Phone> arrPhone;
 
-//    private final int TYPE_PHONE = 0;
+    private ItemClickListener itemClickListener;
+
+    public void setItemClickListener(ItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
+    }
+
+    //    private final int TYPE_PHONE = 0;
 //    private final int TYPE_LOAD = 1;
 //    private OnLoadMoreListener loadMoreListener;
 //    private boolean isLoading = true;
@@ -131,6 +138,12 @@ public class RecyclerPhoneAdapter extends RecyclerView.Adapter<RecyclerView.View
             tvName=itemView.findViewById(R.id.tv_name_phone);
             tvPrice=itemView.findViewById(R.id.tv_price_phone);
             tvStatus=itemView.findViewById(R.id.tv_status);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemClickListener.onItemClick(v, getAdapterPosition());
+                }
+            });
         }
     }
 

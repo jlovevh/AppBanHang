@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.tvt.projectcuoikhoa.R;
+import com.tvt.projectcuoikhoa.helper.ItemClickListener;
 import com.tvt.projectcuoikhoa.model.Phone;
 import com.tvt.projectcuoikhoa.model.PhoneHot;
 
@@ -20,6 +21,13 @@ public class RecyclerPhoneHotAdapter extends RecyclerView.Adapter<RecyclerPhoneH
 
     private Context context;
     private List<PhoneHot> phoneHotList;
+
+
+    private ItemClickListener itemClickListener;
+
+    public void setItemClickListener(ItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
+    }
 
     public RecyclerPhoneHotAdapter(Context context, List<PhoneHot> phoneHotList) {
         this.context = context;
@@ -67,6 +75,13 @@ public class RecyclerPhoneHotAdapter extends RecyclerView.Adapter<RecyclerPhoneH
             tvName = itemView.findViewById(R.id.tv_name_phone);
             tvPrice = itemView.findViewById(R.id.tv_price_phone);
             tvStatus = itemView.findViewById(R.id.tv_status);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemClickListener.onItemClick(v, getAdapterPosition());
+                }
+            });
         }
     }
 }

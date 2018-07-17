@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    tools:context=".fragment.PhoneHotNhatFragment">
+    android:orientation="vertical">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
@@ -36,6 +35,8 @@
             android:layout_height="wrap_content"
             android:text="@string/more"
             android:layout_gravity="center"
+            android:padding="10dp"
+            android:drawablePadding="5dp"
             android:textSize="16sp"
             android:drawableRight="@drawable/ic_expand_more_18dp"
             android:textColor="@android:color/holo_blue_light" />

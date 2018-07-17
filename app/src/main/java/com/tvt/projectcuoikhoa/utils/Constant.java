@@ -1,5 +1,4 @@
 package com.tvt.projectcuoikhoa.utils;
-
 public class Constant {
 
     public static final String BASE_URL = "http://192.168.1.73/thegioididong/";

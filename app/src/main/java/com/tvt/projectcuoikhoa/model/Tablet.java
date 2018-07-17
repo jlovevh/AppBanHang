@@ -20,6 +20,9 @@ public class Tablet {
     @SerializedName("image")
     @Expose
     private String image;
+    @SerializedName("anhkhuyemmai")
+    @Expose
+    private String anhkhuyenmai;
     @SerializedName("evaluation")
     @Expose
     private String evaluation;
@@ -77,6 +80,14 @@ public class Tablet {
 
 
     public Tablet() {
+    }
+
+    public String getAnhkhuyenmai() {
+        return anhkhuyenmai;
+    }
+
+    public void setAnhkhuyenmai(String anhkhuyenmai) {
+        this.anhkhuyenmai = anhkhuyenmai;
     }
 
     public Tablet(String id, String name, String price, String status, String image, String evaluation, String promo1, String promo2, String promo3, String gioithieu, String tag, String createAt, String tendanhmuc, String urlBanner, String manhinh, String cameraTruoc, String cameraSau, String cpu, String gpu, String ram, Object bonhotrong, String ketnoi, String chitietcauhinh) {

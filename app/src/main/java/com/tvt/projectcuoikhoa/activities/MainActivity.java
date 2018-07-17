@@ -45,7 +45,7 @@ import com.tvt.projectcuoikhoa.utils.Constant;
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, NavigationView.OnNavigationItemSelectedListener {
 
     private Toolbar toolbar;
-    private BottomNavigationView bottomNavigationView;
+    public static BottomNavigationView bottomNavigationView;
     private ViewPager viewPager;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
@@ -248,7 +248,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         switch (item.getItemId()) {
 
             case R.id.bnav_home:
-
                 fragment = TrangChuFragment.newInstance();
                 loadFragment(fragment);
                 break;

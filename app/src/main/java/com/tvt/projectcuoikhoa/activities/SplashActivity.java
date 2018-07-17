@@ -12,22 +12,20 @@ import com.tvt.projectcuoikhoa.R;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        progressBar=findViewById(R.id.progressBar);
+
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                progressBar.getIndeterminateDrawable().setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
                 Intent intent =new Intent(SplashActivity.this,LoginActivity.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.anim_splash,R.anim.splash2);
+                overridePendingTransition(R.anim.splash2, R.anim.anim_splash);
             }
-        },2000);
+        }, 5000);
 
 
     }

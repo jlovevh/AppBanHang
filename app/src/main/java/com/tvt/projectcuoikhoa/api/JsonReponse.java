@@ -6,6 +6,7 @@ import com.tvt.projectcuoikhoa.model.LaptopNew;
 import com.tvt.projectcuoikhoa.model.Phone;
 import com.tvt.projectcuoikhoa.model.PhoneHot;
 import com.tvt.projectcuoikhoa.model.Tablet;
+import com.tvt.projectcuoikhoa.model.TinCongNghe;
 import com.tvt.projectcuoikhoa.model.TinTuc;
 import com.tvt.projectcuoikhoa.utils.Constant;
 
@@ -65,5 +66,11 @@ public interface JsonReponse {
 
     @GET(value = "sanpham/laptopmoinhat.php")
     Call<List<LaptopNew>> getLaptopNew();
+
+    @GET(value = "sanpham/tabletmoinhat.php")
+    Call<List<Tablet>> getTabletNew();
+
+    @GET(value = "tintuc/tincongnghe.php")
+    Call<List<TinCongNghe>> getTinCongNghe();
 
 }

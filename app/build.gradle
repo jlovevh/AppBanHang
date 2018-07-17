@@ -4,7 +4,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.tvt.projectcuoikhoa"
-        minSdkVersion 21
+        minSdkVersion 19
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -47,6 +47,10 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:15.0.1'
     implementation 'com.bignerdranch.android:simple-item-decoration:1.0.0'
     implementation 'com.shaishavgandhi:login-buttons:1.0.0'
+    implementation 'com.android.support:support-annotations:27.1.1'
+    implementation 'com.android.support:support-compat:27.1.1'
+    implementation 'com.android.support:support-core-ui:27.1.1'
+    implementation 'com.github.ybq:Android-SpinKit:1.1.0'
 
 }
 apply plugin: 'com.google.gms.google-services'

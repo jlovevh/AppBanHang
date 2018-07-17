@@ -60,8 +60,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public static  boolean isLogin=false;
     @SuppressLint("StaticFieldLeak")
     public static GoogleSignInClient googleSignInClient;
+//    , "user_birthday", "user_friends"
 
-    private Collection<String> permissions = Arrays.asList("public_profile ", "email", "user_birthday", "user_friends");
+    private Collection<String> permissions = Arrays.asList("public_profile ", "email");
     public static String key = "KeyCCnhe";
 
     @Override
@@ -294,8 +295,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String id = null, name = null, email, friends, birthday, url;
         try {
             id = object.getString("id");
-            birthday = object.getString("birthday");
-            friends = object.getJSONObject("friends").getJSONObject("summary").getString("total_count");
+//            birthday = object.getString("birthday");
+//            friends = object.getJSONObject("friends").getJSONObject("summary").getString("total_count");
             email = object.getString("email");
             name = object.getString("name");
             URL profile_picture = new URL("https://graph.facebook.com/" + id + "/picture?type=large");

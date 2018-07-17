@@ -4,6 +4,7 @@ package com.tvt.projectcuoikhoa.fragment;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -17,9 +18,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.tvt.projectcuoikhoa.R;
+import com.tvt.projectcuoikhoa.activities.ChiTietDienThoaiActivity;
 import com.tvt.projectcuoikhoa.adapter.RecyclerPhoneAdapter;
 import com.tvt.projectcuoikhoa.api.APIUtils;
 import com.tvt.projectcuoikhoa.helper.GridDividerDecoration;
+import com.tvt.projectcuoikhoa.helper.ItemClickListener;
 import com.tvt.projectcuoikhoa.model.Phone;
 import com.tvt.projectcuoikhoa.utils.Constant;
 
@@ -33,7 +36,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PhoneFragment extends Fragment {
+public class PhoneFragment extends Fragment implements ItemClickListener {
 
     private RecyclerPhoneAdapter adapter;
     private List<Phone> arrPhone =new ArrayList<>();
@@ -66,6 +69,7 @@ public class PhoneFragment extends Fragment {
         loadMoreData(page);
 
         adapter = new RecyclerPhoneAdapter(recyclerView, getContext(), arrPhone);
+        adapter.setItemClickListener(this);
         recyclerView.setAdapter(adapter);
 
 //        adapter.setLoadMoreListener(this);
@@ -106,5 +110,14 @@ public class PhoneFragment extends Fragment {
                 Log.d(Constant.TAG, "Error" + call.toString());
             }
         });
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+
+        Intent intent = new Intent(getContext(), ChiTietDienThoaiActivity.class);
+
+        getActivity().startActivity(intent);
+
     }
 }

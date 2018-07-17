@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">@android:color/holo_blue_light</color>
     <color name="colorPrimaryDark">@android:color/holo_blue_dark</color>
-    <color name="colorAccent">@color/redPhone</color>
+    <color name="colorAccent">#FF4081</color>
     <color name="item_nav_bottom">#ffffff</color>
     <color name="black">#000000</color>
     <color name="gray">@android:color/darker_gray</color>
@@ -12,7 +12,7 @@
     <color name="redPhone">#FF2842</color>
     <color name="fb">#3B5998</color>
     <color name="gray_splash">#D8D8D8</color>
-    <color name="primary_pink">#FF0099</color>
+    <color name="primary_pink">#FF4081</color>
     <color name="gray1">#F5F5F5</color>
     <color name="green">#3FB846</color>
 </resources>

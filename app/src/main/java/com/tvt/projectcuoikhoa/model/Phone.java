@@ -1,9 +1,12 @@
 package com.tvt.projectcuoikhoa.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Phone {
+public class Phone implements Parcelable {
 
     @SerializedName("id")
     @Expose
@@ -108,6 +111,45 @@ public class Phone {
         this.hedieuhanh = hedieuhanh;
         this.chitietcauhinh = chitietcauhinh;
     }
+
+    protected Phone(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        price = in.readString();
+        status = in.readString();
+        image = in.readString();
+        evaluation = in.readString();
+        promo1 = in.readString();
+        promo2 = in.readString();
+        promo3 = in.readString();
+        gioithieu = in.readString();
+        tag = in.readString();
+        createAt = in.readString();
+        tendanhmuc = in.readString();
+        urlBanner = in.readString();
+        manhinh = in.readString();
+        cameraTruoc = in.readString();
+        cameraSau = in.readString();
+        ram = in.readString();
+        bonhotrong = in.readString();
+        cpu = in.readString();
+        gpu = in.readString();
+        dungluongpin = in.readString();
+        hedieuhanh = in.readString();
+        chitietcauhinh = in.readString();
+    }
+
+    public static final Creator<Phone> CREATOR = new Creator<Phone>() {
+        @Override
+        public Phone createFromParcel(Parcel in) {
+            return new Phone(in);
+        }
+
+        @Override
+        public Phone[] newArray(int size) {
+            return new Phone[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -302,4 +344,36 @@ public class Phone {
         this.chitietcauhinh = chitietcauhinh;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(price);
+        dest.writeString(status);
+        dest.writeString(image);
+        dest.writeString(evaluation);
+        dest.writeString(promo1);
+        dest.writeString(promo2);
+        dest.writeString(promo3);
+        dest.writeString(gioithieu);
+        dest.writeString(tag);
+        dest.writeString(createAt);
+        dest.writeString(tendanhmuc);
+        dest.writeString(urlBanner);
+        dest.writeString(manhinh);
+        dest.writeString(cameraTruoc);
+        dest.writeString(cameraSau);
+        dest.writeString(ram);
+        dest.writeString(bonhotrong);
+        dest.writeString(cpu);
+        dest.writeString(gpu);
+        dest.writeString(dungluongpin);
+        dest.writeString(hedieuhanh);
+        dest.writeString(chitietcauhinh);
+    }
 }
