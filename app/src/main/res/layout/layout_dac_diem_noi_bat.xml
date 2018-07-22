@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/layout"
+    android:padding="10dp"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/tv_name_phone_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:text="ĐẶC ĐIỂM NỔI BẬT IPHONE X 64GB"
+        android:padding="10dp" />
+
+
+</LinearLayout>

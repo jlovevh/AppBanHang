@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import com.tvt.projectcuoikhoa.R;
 import com.tvt.projectcuoikhoa.adapter.RecyclerViewTinTucAdapter;
 import com.tvt.projectcuoikhoa.api.APIUtils;
-import com.tvt.projectcuoikhoa.model.TinTuc;
+import com.tvt.projectcuoikhoa.model.News;
 import com.tvt.projectcuoikhoa.utils.Constant;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ import retrofit2.Response;
  */
 public class TTThiTruongFragment extends Fragment {
 
-    private List<TinTuc> arrThiTruong ;
+    private List<News> arrThiTruong;
     private RecyclerView recyclerView;
     private RecyclerViewTinTucAdapter adapter;
 
@@ -60,9 +60,9 @@ public class TTThiTruongFragment extends Fragment {
         progressDialog.show();
         RecyclerView recyclerView = view.findViewById(R.id.recyclerThiTruong);
         arrThiTruong=new ArrayList<>();
-        APIUtils.getJsonReponse().getThiTruong().enqueue(new Callback<List<TinTuc>>() {
+        APIUtils.getJsonReponse().getThiTruong().enqueue(new Callback<List<News>>() {
             @Override
-            public void onResponse(@NonNull Call<List<TinTuc>> call, @NonNull Response<List<TinTuc>> response) {
+            public void onResponse(@NonNull Call<List<News>> call, @NonNull Response<List<News>> response) {
                 progressDialog.dismiss();
                 arrThiTruong=response.body();
 
@@ -72,7 +72,7 @@ public class TTThiTruongFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<TinTuc>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<List<News>> call, @NonNull Throwable t) {
                 Log.d(Constant.TAG, "error" + call.toString());
             }
         });

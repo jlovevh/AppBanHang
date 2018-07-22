@@ -16,11 +16,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.tvt.projectcuoikhoa.R;
-import com.tvt.projectcuoikhoa.activities.TinTucDanhGiaActivity;
-import com.tvt.projectcuoikhoa.adapter.TinTucDanhGiaAdapter;
+import com.tvt.projectcuoikhoa.activities.NewsEvaluationActivity;
+import com.tvt.projectcuoikhoa.adapter.NewsEvaluationAdapter;
 import com.tvt.projectcuoikhoa.api.APIUtils;
 import com.tvt.projectcuoikhoa.helper.ItemClickListener;
-import com.tvt.projectcuoikhoa.model.TinTuc;
+import com.tvt.projectcuoikhoa.model.News;
 import com.tvt.projectcuoikhoa.utils.Constant;
 
 import java.util.ArrayList;
@@ -35,8 +35,8 @@ import retrofit2.Response;
  */
 public class TTDanhGiaFragment extends Fragment implements ItemClickListener {
 
-    private List<TinTuc> arrDanhGia;
-    private TinTucDanhGiaAdapter adapter;
+    private List<News> arrDanhGia;
+    private NewsEvaluationAdapter adapter;
     private RecyclerView recyclerView;
 
     @SuppressLint("StaticFieldLeak")
@@ -64,9 +64,9 @@ public class TTDanhGiaFragment extends Fragment implements ItemClickListener {
         progressDialog.show();
         recyclerView = view.findViewById(R.id.recyclerDanhGia);
         arrDanhGia=new ArrayList<>();
-        APIUtils.getJsonReponse().getDanhGia().enqueue(new Callback<List<TinTuc>>() {
+        APIUtils.getJsonReponse().getDanhGia().enqueue(new Callback<List<News>>() {
             @Override
-            public void onResponse(@NonNull Call<List<TinTuc>> call, @NonNull Response<List<TinTuc>> response) {
+            public void onResponse(@NonNull Call<List<News>> call, @NonNull Response<List<News>> response) {
                 progressDialog.dismiss();
                 arrDanhGia=response.body();
                 adapter.setData(arrDanhGia);
@@ -75,12 +75,12 @@ public class TTDanhGiaFragment extends Fragment implements ItemClickListener {
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<TinTuc>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<List<News>> call, @NonNull Throwable t) {
                 Log.d(Constant.TAG, "error" + call.toString());
             }
         });
 
-        adapter=new TinTucDanhGiaAdapter(getActivity(),arrDanhGia);
+        adapter = new NewsEvaluationAdapter(getActivity(), arrDanhGia);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
         DividerItemDecoration dividerItemDecoration =new DividerItemDecoration(getActivity(),LinearLayoutManager.VERTICAL);
@@ -92,7 +92,7 @@ public class TTDanhGiaFragment extends Fragment implements ItemClickListener {
 
     @Override
     public void onItemClick(View view, int position) {
-        Intent intent = new Intent(getContext(), TinTucDanhGiaActivity.class);
+        Intent intent = new Intent(getContext(), NewsEvaluationActivity.class);
         intent.putExtra("title", arrDanhGia.get(position).getTieude());
         intent.putExtra("baiviet", arrDanhGia.get(position).getBaiviet());
         intent.putExtra("create", arrDanhGia.get(position).getCreateAt());

@@ -1,9 +1,12 @@
 package com.tvt.projectcuoikhoa.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Tablet {
+public class Tablet implements Parcelable {
 
     @SerializedName("id")
     @Expose
@@ -70,7 +73,7 @@ public class Tablet {
     private String ram;
     @SerializedName("bonhotrong")
     @Expose
-    private Object bonhotrong;
+    private String bonhotrong;
     @SerializedName("ketnoi")
     @Expose
     private String ketnoi;
@@ -82,6 +85,46 @@ public class Tablet {
     public Tablet() {
     }
 
+
+    protected Tablet(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        price = in.readString();
+        status = in.readString();
+        image = in.readString();
+        anhkhuyenmai = in.readString();
+        evaluation = in.readString();
+        promo1 = in.readString();
+        promo2 = in.readString();
+        promo3 = in.readString();
+        gioithieu = in.readString();
+        tag = in.readString();
+        createAt = in.readString();
+        tendanhmuc = in.readString();
+        urlBanner = in.readString();
+        manhinh = in.readString();
+        cameraTruoc = in.readString();
+        cameraSau = in.readString();
+        cpu = in.readString();
+        gpu = in.readString();
+        ram = in.readString();
+        bonhotrong = in.readString();
+        ketnoi = in.readString();
+        chitietcauhinh = in.readString();
+    }
+
+    public static final Creator<Tablet> CREATOR = new Creator<Tablet>() {
+        @Override
+        public Tablet createFromParcel(Parcel in) {
+            return new Tablet(in);
+        }
+
+        @Override
+        public Tablet[] newArray(int size) {
+            return new Tablet[size];
+        }
+    };
+
     public String getAnhkhuyenmai() {
         return anhkhuyenmai;
     }
@@ -90,31 +133,7 @@ public class Tablet {
         this.anhkhuyenmai = anhkhuyenmai;
     }
 
-    public Tablet(String id, String name, String price, String status, String image, String evaluation, String promo1, String promo2, String promo3, String gioithieu, String tag, String createAt, String tendanhmuc, String urlBanner, String manhinh, String cameraTruoc, String cameraSau, String cpu, String gpu, String ram, Object bonhotrong, String ketnoi, String chitietcauhinh) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.status = status;
-        this.image = image;
-        this.evaluation = evaluation;
-        this.promo1 = promo1;
-        this.promo2 = promo2;
-        this.promo3 = promo3;
-        this.gioithieu = gioithieu;
-        this.tag = tag;
-        this.createAt = createAt;
-        this.tendanhmuc = tendanhmuc;
-        this.urlBanner = urlBanner;
-        this.manhinh = manhinh;
-        this.cameraTruoc = cameraTruoc;
-        this.cameraSau = cameraSau;
-        this.cpu = cpu;
-        this.gpu = gpu;
-        this.ram = ram;
-        this.bonhotrong = bonhotrong;
-        this.ketnoi = ketnoi;
-        this.chitietcauhinh = chitietcauhinh;
-    }
+
 
     public String getId() {
         return id;
@@ -276,11 +295,11 @@ public class Tablet {
         this.ram = ram;
     }
 
-    public Object getBonhotrong() {
+    public String getBonhotrong() {
         return bonhotrong;
     }
 
-    public void setBonhotrong(Object bonhotrong) {
+    public void setBonhotrong(String bonhotrong) {
         this.bonhotrong = bonhotrong;
     }
 
@@ -300,4 +319,37 @@ public class Tablet {
         this.chitietcauhinh = chitietcauhinh;
     }
 
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(price);
+        dest.writeString(status);
+        dest.writeString(image);
+        dest.writeString(anhkhuyenmai);
+        dest.writeString(evaluation);
+        dest.writeString(promo1);
+        dest.writeString(promo2);
+        dest.writeString(promo3);
+        dest.writeString(gioithieu);
+        dest.writeString(tag);
+        dest.writeString(createAt);
+        dest.writeString(tendanhmuc);
+        dest.writeString(urlBanner);
+        dest.writeString(manhinh);
+        dest.writeString(cameraTruoc);
+        dest.writeString(cameraSau);
+        dest.writeString(cpu);
+        dest.writeString(gpu);
+        dest.writeString(ram);
+        dest.writeString(bonhotrong);
+        dest.writeString(ketnoi);
+        dest.writeString(chitietcauhinh);
+    }
 }

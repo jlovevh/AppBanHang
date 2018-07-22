@@ -32,11 +32,11 @@
 
     <string name="facebook_app_id">261629417938531</string>
     <string name="facebook_login_protocol_scheme">fb261629417938531</string>
-    <string name="manhinh">Màn Hình: </string>
+    <string name="manhinh">Màn hình: </string>
     <string name="ram">Ram: </string>
     <string name="vga">VGA: </string>
     <string name="hdh">HĐH: </string>
-    <string name="cpu">Cpu: </string>
+    <string name="cpu">CPU: </string>
     <string name="tl">Nặng: </string>
     <string name="about">ABOUT</string>
     <string name="exit">EXIT</string>
@@ -61,6 +61,21 @@
     <string name="v">v</string>
     <string name="more2">Xem tất cả</string>
     <string name="tintuc">TIN CÔNG NGHỆ</string>
+    <string name="camera">Camera trước:</string>
+    <string name="camera2">Camera sau:</string>
+    <string name="bonho">Bộ nhớ trong:</string>
+    <string name="gpu">GPU:</string>
+    <string name="dlpin">Dung lượng pin:</string>
+    <string name="tv_cauhinh">Xem cấu hình chi tiết</string>
+    <string name="detail">ĐẶC ĐIỂM NỔI BẬT</string>
+    <string name="detail2">CẤU HÌNH</string>
+    <string name="ocung">Ổ cứng</string>
+    <string name="dohoa">Card màn hình</string>
+    <string name="ketnoi">Cổng kết nối</string>
+    <string name="tl3">Trọng lượng</string>
+    <string name="ketnoi2">Kết nối</string>
+    <string name="choice">Please select</string>
+    <string name="choice2">Choice</string>
 
     <string-array name="tentintuc">
 
@@ -69,6 +84,10 @@
         <item>THỊ TRƯỜNG </item>
         <item>ĐÁNH GIÁ </item>
         <item>TIN GAME,APP </item>
+    </string-array>
+    <string-array name="choice">
+        <item>Gallery</item>
+        <item>Camera</item>
     </string-array>
 
 

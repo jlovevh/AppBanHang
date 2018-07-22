@@ -12,8 +12,13 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -35,8 +40,11 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.Task;
 import com.tvt.projectcuoikhoa.R;
+import com.tvt.projectcuoikhoa.api.APIUtils;
+import com.tvt.projectcuoikhoa.model.User;
 import com.tvt.projectcuoikhoa.utils.Connectivity;
 import com.tvt.projectcuoikhoa.utils.Constant;
+import com.tvt.projectcuoikhoa.utils.SharepreferenceUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,17 +55,27 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
     private static final int RC_SIGN_IN = 123;
     private Button btnLogin, btnLoginFB;
+    private TextView tvSignUp;
     private CallbackManager callbackManager;
     public static LoginManager loginManager;
     private ProgressDialog dialog, progressDialog;
     private SignInButton signInButton;
     private GoogleApiClient googleApiClient;
-    public static  boolean isLogin=false;
+    public static boolean isLogin = false;
+    private EditText edtEmail, edtPass;
+    private ProgressDialog progressDialogLogin;
+    private CheckBox checkBox;
+    private SharepreferenceUtils sharepreferenceUtils;
     @SuppressLint("StaticFieldLeak")
     public static GoogleSignInClient googleSignInClient;
 //    , "user_birthday", "user_friends"
@@ -69,6 +87,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         isLoggedInFB();
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
         Connectivity.isConnected(this);
         Connectivity.isConnectedMobile(this);
@@ -80,8 +101,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         printKeyHash(this);
 
-        setGooglePlusButtonText(signInButton,"Sign in with Google");
+        setGooglePlusButtonText(signInButton, "Sign in with Google");
         googleLogin();
+        sharepreferenceUtils = SharepreferenceUtils.newInstance(LoginActivity.this);
+
+        sharepreferenceUtils.getSharepreference(LoginActivity.this);
+        edtEmail.setText(sharepreferenceUtils.getEmail());
+        edtPass.setText(sharepreferenceUtils.getPassWord());
+
 
 
     }
@@ -93,8 +120,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnLogin.setOnClickListener(this);
         btnLoginFB.setOnClickListener(this);
         signInButton = findViewById(R.id.sign_in_button);
+        tvSignUp = findViewById(R.id.tv_sign_up);
+        edtEmail = findViewById(R.id.email);
+        edtPass = findViewById(R.id.password);
+        checkBox = findViewById(R.id.checkBox);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         findViewById(R.id.sign_in_button).setOnClickListener(this);
+        tvSignUp.setOnClickListener(this);
     }
 
     protected void setGooglePlusButtonText(SignInButton signInButton, String buttonText) {
@@ -124,30 +156,29 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
 
-            updateUI(account);
-
+        updateUI(account);
 
 
     }
 
     private void updateUI(GoogleSignInAccount account) {
-       if(account!=null){
+        if (account != null) {
 
-           Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-           String name = account.getDisplayName();
-           String email = account.getEmail();
-           String url = null;
-          if(account.getPhotoUrl()==null){
-              url = Constant.URL_DEFAULT_PROFILE_GOOGLE;
-          }else {
-              url = account.getPhotoUrl().toString();
-          }
-           intent.putExtra("nameGG", name);
-           intent.putExtra("emailGG", email);
-           intent.putExtra("url_gg", url);
-           intent.putExtra(key, 3);
-           startActivity(intent);
-       }
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            String name = account.getDisplayName();
+            String email = account.getEmail();
+            String url = null;
+            if (account.getPhotoUrl() == null) {
+                url = Constant.URL_DEFAULT_PROFILE_GOOGLE;
+            } else {
+                url = account.getPhotoUrl().toString();
+            }
+            intent.putExtra("nameGG", name);
+            intent.putExtra("emailGG", email);
+            intent.putExtra("url_gg", url);
+            intent.putExtra(key, 3);
+            startActivity(intent);
+        }
 
 
     }
@@ -201,11 +232,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-
-
         switch (v.getId()) {
             case R.id.btn_login:
-                loginUser();
+                if (edtEmail.getText().toString().isEmpty() || edtPass.getText().toString().isEmpty()) {
+                    Toast.makeText(this, "Bạn chưa nhập thông tin tài khoản", Toast.LENGTH_SHORT).show();
+                } else {
+                    loginUser(edtEmail.getText().toString(), edtPass.getText().toString());
+                }
+
                 break;
             case R.id.btn_loginFB:
                 loginFB();
@@ -216,18 +250,63 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 signIn();
                 break;
 
+            case R.id.tv_sign_up:
+                Intent intent = new Intent(this, SignUpActivity.class);
+                startActivity(intent);
+                break;
+
 
         }
 
     }
 
-    private void loginUser() {
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        intent.putExtra("nameU", "Nene");
-        intent.putExtra("emailU", "neneIloveyou@gmail.com");
-        intent.putExtra("urlU", Constant.URL_DEFAULT_PROFILE_GOOGLE);
-        intent.putExtra(key, 1);
-        startActivity(intent);
+    private void loginUser(final String email, final String pass) {
+
+        progressDialogLogin = new ProgressDialog(this, R.style.AppCompatAlertDialogStyle);
+        progressDialogLogin.setMessage("Loading...Please wait");
+
+        APIUtils.getJsonReponse().getAllUser(email, pass).enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+
+                if (response.isSuccessful()) {
+                    List<User> users = response.body();
+
+                    Log.e("User", "User: " + users.size());
+                    User user = users.get(0);
+
+
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                intent.putExtra("nameU", "Nene");
+//                intent.putExtra("emailU", "neneIloveyou@gmail.com");
+//                intent.putExtra("urlU", Constant.URL_DEFAULT_PROFILE_GOOGLE);
+                    intent.putExtra("nameU", user.getName());
+                    intent.putExtra("emailU", user.getEmail());
+                    intent.putExtra("urlU", user.getImage());
+                    intent.putExtra(key, 1);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.anim_enter, R.anim.anim_exit);
+                    if (checkBox.isChecked()) {
+
+                        sharepreferenceUtils.saveEmail(email);
+                        sharepreferenceUtils.savePassWord(pass);
+                        checkBox.setChecked(true);
+                    } else {
+                        checkBox.setChecked(false);
+                        sharepreferenceUtils.saveEmail("");
+                        sharepreferenceUtils.savePassWord("");
+                    }
+                    progressDialogLogin.dismiss();
+                    Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, "Email hoặc mật khẩu không chính xác.Xin vui lòng nhập lại", Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
     private void loginFB() {

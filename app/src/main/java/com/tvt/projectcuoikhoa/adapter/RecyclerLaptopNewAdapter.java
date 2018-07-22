@@ -11,17 +11,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.tvt.projectcuoikhoa.R;
-import com.tvt.projectcuoikhoa.helper.ItemClickListener;
 import com.tvt.projectcuoikhoa.model.LapTop;
-import com.tvt.projectcuoikhoa.model.LaptopNew;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerLaptopNewAdapter extends RecyclerView.Adapter<RecyclerLaptopNewAdapter.ViewHolder> {
 
     private Context context;
-    private List<LaptopNew> arrLapTop;
+    private List<LapTop> arrLapTop;
 
     private ItemClickListenerLapTop itemClickListener;
 
@@ -29,12 +26,12 @@ public class RecyclerLaptopNewAdapter extends RecyclerView.Adapter<RecyclerLapto
         this.itemClickListener = itemClickListener;
     }
 
-    public RecyclerLaptopNewAdapter(Context context, List<LaptopNew> arrLapTop) {
+    public RecyclerLaptopNewAdapter(Context context, List<LapTop> arrLapTop) {
         this.context = context;
         this.arrLapTop = arrLapTop;
     }
 
-    public void setData(List<LaptopNew> arrLapTop) {
+    public void setData(List<LapTop> arrLapTop) {
 
         this.arrLapTop.clear();
         this.arrLapTop.addAll(arrLapTop);
@@ -51,7 +48,7 @@ public class RecyclerLaptopNewAdapter extends RecyclerView.Adapter<RecyclerLapto
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        LaptopNew lapTop = arrLapTop.get(position);
+        LapTop lapTop = arrLapTop.get(position);
 
         Glide.with(context).load(lapTop.getImage()).error(R.mipmap.ic_launcher).into(holder.img_laptop);
 

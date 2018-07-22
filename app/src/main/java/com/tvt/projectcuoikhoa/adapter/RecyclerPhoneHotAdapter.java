@@ -13,14 +13,13 @@ import com.bumptech.glide.Glide;
 import com.tvt.projectcuoikhoa.R;
 import com.tvt.projectcuoikhoa.helper.ItemClickListener;
 import com.tvt.projectcuoikhoa.model.Phone;
-import com.tvt.projectcuoikhoa.model.PhoneHot;
 
 import java.util.List;
 
 public class RecyclerPhoneHotAdapter extends RecyclerView.Adapter<RecyclerPhoneHotAdapter.ViewHolder> {
 
     private Context context;
-    private List<PhoneHot> phoneHotList;
+    private List<Phone> phoneHotList;
 
 
     private ItemClickListener itemClickListener;
@@ -29,7 +28,7 @@ public class RecyclerPhoneHotAdapter extends RecyclerView.Adapter<RecyclerPhoneH
         this.itemClickListener = itemClickListener;
     }
 
-    public RecyclerPhoneHotAdapter(Context context, List<PhoneHot> phoneHotList) {
+    public RecyclerPhoneHotAdapter(Context context, List<Phone> phoneHotList) {
         this.context = context;
         this.phoneHotList = phoneHotList;
     }
@@ -44,7 +43,7 @@ public class RecyclerPhoneHotAdapter extends RecyclerView.Adapter<RecyclerPhoneH
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        PhoneHot phone = phoneHotList.get(position);
+        Phone phone = phoneHotList.get(position);
         holder.tvName.setText(phone.getName());
         holder.tvPrice.setText(phone.getPrice());
         Glide.with(context).load(phone.getAnhkhuyenmai()).error(R.mipmap.ic_launcher).into(holder.img_phone);
@@ -56,8 +55,7 @@ public class RecyclerPhoneHotAdapter extends RecyclerView.Adapter<RecyclerPhoneH
         return phoneHotList.size();
     }
 
-    public void setData(List<PhoneHot> phoneHotList) {
-        this.phoneHotList.clear();
+    public void setData(List<Phone> phoneHotList) {
         this.phoneHotList.addAll(phoneHotList);
         notifyDataSetChanged();
     }

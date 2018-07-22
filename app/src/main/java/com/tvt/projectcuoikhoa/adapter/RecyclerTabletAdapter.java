@@ -20,6 +20,11 @@ public class RecyclerTabletAdapter extends RecyclerView.Adapter<RecyclerTabletAd
 
     private Context context;
     private List<Tablet> arrTablet;
+    private onItemClickRecyclerTablet onItemClickRecyclerTablet;
+
+    public void setOnItemClickRecyclerTablet(RecyclerTabletAdapter.onItemClickRecyclerTablet onItemClickRecyclerTablet) {
+        this.onItemClickRecyclerTablet = onItemClickRecyclerTablet;
+    }
 
     public RecyclerTabletAdapter(Context context, List<Tablet> arrTablet) {
         this.context = context;
@@ -69,6 +74,17 @@ public class RecyclerTabletAdapter extends RecyclerView.Adapter<RecyclerTabletAd
             tvName=itemView.findViewById(R.id.tv_name_tablet);
             tvPrice=itemView.findViewById(R.id.tv_price_tablet);
             tvStatus=itemView.findViewById(R.id.tv_status_tablet);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClickRecyclerTablet.onClickItem(v, getAdapterPosition());
+                }
+            });
         }
+    }
+
+    public interface onItemClickRecyclerTablet {
+
+        void onClickItem(View view, int position);
     }
 }

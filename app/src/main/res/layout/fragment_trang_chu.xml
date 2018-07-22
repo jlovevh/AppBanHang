@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nestedScrollView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".fragment.TrangChuFragment">
+    tools:context=".fragment.HomeFragment">
 
 
     <LinearLayout
@@ -18,21 +21,20 @@
             android:layout_width="match_parent"
             android:layout_height="200dp">
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/view_pager3"
+            <com.daimajia.slider.library.SliderLayout
+                android:id="@+id/slider3"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="200dp" />
 
-            </android.support.v4.view.ViewPager>
+            <com.daimajia.slider.library.Indicators.PagerIndicator
+                android:id="@+id/custom_indicator3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                app:selected_color="@color/red"
+                app:unselected_color="@android:color/darker_gray" />
 
 
-            <me.relex.circleindicator.CircleIndicator
-                android:id="@+id/indicator"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_gravity="bottom"
-                app:ci_drawable="@color/colorPrimaryDark"
-                app:ci_drawable_unselected="@android:color/darker_gray" />
         </FrameLayout>
 
 

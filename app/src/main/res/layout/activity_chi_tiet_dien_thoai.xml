@@ -1,42 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".activities.ChiTietDienThoaiActivity">
+    tools:context=".activities.DetailPhoneActivity">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimaryDark">
+
+
+            <ImageView
+                android:id="@+id/img_back_phone"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_arrow_back_24dp"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tv_name_toolbar_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="60dp"
+                android:text="I phone X 256GB Silver"
+                android:textSize="18sp" />
+
+        </FrameLayout>
+
+
+        <!--<android.support.v7.widget.Toolbar-->
+        <!--android:id="@+id/toolbar2"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="?attr/actionBarSize"-->
+        <!--android:background="@color/colorPrimaryDark"-->
+        <!--app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
+        <!--app:theme="@style/ToolbarColoredBackArrow">-->
+
+        <!--</android.support.v7.widget.Toolbar>-->
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Trang chủ/"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_ten_danh_muc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Điện thoại/"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/name_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="I phone X 256GB Silver"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+
+        <com.daimajia.slider.library.SliderLayout
+            android:id="@+id/slider"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="10dp" />
+
+        <com.daimajia.slider.library.Indicators.PagerIndicator
+            android:id="@+id/custom_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:gravity="center"
+            app:selected_color="@android:color/holo_blue_dark"
+            app:unselected_color="@android:color/darker_gray" />
 
         <TextView
+            android:id="@+id/tv_name"
             android:layout_width="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content"
             android:text="I phone X 256GB Silver"
-            android:layout_height="wrap_content" />
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
-    </FrameLayout>
+        <TextView
+            android:id="@+id/tv_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15.000.000đ"
+            android:textColor="@color/redPhone" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="I phone X 256GB Silver" />
+        <include layout="@layout/layout_promo" />
 
-    <android.support.v4.view.ViewPager
-        android:layout_width="match_parent"
-        android:layout_height="200dp">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_custom3"
+            android:padding="10dp"
+            android:text="MUA NGAY&#10; Giao trong 1 giờ hoặc nhận tại siêu thị"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 
-    </android.support.v4.view.ViewPager>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <me.relex.circleindicator.CircleIndicator
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_custom4"
+                android:padding="10dp"
+                android:text="MUA TRẢ GÓP 0%&#10; Thủ tục đơn giản"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
 
-    </me.relex.circleindicator.CircleIndicator>
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_custom4"
+                android:padding="10dp"
+                android:text="TRẢ GÓP 0% THẺ&#10; Visa,Master,JBC"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
 
 
-</LinearLayout>
+        </LinearLayout>
+
+        <include
+            layout="@layout/layout_cau_hinh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" />
+
+        <include
+            layout="@layout/layout_camket"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" />
+
+        <include
+            layout="@layout/layout_dac_diem_noi_bat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" />
+    </LinearLayout>
+
+
+</ScrollView>

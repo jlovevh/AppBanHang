@@ -8,9 +8,9 @@
 
     <ImageView
         android:contentDescription="@string/image"
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
         android:id="@+id/img_item_tin_tuc"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:src="@mipmap/ic_launcher_round"
         android:layout_height="fill_parent" />
 

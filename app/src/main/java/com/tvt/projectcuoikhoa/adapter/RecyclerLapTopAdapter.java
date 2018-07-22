@@ -20,7 +20,12 @@ import java.util.List;
 public class RecyclerLapTopAdapter extends RecyclerView.Adapter<RecyclerLapTopAdapter.ViewHolder> {
 
     private Context context;
-    private List<LapTop> arrLapTop = new ArrayList<>();
+    private List<LapTop> arrLapTop;
+    private itemOnClickListenerLaptop itemOnClickListenerLaptop;
+
+    public void setItemOnClickListenerLaptop(RecyclerLapTopAdapter.itemOnClickListenerLaptop itemOnClickListenerLaptop) {
+        this.itemOnClickListenerLaptop = itemOnClickListenerLaptop;
+    }
 
     public RecyclerLapTopAdapter(Context context, List<LapTop> arrLapTop) {
         this.context = context;
@@ -82,6 +87,18 @@ public class RecyclerLapTopAdapter extends RecyclerView.Adapter<RecyclerLapTopAd
             tvHDH = itemView.findViewById(R.id.tv_hdh_laptop);
             tvVGA = itemView.findViewById(R.id.tv_vga_laptop);
             tvTrongLuong = itemView.findViewById(R.id.tv_tl_laptop);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemOnClickListenerLaptop.onClickItemRecyclerView(v, getAdapterPosition());
+                }
+            });
         }
     }
+
+    public interface itemOnClickListenerLaptop {
+
+        void onClickItemRecyclerView(View view, int position);
+    }
+
 }

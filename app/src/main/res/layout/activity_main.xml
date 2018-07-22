@@ -39,11 +39,11 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         android:clickable="true"
-        app:itemIconTint="@drawable/item_nav_selector"
-        app:itemTextColor="@drawable/item_nav_selector1"
+        app:itemIconTint="@color/item_nav_selector"
+        app:itemTextColor="@color/item_nav_selector"
         app:headerLayout="@layout/navigation_header"
         app:menu="@menu/navigation"
-        app:itemBackground="@color/dark_gray"
+        app:itemBackground="@android:color/transparent"
         android:focusable="true">
 
     </android.support.design.widget.NavigationView>

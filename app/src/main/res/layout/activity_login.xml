@@ -10,22 +10,26 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@android:color/holo_blue_light"
+        android:background="@drawable/background"
         android:orientation="vertical"
         android:padding="@dimen/activity_horizontal_margin">
 
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="@dimen/logo_w_h"
             android:layout_height="@dimen/logo_w_h"
+            android:contentDescription="@string/image"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="40dp"
             android:scaleType="centerCrop"
             android:src="@drawable/iu" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColorHint="@color/colorPrimary"
+            android:backgroundTint="@color/colorPrimary"
+            app:hintTextAppearance="@style/MyAppearance"
             android:layout_marginTop="30dp">
 
             <EditText
@@ -42,6 +46,9 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColorHint="@color/colorPrimary"
+            android:backgroundTint="@color/colorPrimary"
+            app:hintTextAppearance="@style/MyAppearance"
             android:layout_marginTop="20dp">
 
             <EditText
@@ -64,7 +71,7 @@
             <CheckBox
                 android:id="@+id/checkBox"
                 android:text="@string/ck_user"
-                android:textColor="@color/primary_pink"
+                android:textColor="@color/white"
                 android:layout_gravity="start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -88,7 +95,7 @@
             android:layout_marginTop="20dp"
             android:background="@color/redPhone"
             android:text="@string/btn_login"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="20sp" />
 
 
@@ -115,7 +122,7 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:text="@string/btn_link_to_register"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/white"
                 android:textSize="15sp" />
 
             <View
@@ -157,6 +164,15 @@
         </com.google.android.gms.common.SignInButton>
 
 
+        <TextView
+            android:id="@+id/tv_sign_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Not account yet ?"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center" />
 
 
     </LinearLayout>

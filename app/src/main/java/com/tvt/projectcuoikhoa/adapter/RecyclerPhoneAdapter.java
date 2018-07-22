@@ -31,43 +31,15 @@ public class RecyclerPhoneAdapter extends RecyclerView.Adapter<RecyclerView.View
         this.itemClickListener = itemClickListener;
     }
 
-    //    private final int TYPE_PHONE = 0;
-//    private final int TYPE_LOAD = 1;
-//    private OnLoadMoreListener loadMoreListener;
-//    private boolean isLoading = true;
-//    private int visiableItem=6;
-//    private int previousTotal = 0;
-//    private int firstVisibleItem,visibleItemCount,totalItemCount,lastVisibleItem;
-//    private  int current_page=1;
+    private final int TYPE_PHONE = 0;
+    private final int TYPE_LOAD = 1;
 
 
-    public RecyclerPhoneAdapter(RecyclerView recyclerView, Context context, List<Phone> arrPhone) {
+    public RecyclerPhoneAdapter(Context context, List<Phone> arrPhone) {
         this.context = context;
         this.arrPhone = arrPhone;
 
-//        final GridLayoutManager gridLayoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
-//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                firstVisibleItem=gridLayoutManager.findLastVisibleItemPosition();
-//                visibleItemCount=recyclerView.getChildCount();
-//                totalItemCount=gridLayoutManager.getItemCount();
-//                if (isLoading){
-//                    if(totalItemCount>previousTotal){
-//                        isLoading=false;
-//                        previousTotal=totalItemCount;
-//                    }
-//                }
-//
-//                if(!isLoading && (totalItemCount-visibleItemCount)<=(firstVisibleItem+visiableItem)){
-//                    current_page++;
-//                    loadMoreListener.onLoadMore(current_page);
-//                    isLoading=true;
-//                }
-//
-//            }
-//        });
+
     }
 
     public void setData(List<Phone> arrPhone){
@@ -81,11 +53,12 @@ public class RecyclerPhoneAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-//        if(viewType==TYPE_PHONE){
-        return new ViewHolder(inflater.inflate(R.layout.item_phone, parent, false));
-//        }else{
-//            return new ViewHolder(inflater.inflate(R.layout.item_load_more,parent,false));
-//        }
+        if (viewType == TYPE_PHONE) {
+            return new ViewHolder(inflater.inflate(R.layout.item_phone, parent, false));
+        }
+
+        return new ViewHolder(inflater.inflate(R.layout.item_load_more, parent, false));
+
     }
 
     @Override
@@ -98,27 +71,22 @@ public class RecyclerPhoneAdapter extends RecyclerView.Adapter<RecyclerView.View
             itemHolder.tvPrice.setText(phone.getPrice());
             Glide.with(context).load(phone.getImage()).error(R.mipmap.ic_launcher).into(itemHolder.img_phone);
             itemHolder.tvStatus.setText(phone.getStatus());
+        } else if (holder instanceof LoadMoreHolder) {
+            LoadMoreHolder loadMoreHolder = (LoadMoreHolder) holder;
+            loadMoreHolder.progressBar.setIndeterminate(true);
+            loadMoreHolder.progressBar.setVisibility(View.VISIBLE);
+
         }
-//        else  if(holder instanceof LoadMoreHolder){
-//            LoadMoreHolder loadMoreHolder= (LoadMoreHolder) holder;
-//            loadMoreHolder.progressBar.setIndeterminate(true);
-//
-//        }
 
     }
 
-//    public void setLoaded() {
-//        isLoading = false;
-//    }
 
-//    @Override
-//    public int getItemViewType(int position) {
-//      return arrPhone.get(position) ==null ? TYPE_LOAD:TYPE_PHONE;
-//    }
+    @Override
+    public int getItemViewType(int position) {
+        return arrPhone.get(position) == null ? TYPE_LOAD : TYPE_PHONE;
+    }
 
-//    public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
-//        this.loadMoreListener = loadMoreListener;
-//    }
+
 
     @Override
     public int getItemCount() {
@@ -147,17 +115,15 @@ public class RecyclerPhoneAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
     }
 
-//    public class LoadMoreHolder extends  RecyclerView.ViewHolder{
-//        private ProgressBar progressBar;
-//
-//        public LoadMoreHolder(View itemView) {
-//            super(itemView);
-//            progressBar=itemView.findViewById(R.id.load_more);
-//        }
-//    }
-//
-//    public interface OnLoadMoreListener {
-//        void onLoadMore(int page);
-//    }
+    public class LoadMoreHolder extends RecyclerView.ViewHolder {
+        private ProgressBar progressBar;
+
+        public LoadMoreHolder(View itemView) {
+            super(itemView);
+            progressBar = itemView.findViewById(R.id.load_more);
+        }
+    }
+
+
 
 }

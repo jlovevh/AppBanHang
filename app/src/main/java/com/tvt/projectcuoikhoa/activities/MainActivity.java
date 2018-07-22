@@ -1,5 +1,6 @@
 package com.tvt.projectcuoikhoa.activities;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
@@ -18,10 +19,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,15 +34,23 @@ import com.google.android.gms.tasks.Task;
 import com.squareup.picasso.Picasso;
 import com.tvt.projectcuoikhoa.R;
 import com.tvt.projectcuoikhoa.adapter.ViewPagerAdapter;
+import com.tvt.projectcuoikhoa.api.APIUtils;
+import com.tvt.projectcuoikhoa.fragment.AccountFragment;
+import com.tvt.projectcuoikhoa.fragment.HomeFragment;
 import com.tvt.projectcuoikhoa.fragment.LapTopFragment;
 import com.tvt.projectcuoikhoa.fragment.TabletFragment;
 import com.tvt.projectcuoikhoa.fragment.PhoneFragment;
-import com.tvt.projectcuoikhoa.fragment.TaiKhoanFragment;
-import com.tvt.projectcuoikhoa.fragment.TinTucFragment;
-import com.tvt.projectcuoikhoa.fragment.TrangChuFragment;
+import com.tvt.projectcuoikhoa.fragment.NewsFragment;
 import com.tvt.projectcuoikhoa.helper.BottomNavigationBehavior;
 import com.tvt.projectcuoikhoa.helper.BottomNavigationViewHelper;
-import com.tvt.projectcuoikhoa.utils.Constant;
+import com.tvt.projectcuoikhoa.model.User;
+import com.tvt.projectcuoikhoa.utils.SharepreferenceUtils;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, NavigationView.OnNavigationItemSelectedListener {
 
@@ -52,7 +62,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private ViewPagerAdapter adapter;
     private TextView tvName, tvEmail;
     private ImageView imgHeader;
+    private SharepreferenceUtils sharepreferenceUtils;
     private boolean doubleBackToExitPressedOnce = false;
+
 
 
     @Override
@@ -65,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         Intent intent = getIntent();
 
         int key = intent.getIntExtra(LoginActivity.key, 0);
-        Log.d(Constant.TAG, "KeyU: " + key);
+//        Log.d(Constant.TAG, "KeyU: " + key);
 
         if (key == 1) {
             getIntents();
@@ -83,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
         //load default fragment
-        loadFragment(TrangChuFragment.newInstance());
+        loadFragment(HomeFragment.newInstance());
 
 
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
@@ -99,9 +111,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         String url = intentFB.getStringExtra("url");
         String email = intentFB.getStringExtra("email");
 
-        Log.d(Constant.TAG, "ccc: " + name);
-        Log.d(Constant.TAG, "ccc: " + email);
-        Log.d(Constant.TAG, "ccc: " + url);
+//        Log.d(Constant.TAG, "ccc: " + name);
+//        Log.d(Constant.TAG, "ccc: " + email);
+//        Log.d(Constant.TAG, "ccc: " + url);
 
         tvEmail.setText(email);
         tvName.setText(name);
@@ -150,9 +162,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         String urlGG = intent.getStringExtra("url_gg");
         String emailGG = intent.getStringExtra("emailGG");
 
-        Log.d(Constant.TAG, "nameGG: " + nameGG);
-        Log.d(Constant.TAG, "urlGG: " + urlGG);
-        Log.d(Constant.TAG, "emailGG: " + emailGG);
+//        Log.d(Constant.TAG, "nameGG: " + nameGG);
+//        Log.d(Constant.TAG, "urlGG: " + urlGG);
+//        Log.d(Constant.TAG, "emailGG: " + emailGG);
         tvEmail.setText(emailGG);
         tvName.setText(nameGG);
         Picasso.with(this).load(urlGG).error(R.drawable.iu).into(imgHeader);
@@ -203,21 +215,61 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         String urlU = intentU.getStringExtra("urlU");
         String emailU = intentU.getStringExtra("emailU");
 
-        Log.d(Constant.TAG, "nameU: " + nameU);
-        Log.d(Constant.TAG, "urlU: " + urlU);
-        Log.d(Constant.TAG, "emailU: " + emailU);
+//        Log.d(Constant.TAG, "nameU: " + nameU);
+//        Log.d(Constant.TAG, "urlU: " + urlU);
+//        Log.d(Constant.TAG, "emailU: " + emailU);
         tvName.setText(nameU);
         tvEmail.setText(emailU);
         Picasso.with(this).load(urlU).placeholder(R.drawable.iu).error(R.mipmap.ic_launcher).into(imgHeader);
+
+        imgHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Thông báo")
+                        .setMessage("Bạn có muốn đăng xuất không?")
+                        .setNegativeButton("Có", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String name = "Lee Ji-eun";
+                                tvName.setText(name);
+                                String email = "I love IU";
+                                tvEmail.setText(email);
+                                imgHeader.setImageResource(R.drawable.iu);
+                                logOut();
+                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                startActivity(intent);
+
+
+                            }
+                        })
+                        .setPositiveButton("Không", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+
+                            }
+                        });
+
+                builder.show();
+
+
+            }
+
+            private void logOut() {
+                sharepreferenceUtils.savePassWord("");
+                sharepreferenceUtils.saveEmail("");
+            }
+        });
     }
 
 
 //    private void setupViewPager(ViewPager viewPager) {
 //        adapter = new ViewPagerAdapter(getSupportFragmentManager());
-//        adapter.addFragment(TrangChuFragment.newInstance());
+//        adapter.addFragment(HomeFragment.newInstance());
 //        adapter.addFragment(PhoneFragment.newInstance());
-//        adapter.addFragment(TinTucFragment.newInstance());
-//        adapter.addFragment(TaiKhoanFragment.newInstance());
+//        adapter.addFragment(NewsFragment.newInstance());
+//        adapter.addFragment(AccountFragment.newInstance());
 //        viewPager.setAdapter(adapter);
 //    }
 
@@ -237,7 +289,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         tvEmail = navHeaderView.findViewById(R.id.email_header);
         tvName = navHeaderView.findViewById(R.id.name_header);
         imgHeader = navHeaderView.findViewById(R.id.img_header);
-
+        sharepreferenceUtils = SharepreferenceUtils.newInstance(MainActivity.this);
 
     }
 
@@ -248,7 +300,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         switch (item.getItemId()) {
 
             case R.id.bnav_home:
-                fragment = TrangChuFragment.newInstance();
+                fragment = HomeFragment.newInstance();
                 loadFragment(fragment);
                 break;
             case R.id.bnav_sanpham:
@@ -259,17 +311,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
             case R.id.bnav_news:
 
-                fragment = TinTucFragment.newInstance();
+                fragment = NewsFragment.newInstance();
                 loadFragment(fragment);
                 break;
 
             case R.id.bnav_account:
 
-                fragment = TaiKhoanFragment.newInstance();
+                fragment = AccountFragment.newInstance();
                 loadFragment(fragment);
                 break;
             case R.id.nav_home:
-                fragment = TrangChuFragment.newInstance();
+                fragment = HomeFragment.newInstance();
                 loadFragment(fragment);
                 bottomNavigationView.getMenu().getItem(0).setChecked(true);
                 break;
@@ -327,6 +379,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
             case R.id.action_giohang:
+                Intent intent = new Intent(MainActivity.this, ShoppingCartActivity.class);
+                startActivity(intent);
                 break;
         }
         return true;

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:padding="10dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_name_phone2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="CẤU HÌNH OPPO F7"
+        android:padding="10dp"
+        android:textSize="18sp"
+        android:textColor="@color/black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/gray_splash"
+        android:layout_marginTop="10dp">
+
+        <TextView
+
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:text="@string/manhinh"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_manhinh_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/value_manhinh"
+            android:textSize="18sp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginStart="7dp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp">
+
+        <TextView
+
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:text="@string/camera"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_camera_truoc_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/cpu2"
+            android:textSize="18sp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginStart="7dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/gray_splash"
+        android:layout_marginTop="5dp">
+
+        <TextView
+
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:text="@string/camera2"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_camera_sau_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ram2"
+            android:textSize="18sp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginStart="7dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp">
+
+        <TextView
+
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:text="@string/ram"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_ram_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginStart="7dp"
+            android:text="@string/vga2" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/gray_splash"
+        android:layout_marginTop="5dp">
+
+        <TextView
+
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:text="@string/bonho"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_bnt_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginStart="7dp"
+            android:text="@string/hdh2" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp">
+
+        <TextView
+
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:text="@string/cpu"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_cpu_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tl2"
+            android:layout_marginLeft="7dp"
+            android:layout_marginStart="7dp"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/gray_splash"
+        android:layout_marginTop="5dp">
+
+        <TextView
+
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:text="@string/gpu"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_gpu_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tl2"
+            android:layout_marginLeft="7dp"
+            android:layout_marginStart="7dp"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp">
+
+        <TextView
+
+            android:layout_width="140dp"
+            android:layout_height="match_parent"
+            android:text="@string/dlpin"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/tv_dlpin_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tl2"
+            android:layout_marginLeft="7dp"
+            android:layout_marginStart="7dp"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/gray_splash"
+        android:layout_marginTop="5dp">
+
+        <TextView
+
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:text="@string/hdh"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_hdh_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tl2"
+            android:layout_marginLeft="7dp"
+            android:layout_marginStart="7dp"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_all_cauhinh_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_cauhinh"
+        android:layout_gravity="center"
+        android:textSize="18sp"
+        android:padding="10dp"
+        android:layout_marginTop="5dp"
+        android:drawablePadding="5dp"
+        android:drawableRight="@drawable/ic_navigate_next_black_18dp"
+        android:textColor="@android:color/holo_blue_dark" />
+
+</LinearLayout>

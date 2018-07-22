@@ -2,51 +2,47 @@ package com.tvt.projectcuoikhoa.api;
 
 import com.tvt.projectcuoikhoa.model.BannerQc;
 import com.tvt.projectcuoikhoa.model.LapTop;
-import com.tvt.projectcuoikhoa.model.LaptopNew;
+import com.tvt.projectcuoikhoa.model.News;
 import com.tvt.projectcuoikhoa.model.Phone;
-import com.tvt.projectcuoikhoa.model.PhoneHot;
 import com.tvt.projectcuoikhoa.model.Tablet;
-import com.tvt.projectcuoikhoa.model.TinCongNghe;
-import com.tvt.projectcuoikhoa.model.TinTuc;
-import com.tvt.projectcuoikhoa.utils.Constant;
+import com.tvt.projectcuoikhoa.model.User;
 
 import java.util.List;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 public interface JsonReponse {
     @GET(value = "getbannerqc.php")
     Call<List<BannerQc>> getAllBanner();
 
     @GET(value = "tintuc/tinmoi.php")
-    Call<List<TinTuc>> getTinMoi();
+    Call<List<News>> getTinMoi();
 
     @GET(value = "tintuc/meohay.php")
-    Call<List<TinTuc>> getMeoHay();
+    Call<List<News>> getMeoHay();
 
     @GET(value = "tintuc/danhgia.php")
-    Call<List<TinTuc>> getDanhGia();
+    Call<List<News>> getDanhGia();
 
     @GET(value = "tintuc/thitruong.php")
-    Call<List<TinTuc>> getThiTruong();
+    Call<List<News>> getThiTruong();
 
     @GET(value = "tintuc/tingame.php")
-    Call<List<TinTuc>> getTinGame();
+    Call<List<News>> getTinGame();
 
     @GET(value = "tintuc/cuocsong.php")
-    Call<List<TinTuc>> getTinTucCuocSong();
+    Call<List<News>> getTinTucCuocSong();
 
 
-//    @GET(value = "sanpham/dienthoai.php")
-////    Call<List<Phone>> getALLPhone(@Query("page") int page);
+//    @POST(value = "sanpham/dienthoai.php")
+//    Call<List<Phone>> getALLPhone(@Query("page") int page);
 
     @GET(value = "sanpham/dienthoai.php")
     Call<List<Phone>> getALLPhone();
@@ -59,18 +55,33 @@ public interface JsonReponse {
 
     @Multipart
     @POST(value = "uploadhinhanh.php")
-    Call<String> postImageUser(@Part MultipartBody multipartBody);
+    Call<String> postImageUser(@Part MultipartBody.Part multipartBody);
 
     @GET(value = "sanpham/dienthoaimoinhat.php")
-    Call<List<PhoneHot>> getPhoneHot();
+    Call<List<Phone>> getPhoneHot();
 
     @GET(value = "sanpham/laptopmoinhat.php")
-    Call<List<LaptopNew>> getLaptopNew();
+    Call<List<LapTop>> getLaptopNew();
 
     @GET(value = "sanpham/tabletmoinhat.php")
     Call<List<Tablet>> getTabletNew();
 
     @GET(value = "tintuc/tincongnghe.php")
-    Call<List<TinCongNghe>> getTinCongNghe();
+    Call<List<News>> getTinCongNghe();
+
+    @FormUrlEncoded
+    @POST(value = "signup.php")
+    Call<String> signUp(@Field("username") String username,
+                        @Field("password") String password,
+                        @Field("name") String name,
+                        @Field("email") String email,
+                        @Field("phone") int phone,
+                        @Field("address") String address,
+                        @Field("image") String image);
+
+    @FormUrlEncoded
+    @POST(value = "login.php")
+    Call<List<User>> getAllUser(@Field("email") String email,
+                                @Field("password") String pass);
 
 }

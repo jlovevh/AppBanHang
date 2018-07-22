@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.tvt.projectcuoikhoa.R;
-import com.tvt.projectcuoikhoa.activities.TinTucActivity;
-import com.tvt.projectcuoikhoa.model.TinTuc;
+import com.tvt.projectcuoikhoa.activities.NewsActivity;
+import com.tvt.projectcuoikhoa.model.News;
 import com.tvt.projectcuoikhoa.helper.ItemClickListener;
 
 import java.sql.Timestamp;
@@ -28,23 +28,23 @@ public class RecyclerViewTinTucAdapter extends RecyclerView.Adapter<RecyclerView
     private static final int TYPE_ITEM = 1;
 
     private Context context;
-    private List<TinTuc> arrTinTuc;
+    private List<News> arrNews;
 
-    public RecyclerViewTinTucAdapter(Context context, List<TinTuc> arrTinTuc) {
+    public RecyclerViewTinTucAdapter(Context context, List<News> arrNews) {
         this.context = context;
-        this.arrTinTuc = arrTinTuc;
+        this.arrNews = arrNews;
     }
 
-    public void setData(List<TinTuc> arrTinTuc) {
-        this.arrTinTuc.clear();
-        this.arrTinTuc.addAll(arrTinTuc);
+    public void setData(List<News> arrNews) {
+        this.arrNews.clear();
+        this.arrNews.addAll(arrNews);
         this.notifyDataSetChanged();
     }
 
 
     @Override
     public int getItemCount() {
-        return arrTinTuc.size();
+        return arrNews.size();
     }
 
 
@@ -117,14 +117,14 @@ public class RecyclerViewTinTucAdapter extends RecyclerView.Adapter<RecyclerView
 
     }
 
-    private TinTuc getItem(int position) {
-        return this.arrTinTuc.get(position);
+    private News getItem(int position) {
+        return this.arrNews.get(position);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ViewHolderHeader) {
-            final TinTuc tinMoi = arrTinTuc.get(position);
+            final News tinMoi = arrNews.get(position);
             ViewHolderHeader holderHeader = (ViewHolderHeader) holder;
             Picasso.with(context).load(tinMoi.getAnhtieude()).error(R.mipmap.ic_launcher).into(holderHeader.imgHeader);
             holderHeader.titleHeader.setText(tinMoi.getTieude());
@@ -132,7 +132,7 @@ public class RecyclerViewTinTucAdapter extends RecyclerView.Adapter<RecyclerView
             holderHeader.setItemClickListener(new ItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    Intent intent = new Intent(context, TinTucActivity.class);
+                    Intent intent = new Intent(context, NewsActivity.class);
                     intent.putExtra("title",tinMoi.getTieude());
                     intent.putExtra("baiviet",tinMoi.getBaiviet());
                     intent.putExtra("create",tinMoi.getCreateAt());
@@ -141,7 +141,7 @@ public class RecyclerViewTinTucAdapter extends RecyclerView.Adapter<RecyclerView
             });
         } else if (holder instanceof ViewHolderItem) {
 
-            final TinTuc tinMoi = arrTinTuc.get(position);
+            final News tinMoi = arrNews.get(position);
             ViewHolderItem holderItem = (ViewHolderItem) holder;
             Picasso.with(context).load(tinMoi.getAnhtieude()).error(R.mipmap.ic_launcher).into(holderItem.imgTinTuc);
             holderItem.tvTitle.setText(tinMoi.getTieude());
@@ -159,7 +159,7 @@ public class RecyclerViewTinTucAdapter extends RecyclerView.Adapter<RecyclerView
             holderItem.setItemClickListener(new ItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    Intent intent = new Intent(context, TinTucActivity.class);
+                    Intent intent = new Intent(context, NewsActivity.class);
                     intent.putExtra("title",tinMoi.getTieude());
                     intent.putExtra("baiviet",tinMoi.getBaiviet());
                     intent.putExtra("create",tinMoi.getCreateAt());
