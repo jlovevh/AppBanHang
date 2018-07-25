@@ -15,9 +15,13 @@ import com.bumptech.glide.Glide;
 import com.tvt.projectcuoikhoa.R;
 import com.tvt.projectcuoikhoa.helper.ItemClickListener;
 import com.tvt.projectcuoikhoa.model.Phone;
+import com.tvt.projectcuoikhoa.utils.NumberFormatCurency;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class RecyclerPhoneAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -68,7 +72,9 @@ public class RecyclerPhoneAdapter extends RecyclerView.Adapter<RecyclerView.View
             ViewHolder itemHolder = (ViewHolder) holder;
             Phone phone = arrPhone.get(position);
             itemHolder.tvName.setText(phone.getName());
-            itemHolder.tvPrice.setText(phone.getPrice());
+            int price = Integer.parseInt(phone.getPrice());
+            String str1 = NumberFormatCurency.numBerForMat(price);
+            itemHolder.tvPrice.setText(str1);
             Glide.with(context).load(phone.getImage()).error(R.mipmap.ic_launcher).into(itemHolder.img_phone);
             itemHolder.tvStatus.setText(phone.getStatus());
         } else if (holder instanceof LoadMoreHolder) {

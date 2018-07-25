@@ -12,8 +12,12 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.tvt.projectcuoikhoa.R;
 import com.tvt.projectcuoikhoa.model.LapTop;
+import com.tvt.projectcuoikhoa.utils.NumberFormatCurency;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class RecyclerLaptopNewAdapter extends RecyclerView.Adapter<RecyclerLaptopNewAdapter.ViewHolder> {
 
@@ -53,7 +57,9 @@ public class RecyclerLaptopNewAdapter extends RecyclerView.Adapter<RecyclerLapto
         Glide.with(context).load(lapTop.getImage()).error(R.mipmap.ic_launcher).into(holder.img_laptop);
 
         holder.tvName.setText(lapTop.getName());
-        holder.tvPrice.setText(lapTop.getPrice());
+        int price = Integer.parseInt(lapTop.getPrice());
+        String str1 = NumberFormatCurency.numBerForMat(price);
+        holder.tvPrice.setText(str1);
         holder.tvOCung.setText("Ổ CỨNG " + lapTop.getOcung());
         holder.tvRam.setText("RAM " + lapTop.getRam());
         holder.tvStatus.setText(lapTop.getStatus());

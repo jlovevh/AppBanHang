@@ -6,11 +6,12 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -26,6 +27,9 @@ import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.tvt.projectcuoikhoa.R;
+import com.tvt.projectcuoikhoa.fragment.HomeFragment;
+import com.tvt.projectcuoikhoa.model.Cart;
+import com.tvt.projectcuoikhoa.utils.NumberFormatCurency;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,6 +45,8 @@ public class DetailPhoneActivity extends AppCompatActivity implements ViewPagerE
     private String urlBanner;
     private List<String> arrString;
     private boolean isMore;
+    private int count = 0;
+    private int sl;
 
     @BindView(R.id.tv_name)
     TextView tvName;
@@ -88,6 +94,10 @@ public class DetailPhoneActivity extends AppCompatActivity implements ViewPagerE
     ImageView imgBack;
     @BindView(R.id.tv_name_toolbar_phone)
     TextView tvNameToolbar;
+    @BindView(R.id.cart_phone)
+    ImageView imgCart;
+    @BindView(R.id.counttxt)
+    TextView tvCount;
 
     @OnClick(R.id.tv_all_cauhinh_phone)
     void submit() {
@@ -101,19 +111,81 @@ public class DetailPhoneActivity extends AppCompatActivity implements ViewPagerE
         finish();
     }
 
+    @OnClick(R.id.btn_buy_phone)
+    void buyPhone() {
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.shake_anim_image);
+        imgCart.startAnimation(animation);
+        sl = ++count;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (HomeFragment.arrCart.size() > 0) {
+                    boolean exists = false;
+                    for (int i = 0; i < HomeFragment.arrCart.size(); i++) {
+                        if (HomeFragment.arrCart.get(i).getId_sp() == Integer.parseInt(id)) {
+                            HomeFragment.arrCart.get(i).setSoluong(sl);
+                            if (HomeFragment.arrCart.get(i).getSoluong() >= 10) {
+                                HomeFragment.arrCart.get(i).setSoluong(10);
+                                HomeFragment.arrCart.get(i).setPrice(10 * Integer.parseInt(price));
+                                Toast.makeText(DetailPhoneActivity.this, "Mỗi sản phẩm chỉ mua tối đa 10 sản phẩm", Toast.LENGTH_SHORT).show();
+                            }
+                            HomeFragment.arrCart.get(i).setPrice(HomeFragment.arrCart.get(i).getSoluong() * Integer.parseInt(price));
+                            exists = true;
+                        }
+
+                    }
+                    if (exists == false) {
+                        if (MainActivity.key == 1) {
+                            HomeFragment.arrCart.add(new Cart(Integer.parseInt(id), image, Integer.parseInt(price), name, Integer.parseInt(MainActivity.id), sl));
+                            tvCount.setText(String.valueOf(HomeFragment.arrCart.size()));
+                        } else if (MainActivity.key == 2) {
+                            HomeFragment.arrCart.add(new Cart(Integer.parseInt(id), image, Integer.parseInt(price), name, 0, sl));
+                            tvCount.setText(String.valueOf(HomeFragment.arrCart.size()));
+                        } else if (MainActivity.key == 3) {
+                            HomeFragment.arrCart.add(new Cart(Integer.parseInt(id), image, Integer.parseInt(price), name, 0, sl));
+                            tvCount.setText(String.valueOf(HomeFragment.arrCart.size()));
+                        }
+                    }
+                } else {
+                    if (MainActivity.key == 1) {
+                        HomeFragment.arrCart.add(new Cart(Integer.parseInt(id), image, Integer.parseInt(price), name, Integer.parseInt(MainActivity.id), sl));
+                        tvCount.setText(String.valueOf(HomeFragment.arrCart.size()));
+                    } else if (MainActivity.key == 2) {
+                        HomeFragment.arrCart.add(new Cart(Integer.parseInt(id), image, Integer.parseInt(price), name, 0, sl));
+                        tvCount.setText(String.valueOf(HomeFragment.arrCart.size()));
+                    } else if (MainActivity.key == 3) {
+                        HomeFragment.arrCart.add(new Cart(Integer.parseInt(id), image, Integer.parseInt(price), name, 0, sl));
+                        tvCount.setText(String.valueOf(HomeFragment.arrCart.size()));
+                    }
+
+                }
+                Intent intent = new Intent(DetailPhoneActivity.this, ShoppingCartActivity.class);
+                startActivity(intent);
+            }
+        }, 2000);
+    }
+
+
+    @OnClick(R.id.cart_phone)
+    void anim() {
+
+        Intent intent = new Intent(DetailPhoneActivity.this, ShoppingCartActivity.class);
+        startActivity(intent);
+
+    }
+
 
     @SuppressLint({"SetTextI18n", "SetJavaScriptEnabled"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chi_tiet_dien_thoai);
+        setContentView(R.layout.activity_detail_phone);
         ButterKnife.bind(this);
-
+        tvCount.setText(String.valueOf(HomeFragment.arrCart.size()));
         getIntents();
-//        getId();
         tvName.setText(name);
         tvCameraSau.setText(cameraSau);
-        tvPrice.setText(price);
+        tvPrice.setText(NumberFormatCurency.numBerForMat(Integer.parseInt(price)));
         tvPromo1.setText(promo1);
         tvPromo2.setText(promo2);
         tvPromo3.setText(promo3);
@@ -150,7 +222,7 @@ public class DetailPhoneActivity extends AppCompatActivity implements ViewPagerE
     }
 
 
-    @SuppressLint({"SetJavaScriptEnabled"})
+    @SuppressLint({"SetJavaScriptEnabled", "ClickableViewAccessibility"})
     private void addWebView() {
 
         final WebView webView = new WebView(this);
@@ -177,9 +249,10 @@ public class DetailPhoneActivity extends AppCompatActivity implements ViewPagerE
         webView.setHorizontalScrollBarEnabled(false);
 
 
-        LinearLayout.LayoutParams rl = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams rl = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         tvMore.setLayoutParams(rl);
         tvMore.setText("Đọc thêm");
+        tvMore.setBackgroundResource(R.color.white);
         tvMore.setTextColor(getResources().getColor(android.R.color.holo_blue_dark));
         Drawable img = getResources().getDrawable(R.drawable.ic_arrow_drop_down_black_24dp);
         tvMore.setPadding(10, 10, 10, 10);

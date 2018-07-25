@@ -1,6 +1,5 @@
 package com.tvt.projectcuoikhoa.adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -13,8 +12,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.tvt.projectcuoikhoa.R;
 import com.tvt.projectcuoikhoa.model.LapTop;
+import com.tvt.projectcuoikhoa.utils.NumberFormatCurency;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerLapTopAdapter extends RecyclerView.Adapter<RecyclerLapTopAdapter.ViewHolder> {
@@ -56,7 +55,9 @@ public class RecyclerLapTopAdapter extends RecyclerView.Adapter<RecyclerLapTopAd
         Glide.with(context).load(lapTop.getImage()).error(R.mipmap.ic_launcher).into(holder.img_laptop);
 
         holder.tvName.setText(lapTop.getName());
-        holder.tvPrice.setText(lapTop.getPrice());
+        int price = Integer.parseInt(lapTop.getPrice());
+        String str1 = NumberFormatCurency.numBerForMat(price);
+        holder.tvPrice.setText(str1);
         holder.tvScreen.setText(lapTop.getManhinh());
         holder.tvRam.setText(lapTop.getRam());
         holder.tvVGA.setText(lapTop.getDohoa());

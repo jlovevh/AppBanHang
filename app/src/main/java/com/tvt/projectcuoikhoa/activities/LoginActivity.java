@@ -21,15 +21,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -41,7 +45,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.Task;
 import com.tvt.projectcuoikhoa.R;
 import com.tvt.projectcuoikhoa.api.APIUtils;
+import com.tvt.projectcuoikhoa.database.FBSqliteOpenHelper;
 import com.tvt.projectcuoikhoa.model.User;
+import com.tvt.projectcuoikhoa.model.UserFB;
 import com.tvt.projectcuoikhoa.utils.Connectivity;
 import com.tvt.projectcuoikhoa.utils.Constant;
 import com.tvt.projectcuoikhoa.utils.SharepreferenceUtils;
@@ -64,18 +70,17 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
     private static final int RC_SIGN_IN = 123;
-    private Button btnLogin, btnLoginFB;
+    private Button btnLogin;
+    private LoginButton loginButton;
     private TextView tvSignUp;
     private CallbackManager callbackManager;
-    public static LoginManager loginManager;
     private ProgressDialog dialog, progressDialog;
     private SignInButton signInButton;
-    private GoogleApiClient googleApiClient;
-    public static boolean isLogin = false;
     private EditText edtEmail, edtPass;
     private ProgressDialog progressDialogLogin;
     private CheckBox checkBox;
     private SharepreferenceUtils sharepreferenceUtils;
+    private Intent intent;
     @SuppressLint("StaticFieldLeak")
     public static GoogleSignInClient googleSignInClient;
 //    , "user_birthday", "user_friends"
@@ -86,7 +91,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        isLoggedInFB();
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -98,16 +102,29 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         AppEventsLogger.activateApp(this);
         initViews();
         callbackManager = CallbackManager.Factory.create();
+        if (isLoggedIn()) {
+//            intent = new Intent(LoginActivity.this, MainActivity.class);
+////            intent.putExtra(key,4);
+//            startActivity(intent);
+//            finish();
+            Toast.makeText(this, "A", Toast.LENGTH_SHORT).show();
+        }
+
+
+
+
 
         printKeyHash(this);
 
         setGooglePlusButtonText(signInButton, "Sign in with Google");
         googleLogin();
-        sharepreferenceUtils = SharepreferenceUtils.newInstance(LoginActivity.this);
 
+
+        sharepreferenceUtils = SharepreferenceUtils.newInstance(LoginActivity.this);
         sharepreferenceUtils.getSharepreference(LoginActivity.this);
         edtEmail.setText(sharepreferenceUtils.getEmail());
         edtPass.setText(sharepreferenceUtils.getPassWord());
+        checkBox.setChecked(true);
 
 
 
@@ -116,9 +133,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void initViews() {
         btnLogin = findViewById(R.id.btn_login);
-        btnLoginFB = findViewById(R.id.btn_loginFB);
+        loginButton = findViewById(R.id.loginButton);
         btnLogin.setOnClickListener(this);
-        btnLoginFB.setOnClickListener(this);
+        loginButton.setOnClickListener(this);
         signInButton = findViewById(R.id.sign_in_button);
         tvSignUp = findViewById(R.id.tv_sign_up);
         edtEmail = findViewById(R.id.email);
@@ -148,10 +165,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .requestProfile()
                 .requestEmail()
                 .build();
-//        googleApiClient = new GoogleApiClient.Builder(this)
-//                .enableAutoManage(this, this)
-//                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-//                .build();
         googleSignInClient = GoogleSignIn.getClient(this, gso);
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
@@ -241,7 +254,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
 
                 break;
-            case R.id.btn_loginFB:
+            case R.id.loginButton:
                 loginFB();
 
                 break;
@@ -283,6 +296,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     intent.putExtra("nameU", user.getName());
                     intent.putExtra("emailU", user.getEmail());
                     intent.putExtra("urlU", user.getImage());
+                    intent.putExtra("idU", user.getId());
                     intent.putExtra(key, 1);
                     startActivity(intent);
                     overridePendingTransition(R.anim.anim_enter, R.anim.anim_exit);
@@ -310,15 +324,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void loginFB() {
-        loginManager = LoginManager.getInstance();
-        loginManager.logInWithReadPermissions(this, permissions);
+//        loginManager = LoginManager.getInstance();
+//        loginManager.logInWithReadPermissions(this, permissions);
+        loginButton.setReadPermissions(Arrays.asList("public_profile ", "email"));
 
-        loginManager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
 
                 dialog = new ProgressDialog(LoginActivity.this);
-                dialog.setMessage("Retrieving data...");
+                dialog.setMessage("Loading data...Please wait");
                 dialog.show();
                 String accesstoken = loginResult.getAccessToken().getToken();
                 GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
@@ -363,33 +378,35 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
-    public void isLoggedInFB() {
-
-        if (AccessToken.getCurrentAccessToken() == null) {
-            return; // already logged out
+    public static boolean isLoggedIn() {
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        Profile profile = Profile.getCurrentProfile();
+        //Attempts to recognize if the user has logged in before
+        if (accessToken != null && profile != null) {
+            return true;
+        } else {
+            return false;
         }
     }
 
     private void getFacebookData(JSONObject object) {
-        String id = null, name = null, email, friends, birthday, url;
+        String friends, birthday, email, name, url;
         try {
-            id = object.getString("id");
+            String id = object.getString("id");
 //            birthday = object.getString("birthday");
 //            friends = object.getJSONObject("friends").getJSONObject("summary").getString("total_count");
             email = object.getString("email");
             name = object.getString("name");
             URL profile_picture = new URL("https://graph.facebook.com/" + id + "/picture?type=large");
             url = profile_picture.toString();
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+
+
+            intent = new Intent(LoginActivity.this, MainActivity.class);
             intent.putExtra("name", name);
             intent.putExtra("email", email);
             intent.putExtra("url", url);
+            intent.putExtra("id", id);
             intent.putExtra(key, 2);
-//            Log.d(Constant.TAG, "url: " + url);
-//            Log.d(Constant.TAG, "name: " + name);
-//            Log.d(Constant.TAG, "email: " + email);
-//            Log.d(Constant.TAG, "birthday: " + birthday);
-//            Log.d(Constant.TAG, "friends: " + friends);
             startActivity(intent);
 
         } catch (JSONException | MalformedURLException e) {
@@ -403,5 +420,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d(Constant.TAG, connectionResult + "");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
     }
 }

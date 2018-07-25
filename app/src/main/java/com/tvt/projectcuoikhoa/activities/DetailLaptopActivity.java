@@ -10,12 +10,16 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
@@ -23,12 +27,16 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.tvt.projectcuoikhoa.R;
+import com.tvt.projectcuoikhoa.fragment.HomeFragment;
+import com.tvt.projectcuoikhoa.model.Cart;
+import com.tvt.projectcuoikhoa.utils.NumberFormatCurency;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -38,7 +46,7 @@ public class DetailLaptopActivity extends AppCompatActivity implements ViewPager
             oCung, ram, cardManHinh, cpu, congKetNoi, trongLuong, hdh, detail, tenDanhMuc, urlBanner;
 
     private List<String> arrString;
-
+    private int count = 0;
     @BindView(R.id.tv_name_lap)
     TextView tvName;
     @BindView(R.id.tv_price_lap)
@@ -85,11 +93,26 @@ public class DetailLaptopActivity extends AppCompatActivity implements ViewPager
     TextView tvMore;
     @BindView(R.id.layout2)
     LinearLayout linearLayout;
+    @BindView(R.id.cart_lap)
+    ImageView imgCart;
+    @BindView(R.id.counttxt_lap)
+    TextView tvCount;
+    @BindView(R.id.btn_buy_lap)
+    Button btnBuy;
+
+
 
     @OnClick(R.id.img_back)
     void onClick() {
         finish();
     }
+
+    @OnClick(R.id.cart_lap)
+    void gotoCart() {
+        Intent intent = new Intent(DetailLaptopActivity.this, ShoppingCartActivity.class);
+        startActivity(intent);
+    }
+
 
     @OnClick(R.id.tv_all_cauhinh_lap)
     void loadMore() {
@@ -99,17 +122,72 @@ public class DetailLaptopActivity extends AppCompatActivity implements ViewPager
         startActivity(intent);
     }
 
+    @OnClick(R.id.btn_buy_lap)
+    void buyLaptop() {
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.shake_anim_image);
+        imgCart.startAnimation(animation);
+        final int sl = ++count;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (HomeFragment.arrCart.size() > 0) {
+                    boolean exists = false;
+                    for (int i = 0; i < HomeFragment.arrCart.size(); i++) {
+                        if (HomeFragment.arrCart.get(i).getId_sp() == Integer.parseInt(id)) {
+                            HomeFragment.arrCart.get(i).setSoluong(sl);
+                            if (HomeFragment.arrCart.get(i).getSoluong() >= 10) {
+                                HomeFragment.arrCart.get(i).setSoluong(10);
+                                HomeFragment.arrCart.get(i).setPrice(10 * Integer.parseInt(price));
+                                Toast.makeText(DetailLaptopActivity.this, "Mỗi sản phẩm chỉ mua tối đa 10 sản phẩm", Toast.LENGTH_SHORT).show();
+                            }
+                            HomeFragment.arrCart.get(i).setPrice(HomeFragment.arrCart.get(i).getSoluong() * Integer.parseInt(price));
+                            exists = true;
+                        }
+
+                    }
+                    if (exists == false) {
+                        if (MainActivity.key == 1) {
+                            HomeFragment.arrCart.add(new Cart(Integer.parseInt(id), image, Integer.parseInt(price), name, Integer.parseInt(MainActivity.id), sl));
+                            tvCount.setText(String.valueOf(HomeFragment.arrCart.size()));
+                        } else if (MainActivity.key == 2) {
+                            HomeFragment.arrCart.add(new Cart(Integer.parseInt(id), image, Integer.parseInt(price), name, 0, sl));
+                            tvCount.setText(String.valueOf(HomeFragment.arrCart.size()));
+                        } else if (MainActivity.key == 3) {
+                            HomeFragment.arrCart.add(new Cart(Integer.parseInt(id), image, Integer.parseInt(price), name, 0, sl));
+                            tvCount.setText(String.valueOf(HomeFragment.arrCart.size()));
+                        }
+                    }
+                } else {
+                    if (MainActivity.key == 1) {
+                        HomeFragment.arrCart.add(new Cart(Integer.parseInt(id), image, Integer.parseInt(price), name, Integer.parseInt(MainActivity.id), sl));
+                        tvCount.setText(String.valueOf(HomeFragment.arrCart.size()));
+                    } else if (MainActivity.key == 2) {
+                        HomeFragment.arrCart.add(new Cart(Integer.parseInt(id), image, Integer.parseInt(price), name, 0, sl));
+                        tvCount.setText(String.valueOf(HomeFragment.arrCart.size()));
+                    } else if (MainActivity.key == 3) {
+                        HomeFragment.arrCart.add(new Cart(Integer.parseInt(id), image, Integer.parseInt(price), name, 0, sl));
+                        tvCount.setText(String.valueOf(HomeFragment.arrCart.size()));
+                    }
+
+                }
+                Intent intent = new Intent(DetailLaptopActivity.this, ShoppingCartActivity.class);
+                startActivity(intent);
+            }
+        }, 2000);
+    }
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chi_tiet_laptop);
+        setContentView(R.layout.activity_detail_laptop);
         ButterKnife.bind(this);
+        tvCount.setText(String.valueOf(HomeFragment.arrCart.size()));
         getIntents();
 
         tvName.setText(name);
         tvDoHoa.setText(cardManHinh);
-        tvPrice.setText(price);
+        tvPrice.setText(NumberFormatCurency.numBerForMat(Integer.parseInt(price)));
         tvPromo1.setText(promo1);
         tvPromo2.setText(promo2);
         tvPromo3.setText(promo3);
@@ -213,6 +291,7 @@ public class DetailLaptopActivity extends AppCompatActivity implements ViewPager
         LinearLayout.LayoutParams rl = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         tvMore.setLayoutParams(rl);
         tvMore.setText("Đọc thêm");
+        tvMore.setBackgroundResource(R.color.white);
         tvMore.setTextColor(getResources().getColor(android.R.color.holo_blue_dark));
         Drawable img = getResources().getDrawable(R.drawable.ic_arrow_drop_down_black_24dp);
         tvMore.setPadding(10, 10, 10, 10);

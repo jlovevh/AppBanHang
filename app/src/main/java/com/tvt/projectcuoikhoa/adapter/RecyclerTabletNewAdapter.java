@@ -13,9 +13,13 @@ import com.squareup.picasso.Picasso;
 import com.tvt.projectcuoikhoa.R;
 import com.tvt.projectcuoikhoa.helper.ItemClickListener;
 import com.tvt.projectcuoikhoa.model.Tablet;
+import com.tvt.projectcuoikhoa.utils.NumberFormatCurency;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class RecyclerTabletNewAdapter extends RecyclerView.Adapter<RecyclerTabletNewAdapter.ViewHolder> {
 
@@ -53,7 +57,9 @@ public class RecyclerTabletNewAdapter extends RecyclerView.Adapter<RecyclerTable
 
         Picasso.with(context).load(tablet.getImage()).error(R.mipmap.ic_launcher).into(holder.img_tablet);
         holder.tvName.setText(tablet.getName());
-        holder.tvPrice.setText(tablet.getPrice());
+        int price = Integer.parseInt(tablet.getPrice());
+        String str1 = NumberFormatCurency.numBerForMat(price);
+        holder.tvPrice.setText(str1);
         holder.tvStatus.setText(tablet.getStatus());
 
     }

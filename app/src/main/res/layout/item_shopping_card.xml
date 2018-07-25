@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <android.support.design.widget.CoordinatorLayout
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:contentDescription="@string/image"
+            android:id="@+id/img_cart"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/iu" />
+
+
+        <TextView
+            android:id="@+id/tv_name_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="120dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:text="I phone X 256GB Silvel" />
+
+        <TextView
+            android:layout_marginLeft="125dp"
+            android:id="@+id/tv_price_cart"
+            android:layout_width="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/redPhone"
+            android:layout_marginTop="40dp"
+            android:layout_height="wrap_content"
+            android:text="34.990.000 đ" />
+
+
+        <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
+
+            android:id="@+id/number_button"
+            android:layout_width="120dp"
+            android:layout_height="30dp"
+
+            android:layout_gravity="bottom|end"
+
+            app:backGroundColor="@color/colorPrimary"
+            app:finalNumber="10"
+            app:initialNumber="0" />
+
+
+    </android.support.design.widget.CoordinatorLayout>
+</LinearLayout>

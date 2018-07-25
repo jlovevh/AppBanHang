@@ -1,66 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nestedScrollView"
+<android.support.v4.widget.SwipeRefreshLayout android:id="@+id/swipeRefresh"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".fragment.HomeFragment">
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-    <LinearLayout
+    <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".fragment.HomeFragment">
 
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <com.daimajia.slider.library.SliderLayout
-                android:id="@+id/slider3"
+
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp" />
+                android:layout_height="200dp">
 
-            <com.daimajia.slider.library.Indicators.PagerIndicator
-                android:id="@+id/custom_indicator3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center"
-                app:selected_color="@color/red"
-                app:unselected_color="@android:color/darker_gray" />
+                <com.daimajia.slider.library.SliderLayout
+                    android:id="@+id/slider3"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp" />
 
-
-        </FrameLayout>
-
-
-        <include
-            layout="@layout/layout_phone_hot"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <include
-            layout="@layout/laptop_noi_bat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <include
-            layout="@layout/tablet_moi_nhat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <include
-            layout="@layout/layout_tin_cong_nghe"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </include>
-
-    </LinearLayout>
+                <com.daimajia.slider.library.Indicators.PagerIndicator
+                    android:id="@+id/custom_indicator3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center"
+                    app:selected_color="@color/red"
+                    app:unselected_color="@android:color/darker_gray" />
 
 
-</android.support.v4.widget.NestedScrollView>
+            </FrameLayout>
+
+
+            <include
+                layout="@layout/layout_phone_hot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/laptop_noi_bat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/tablet_moi_nhat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/layout_tin_cong_nghe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </include>
+
+        </LinearLayout>
+
+
+    </android.support.v4.widget.NestedScrollView>
+</android.support.v4.widget.SwipeRefreshLayout>
+

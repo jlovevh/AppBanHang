@@ -76,6 +76,9 @@
     <string name="ketnoi2">Kết nối</string>
     <string name="choice">Please select</string>
     <string name="choice2">Choice</string>
+    <string name="cart">Giỏ hàng trống</string>
+    <string name="a">Không có sản phẩm nào trong giỏ hàng của bạn</string>
+    <string name="back">Quay lại trang chủ</string>
 
     <string-array name="tentintuc">
 

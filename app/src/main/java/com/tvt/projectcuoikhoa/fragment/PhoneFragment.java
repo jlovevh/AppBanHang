@@ -61,7 +61,7 @@ public class PhoneFragment extends Fragment implements ItemClickListener {
         recyclerView=view.findViewById(R.id.recyclerPhone);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
-        recyclerView.addItemDecoration(new GridDividerDecoration(getActivity()));
+//        recyclerView.addItemDecoration(new GridDividerDecoration(getActivity()));
 
 
         loadData();

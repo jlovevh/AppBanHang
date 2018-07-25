@@ -1,6 +1,5 @@
 package com.tvt.projectcuoikhoa.fragment;
 
-
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
@@ -45,6 +44,7 @@ import com.tvt.projectcuoikhoa.helper.GridDividerDecoration;
 import com.tvt.projectcuoikhoa.helper.ItemClickListener;
 import com.tvt.projectcuoikhoa.helper.MyDividerItemDecoration;
 import com.tvt.projectcuoikhoa.model.BannerQc;
+import com.tvt.projectcuoikhoa.model.Cart;
 import com.tvt.projectcuoikhoa.model.LapTop;
 import com.tvt.projectcuoikhoa.model.News;
 import com.tvt.projectcuoikhoa.model.Phone;
@@ -60,39 +60,40 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 @SuppressLint("ValidFragment")
 public class HomeFragment extends Fragment implements ItemClickListener, RecyclerLaptopNewAdapter.ItemClickListenerLapTop, RecyclerTabletNewAdapter.ItemClickListenerTablet, ViewPagerEx.OnPageChangeListener, BaseSliderView.OnSliderClickListener {
-
-    private NestedScrollView nestedScrollView;
+    //list banner
     private List<BannerQc> bannerQcList = new ArrayList<>();
     private SliderLayout sliderLayout;
     private PagerIndicator pagerIndicator;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
-
+    //list phone
     private RecyclerPhoneHotAdapter adapterPhone;
     private List<Phone> phoneHotList;
     private RecyclerView recyclerView;
     private TextView tvMore;
 
+    //list laptop
     private RecyclerLaptopNewAdapter adapterLaptop;
     private List<LapTop> arrLaptop;
     private RecyclerView recyclerViewLaptop;
     private TextView tvAll;
 
-
+    //list tablet
     private RecyclerTabletNewAdapter adapterTablet;
     private List<Tablet> arrTablet;
     private RecyclerView recyclerViewTablet;
     private TextView tvMoreTablet;
 
-
+    // list news
     private ListView listView;
     private List<News> arrNews;
     private NewsTechnologyAdapter adapterTinCongNghe;
     private TextView tvMoreTinTuc;
+
+    public static List<Cart> arrCart;
 
 
     public static HomeFragment newInstance() {
@@ -111,9 +112,6 @@ public class HomeFragment extends Fragment implements ItemClickListener, Recycle
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_trang_chu, container, false);
         initViews(view);
-        ButterKnife.bind(Objects.requireNonNull(getActivity()), view);
-
-
         getPhoneHot();
         getLaptopNew();
         getTabletNews();
@@ -121,30 +119,20 @@ public class HomeFragment extends Fragment implements ItemClickListener, Recycle
         getBanner();
 
 
-        sliderLayout.setPresetTransformer(SliderLayout.Transformer.Tablet);
-        sliderLayout.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-        sliderLayout.setCustomAnimation(new DescriptionAnimation());
-        sliderLayout.setDuration(8000);
-        sliderLayout.addOnPageChangeListener(this);
-        sliderLayout.setCustomIndicator(pagerIndicator);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                arrLaptop.clear();
+                arrTablet.clear();
+                arrNews.clear();
+                phoneHotList.clear();
+                getPhoneHot();
+                getLaptopNew();
+                getTabletNews();
+                getTinCongNghe();
 
-        adapterPhone.setItemClickListener(this);
-        adapterTablet.setItemClickListener(this);
-        adapterLaptop.setItemClickListener(this);
-
-
-//        nestedScrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-//            @Override
-//            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-//                if (scrollY<50){
-//                    swipeRefreshLayout.setRefreshing(true);
-//                    swipeRefreshLayout.setOnRefreshListener(HomeFragment.this);
-//
-//                }
-//
-//            }
-//        });
-
+            }
+        });
 
         return view;
     }
@@ -159,7 +147,6 @@ public class HomeFragment extends Fragment implements ItemClickListener, Recycle
                 if (arr != null) {
                     bannerQcList.addAll(arr);
                 }
-                Log.d(Constant.TAG, "SizeBanner: " + bannerQcList.size());
 
                 for (BannerQc bannerQc : bannerQcList) {
                     TextSliderView textSliderView = new TextSliderView(getContext());
@@ -183,17 +170,13 @@ public class HomeFragment extends Fragment implements ItemClickListener, Recycle
     }
 
     private void getTinCongNghe() {
-        adapterTinCongNghe = new NewsTechnologyAdapter(getContext(), arrNews);
-
         APIUtils.getJsonReponse().getTinCongNghe().enqueue(new Callback<List<News>>() {
             @Override
             public void onResponse(Call<List<News>> call, Response<List<News>> response) {
-
+                swipeRefreshLayout.setRefreshing(false);
                 arrNews = response.body();
-//                Log.d(Constant.TAG, "Size: " + arrNews.size());
                 adapterTinCongNghe.setData(arrNews);
-                adapterTinCongNghe.notifyDataSetChanged();
-                listView.setAdapter(adapterTinCongNghe);
+
             }
 
             @Override
@@ -201,8 +184,6 @@ public class HomeFragment extends Fragment implements ItemClickListener, Recycle
                 Log.e(Constant.TAG, "error: " + t.getMessage());
             }
         });
-
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -238,6 +219,11 @@ public class HomeFragment extends Fragment implements ItemClickListener, Recycle
     }
 
     private void initViews(View view) {
+        if (arrCart != null) {
+
+        } else {
+            arrCart = new ArrayList<>();
+        }
         recyclerView = view.findViewById(R.id.recyclerPhoneHOt);
         tvMore = view.findViewById(R.id.tv_more);
         recyclerViewTablet = view.findViewById(R.id.recyclerTabletMoiNhat);
@@ -249,29 +235,57 @@ public class HomeFragment extends Fragment implements ItemClickListener, Recycle
         tvMoreTinTuc = view.findViewById(R.id.tv_more_tin_tuc);
         sliderLayout = view.findViewById(R.id.slider3);
         pagerIndicator = view.findViewById(R.id.custom_indicator3);
-        nestedScrollView = view.findViewById(R.id.nestedScrollView);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_dark,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
         arrNews = new ArrayList<>();
-
         arrTablet = new ArrayList<>();
-
-
         arrLaptop = new ArrayList<>();
         phoneHotList = new ArrayList<>();
+
+        adapterPhone = new RecyclerPhoneHotAdapter(getContext(), phoneHotList);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false));
+//        recyclerView.addItemDecoration(new GridDividerDecoration(getActivity()));
+
+
+        adapterLaptop = new RecyclerLaptopNewAdapter(getContext(), arrLaptop);
+        recyclerViewLaptop.setHasFixedSize(true);
+        recyclerViewLaptop.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        recyclerViewLaptop.addItemDecoration(new android.support.v7.widget.DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
+        recyclerViewLaptop.setAdapter(adapterLaptop);
+
+        adapterTablet = new RecyclerTabletNewAdapter(getContext(), arrTablet);
+        recyclerViewTablet.setHasFixedSize(true);
+        recyclerViewTablet.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewTablet.addItemDecoration(new MyDividerItemDecoration(getContext(), LinearLayoutManager.HORIZONTAL, 2));
+        recyclerViewTablet.setAdapter(adapterTablet);
+
+        sliderLayout.setPresetTransformer(SliderLayout.Transformer.Tablet);
+        sliderLayout.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+        sliderLayout.setCustomAnimation(new DescriptionAnimation());
+        sliderLayout.setDuration(8000);
+        sliderLayout.addOnPageChangeListener(this);
+        sliderLayout.setCustomIndicator(pagerIndicator);
+
+
+        adapterTinCongNghe = new NewsTechnologyAdapter(getContext(), arrNews);
+        listView.setAdapter(adapterTinCongNghe);
+        adapterPhone.setItemClickListener(this);
+        adapterTablet.setItemClickListener(this);
+        adapterLaptop.setItemClickListener(this);
 
 
     }
 
 
     private void getTabletNews() {
-        adapterTablet = new RecyclerTabletNewAdapter(getContext(), arrTablet);
-        recyclerViewTablet.setHasFixedSize(true);
-        recyclerViewTablet.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerViewTablet.addItemDecoration(new MyDividerItemDecoration(getContext(), LinearLayoutManager.HORIZONTAL, 2));
-
         APIUtils.getJsonReponse().getTabletNew().enqueue(new Callback<List<Tablet>>() {
             @Override
             public void onResponse(Call<List<Tablet>> call, Response<List<Tablet>> response) {
-                arrTablet.clear();
+                swipeRefreshLayout.setRefreshing(false);
                 arrTablet = response.body();
                 adapterTablet.setData(arrTablet);
             }
@@ -281,7 +295,7 @@ public class HomeFragment extends Fragment implements ItemClickListener, Recycle
                 Log.e(Constant.TAG, "error" + t.getMessage());
             }
         });
-        recyclerViewTablet.setAdapter(adapterTablet);
+
 
         tvMoreTablet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -298,15 +312,10 @@ public class HomeFragment extends Fragment implements ItemClickListener, Recycle
     }
 
     private void getLaptopNew() {
-        adapterLaptop = new RecyclerLaptopNewAdapter(getContext(), arrLaptop);
-        recyclerViewLaptop.setHasFixedSize(true);
-        recyclerViewLaptop.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        recyclerViewLaptop.addItemDecoration(new android.support.v7.widget.DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
-
         APIUtils.getJsonReponse().getLaptopNew().enqueue(new Callback<List<LapTop>>() {
             @Override
             public void onResponse(Call<List<LapTop>> call, Response<List<LapTop>> response) {
-                arrLaptop.clear();
+                swipeRefreshLayout.setRefreshing(false);
                 arrLaptop = response.body();
                 adapterLaptop.setData(arrLaptop);
             }
@@ -317,7 +326,7 @@ public class HomeFragment extends Fragment implements ItemClickListener, Recycle
             }
         });
 
-        recyclerViewLaptop.setAdapter(adapterLaptop);
+
         tvAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -334,14 +343,11 @@ public class HomeFragment extends Fragment implements ItemClickListener, Recycle
     }
 
     private void getPhoneHot() {
-        adapterPhone = new RecyclerPhoneHotAdapter(getContext(), phoneHotList);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false));
-        recyclerView.addItemDecoration(new GridDividerDecoration(getActivity()));
 
         APIUtils.getJsonReponse().getPhoneHot().enqueue(new Callback<List<Phone>>() {
             @Override
             public void onResponse(Call<List<Phone>> call, Response<List<Phone>> response) {
+                swipeRefreshLayout.setRefreshing(false);
                 phoneHotList = response.body();
 //                Log.d("Phone", "Size " + phoneHotList.size());
                 adapterPhone.setData(phoneHotList);
@@ -353,26 +359,20 @@ public class HomeFragment extends Fragment implements ItemClickListener, Recycle
                 Log.d(Constant.TAG, "Error" + call.toString());
             }
         });
-
-
+        recyclerView.setAdapter(adapterPhone);
         tvMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Fragment fragment = PhoneFragment.newInstance();
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+
                 fragmentTransaction.replace(R.id.layout, fragment);
                 fragmentTransaction.addToBackStack(null);
                 MainActivity.bottomNavigationView.getMenu().getItem(1).setChecked(true);
                 fragmentTransaction.commit();
-
-
             }
-
-
         });
 
-        recyclerView.setAdapter(adapterPhone);
     }
 
     @Override
@@ -407,7 +407,6 @@ public class HomeFragment extends Fragment implements ItemClickListener, Recycle
         bundle.putString("tendanhmuc", phone.getTendanhmuc());
         intent.putExtra("bundle", bundle);
         getActivity().startActivity(intent);
-
 
 
     }
@@ -503,6 +502,4 @@ public class HomeFragment extends Fragment implements ItemClickListener, Recycle
     public void onSliderClick(BaseSliderView slider) {
 
     }
-
-
 }

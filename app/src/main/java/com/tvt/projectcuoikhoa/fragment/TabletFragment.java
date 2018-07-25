@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,7 +60,7 @@ public class TabletFragment extends Fragment implements RecyclerTabletAdapter.on
         dialog.show();
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
-        recyclerView.addItemDecoration(new GridDividerDecoration(getContext()));
+//        recyclerView.addItemDecoration(new GridDividerDecoration(getContext()));
 
 
         APIUtils.getJsonReponse().getAllTablet().enqueue(new Callback<List<Tablet>>() {

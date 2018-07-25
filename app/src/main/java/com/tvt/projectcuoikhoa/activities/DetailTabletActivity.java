@@ -3,18 +3,23 @@ package com.tvt.projectcuoikhoa.activities;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
@@ -22,6 +27,9 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.tvt.projectcuoikhoa.R;
+import com.tvt.projectcuoikhoa.fragment.HomeFragment;
+import com.tvt.projectcuoikhoa.model.Cart;
+import com.tvt.projectcuoikhoa.utils.NumberFormatCurency;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,7 +45,7 @@ public class DetailTabletActivity extends AppCompatActivity implements ViewPager
             cameraTruoc, cameraSau, ram, storage, cpu, gpu, ketNoi, detail, tenDanhMuc;
     private String urlBanner;
     private List<String> arrString;
-
+    private int count = 0;
     @BindView(R.id.tv_name_tab)
     TextView tvName;
     @BindView(R.id.tv_price_tab)
@@ -84,11 +92,16 @@ public class DetailTabletActivity extends AppCompatActivity implements ViewPager
     ImageView imgBack;
     @BindView(R.id.tv_name_toolbar_tablet)
     TextView tvNameToolbar;
+    @BindView(R.id.cart_tablet)
+    ImageView imgCart;
+    @BindView(R.id.btn_buy_tablet)
+    Button btnBuyTablet;
+    @BindView(R.id.counttxt_tablet)
+    TextView tvCount;
 
     @OnClick(R.id.tv_all_cauhinh_tab)
     void submit() {
         Intent intent = new Intent(DetailTabletActivity.this, DetailConfigTabletActivity.class);
-
         intent.putExtra("cauhinhchitiet", detail);
         startActivity(intent);
     }
@@ -98,18 +111,79 @@ public class DetailTabletActivity extends AppCompatActivity implements ViewPager
         finish();
     }
 
+    @OnClick(R.id.cart_tablet)
+    void gotoCart() {
+        Intent intent = new Intent(DetailTabletActivity.this, ShoppingCartActivity.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.btn_buy_tablet)
+    void buyTablet() {
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.shake_anim_image);
+        imgCart.startAnimation(animation);
+        final int sl = ++count;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (HomeFragment.arrCart.size() > 0) {
+                    boolean exists = false;
+                    for (int i = 0; i < HomeFragment.arrCart.size(); i++) {
+                        if (HomeFragment.arrCart.get(i).getId_sp() == Integer.parseInt(id)) {
+                            HomeFragment.arrCart.get(i).setSoluong(sl);
+                            if (HomeFragment.arrCart.get(i).getSoluong() >= 10) {
+                                HomeFragment.arrCart.get(i).setSoluong(10);
+                                HomeFragment.arrCart.get(i).setPrice(10 * Integer.parseInt(price));
+                                Toast.makeText(DetailTabletActivity.this, "Mỗi sản phẩm chỉ mua tối đa 10 sản phẩm", Toast.LENGTH_SHORT).show();
+                            }
+                            HomeFragment.arrCart.get(i).setPrice(HomeFragment.arrCart.get(i).getSoluong() * Integer.parseInt(price));
+                            exists = true;
+                        }
+
+                    }
+                    if (exists == false) {
+                        if (MainActivity.key == 1) {
+                            HomeFragment.arrCart.add(new Cart(Integer.parseInt(id), image, Integer.parseInt(price), name, Integer.parseInt(MainActivity.id), sl));
+                            tvCount.setText(String.valueOf(HomeFragment.arrCart.size()));
+                        } else if (MainActivity.key == 2) {
+                            HomeFragment.arrCart.add(new Cart(Integer.parseInt(id), image, Integer.parseInt(price), name, 0, sl));
+                            tvCount.setText(String.valueOf(HomeFragment.arrCart.size()));
+                        } else if (MainActivity.key == 3) {
+                            HomeFragment.arrCart.add(new Cart(Integer.parseInt(id), image, Integer.parseInt(price), name, 0, sl));
+                            tvCount.setText(String.valueOf(HomeFragment.arrCart.size()));
+                        }
+                    }
+                } else {
+                    if (MainActivity.key == 1) {
+                        HomeFragment.arrCart.add(new Cart(Integer.parseInt(id), image, Integer.parseInt(price), name, Integer.parseInt(MainActivity.id), sl));
+                        tvCount.setText(String.valueOf(HomeFragment.arrCart.size()));
+                    } else if (MainActivity.key == 2) {
+                        HomeFragment.arrCart.add(new Cart(Integer.parseInt(id), image, Integer.parseInt(price), name, 0, sl));
+                        tvCount.setText(String.valueOf(HomeFragment.arrCart.size()));
+                    } else if (MainActivity.key == 3) {
+                        HomeFragment.arrCart.add(new Cart(Integer.parseInt(id), image, Integer.parseInt(price), name, 0, sl));
+                        tvCount.setText(String.valueOf(HomeFragment.arrCart.size()));
+                    }
+
+                }
+                Intent intent = new Intent(DetailTabletActivity.this, ShoppingCartActivity.class);
+                startActivity(intent);
+            }
+        }, 2000);
+    }
+
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chi_tiet_tablet);
+        setContentView(R.layout.activity_detail_tablet);
 
         ButterKnife.bind(this);
 
         getIntents();
         tvName.setText(name);
         tvCameraSau.setText(cameraSau);
-        tvPrice.setText(price);
+        tvPrice.setText(NumberFormatCurency.numBerForMat(Integer.parseInt(price)));
         tvPromo1.setText(promo1);
         tvPromo2.setText(promo2);
         tvPromo3.setText(promo3);
@@ -180,6 +254,7 @@ public class DetailTabletActivity extends AppCompatActivity implements ViewPager
         LinearLayout.LayoutParams rl = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         tvMore.setLayoutParams(rl);
         tvMore.setText("Đọc thêm");
+        tvMore.setBackgroundResource(R.color.white);
         tvMore.setTextColor(getResources().getColor(android.R.color.holo_blue_dark));
         Drawable img = getResources().getDrawable(R.drawable.ic_arrow_drop_down_black_24dp);
         tvMore.setPadding(10, 10, 10, 10);

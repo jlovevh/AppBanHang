@@ -28,6 +28,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -35,6 +37,7 @@ import com.squareup.picasso.Picasso;
 import com.tvt.projectcuoikhoa.R;
 import com.tvt.projectcuoikhoa.adapter.ViewPagerAdapter;
 import com.tvt.projectcuoikhoa.api.APIUtils;
+import com.tvt.projectcuoikhoa.database.FBSqliteOpenHelper;
 import com.tvt.projectcuoikhoa.fragment.AccountFragment;
 import com.tvt.projectcuoikhoa.fragment.HomeFragment;
 import com.tvt.projectcuoikhoa.fragment.LapTopFragment;
@@ -44,6 +47,7 @@ import com.tvt.projectcuoikhoa.fragment.NewsFragment;
 import com.tvt.projectcuoikhoa.helper.BottomNavigationBehavior;
 import com.tvt.projectcuoikhoa.helper.BottomNavigationViewHelper;
 import com.tvt.projectcuoikhoa.model.User;
+import com.tvt.projectcuoikhoa.model.UserFB;
 import com.tvt.projectcuoikhoa.utils.SharepreferenceUtils;
 
 import java.util.List;
@@ -64,7 +68,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private ImageView imgHeader;
     private SharepreferenceUtils sharepreferenceUtils;
     private boolean doubleBackToExitPressedOnce = false;
-
+    private String name, url, email;
+    public static String id;
+    private FBSqliteOpenHelper sqliteOpenHelper;
+    public static int key;
 
 
     @Override
@@ -76,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         Intent intent = getIntent();
 
-        int key = intent.getIntExtra(LoginActivity.key, 0);
+        key = intent.getIntExtra(LoginActivity.key, 0);
 //        Log.d(Constant.TAG, "KeyU: " + key);
 
         if (key == 1) {
@@ -86,7 +93,51 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         } else if (key == 3) {
             getIntentsGG();
         }
+// else {
+//            final List<UserFB> arr=sqliteOpenHelper.getFBUser();
+//            tvEmail.setText(arr.get(0).getEmail());
+//            tvName.setText(arr.get(0).getName());
+//            Picasso.with(this).load(arr.get(0).getUrl()).placeholder(R.drawable.iu).error(R.mipmap.ic_launcher).into(imgHeader);
+//            imgHeader.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this)
+//                            .setTitle("Thông báo")
+//                            .setMessage("Bạn có muốn đăng xuất không?")
+//                            .setNegativeButton("Có", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    LoginManager.getInstance().logOut();
+//                                    sqliteOpenHelper.deleteTable(1);
+//                                    String name = "Lee Ji-eun";
+//                                    tvName.setText(name);
+//                                    String email = "I love IU";
+//                                    tvEmail.setText(email);
+//                                    imgHeader.setImageResource(R.drawable.iu);
+//
+//                                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+//                                    startActivity(intent);
+//
+//                                }
+//                            })
+//                            .setPositiveButton("Không", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    dialog.dismiss();
+//
+//                                }
+//                            });
+//
+//                    builder.show();
+//
+//
+//                }
+//            });
+//        }
 
+
+//        UserFB user =new UserFB(id,name,email,url);
+//        sqliteOpenHelper.insert(user);
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer);
         drawerToggle.syncState();
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
@@ -107,14 +158,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private void getIntentsFB() {
 
         Intent intentFB = getIntent();
-        String name = intentFB.getStringExtra("name");
-        String url = intentFB.getStringExtra("url");
-        String email = intentFB.getStringExtra("email");
-
-//        Log.d(Constant.TAG, "ccc: " + name);
-//        Log.d(Constant.TAG, "ccc: " + email);
-//        Log.d(Constant.TAG, "ccc: " + url);
-
+        name = intentFB.getStringExtra("name");
+        url = intentFB.getStringExtra("url");
+        email = intentFB.getStringExtra("email");
+        id = intentFB.getStringExtra("id");
         tvEmail.setText(email);
         tvName.setText(name);
         Picasso.with(this).load(url).placeholder(R.drawable.iu).error(R.mipmap.ic_launcher).into(imgHeader);
@@ -158,16 +205,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private void getIntentsGG() {
 
         Intent intent = getIntent();
-        String nameGG = intent.getStringExtra("nameGG");
-        String urlGG = intent.getStringExtra("url_gg");
-        String emailGG = intent.getStringExtra("emailGG");
-
-//        Log.d(Constant.TAG, "nameGG: " + nameGG);
-//        Log.d(Constant.TAG, "urlGG: " + urlGG);
-//        Log.d(Constant.TAG, "emailGG: " + emailGG);
-        tvEmail.setText(emailGG);
-        tvName.setText(nameGG);
-        Picasso.with(this).load(urlGG).error(R.drawable.iu).into(imgHeader);
+        name = intent.getStringExtra("nameGG");
+        url = intent.getStringExtra("url_gg");
+        email = intent.getStringExtra("emailGG");
+        tvEmail.setText(email);
+        tvName.setText(name);
+        Picasso.with(this).load(url).error(R.drawable.iu).into(imgHeader);
 
         imgHeader.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -211,16 +254,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private void getIntents() {
 
         Intent intentU = getIntent();
-        String nameU = intentU.getStringExtra("nameU");
-        String urlU = intentU.getStringExtra("urlU");
-        String emailU = intentU.getStringExtra("emailU");
+        name = intentU.getStringExtra("nameU");
+        url = intentU.getStringExtra("urlU");
+        email = intentU.getStringExtra("emailU");
+        id = intentU.getStringExtra("idU");
 
-//        Log.d(Constant.TAG, "nameU: " + nameU);
-//        Log.d(Constant.TAG, "urlU: " + urlU);
-//        Log.d(Constant.TAG, "emailU: " + emailU);
-        tvName.setText(nameU);
-        tvEmail.setText(emailU);
-        Picasso.with(this).load(urlU).placeholder(R.drawable.iu).error(R.mipmap.ic_launcher).into(imgHeader);
+        tvName.setText(name);
+        tvEmail.setText(email);
+        Picasso.with(this).load(url).placeholder(R.drawable.iu).error(R.mipmap.ic_launcher).into(imgHeader);
 
         imgHeader.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -263,17 +304,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         });
     }
 
-
-//    private void setupViewPager(ViewPager viewPager) {
-//        adapter = new ViewPagerAdapter(getSupportFragmentManager());
-//        adapter.addFragment(HomeFragment.newInstance());
-//        adapter.addFragment(PhoneFragment.newInstance());
-//        adapter.addFragment(NewsFragment.newInstance());
-//        adapter.addFragment(AccountFragment.newInstance());
-//        viewPager.setAdapter(adapter);
-//    }
-
-
     private void initViews() {
         toolbar = findViewById(R.id.toolbar);
         drawerLayout = findViewById(R.id.draw_layout);
@@ -290,7 +320,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         tvName = navHeaderView.findViewById(R.id.name_header);
         imgHeader = navHeaderView.findViewById(R.id.img_header);
         sharepreferenceUtils = SharepreferenceUtils.newInstance(MainActivity.this);
-
     }
 
 
@@ -438,5 +467,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LoginManager.getInstance().logOut();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        LoginManager.getInstance().logOut();
     }
 }
