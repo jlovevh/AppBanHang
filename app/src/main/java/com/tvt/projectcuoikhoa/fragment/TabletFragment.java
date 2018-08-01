@@ -5,8 +5,10 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -21,6 +23,7 @@ import com.tvt.projectcuoikhoa.activities.DetailTabletActivity;
 import com.tvt.projectcuoikhoa.adapter.RecyclerTabletAdapter;
 import com.tvt.projectcuoikhoa.api.APIUtils;
 import com.tvt.projectcuoikhoa.helper.GridDividerDecoration;
+import com.tvt.projectcuoikhoa.model.Rating;
 import com.tvt.projectcuoikhoa.model.Tablet;
 import com.tvt.projectcuoikhoa.utils.Constant;
 
@@ -34,11 +37,16 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TabletFragment extends Fragment implements RecyclerTabletAdapter.onItemClickRecyclerTablet, ViewPagerEx.OnPageChangeListener {
+public class TabletFragment extends Fragment implements RecyclerTabletAdapter.onItemClickRecyclerTablet, SwipeRefreshLayout.OnRefreshListener {
 
     private RecyclerView recyclerView;
     private RecyclerTabletAdapter adapter;
     private List<Tablet> arrTablet =new ArrayList<>();
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private ProgressDialog dialog;
+    public List<Rating> arrRating = new ArrayList<>();
+    public List<Rating> arrRatingByIDSp = new ArrayList<>();
+    public Rating rating;
 
 
     @SuppressLint("ValidFragment")
@@ -55,54 +63,47 @@ public class TabletFragment extends Fragment implements RecyclerTabletAdapter.on
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_tablet, container, false);
         recyclerView=view.findViewById(R.id.recyclerTablet);
-        final ProgressDialog dialog=new ProgressDialog(getActivity(),R.style.AppCompatAlertDialogStyle);
+        dialog = new ProgressDialog(getActivity(), R.style.AppCompatAlertDialogStyle);
         dialog.setMessage("Loading...");
         dialog.show();
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshTablet);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_dark,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+        swipeRefreshLayout.setOnRefreshListener(this);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
 //        recyclerView.addItemDecoration(new GridDividerDecoration(getContext()));
 
+        loadData();
+        getRatingTablet();
 
-        APIUtils.getJsonReponse().getAllTablet().enqueue(new Callback<List<Tablet>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<Tablet>> call,@NonNull Response<List<Tablet>> response) {
-                dialog.dismiss();
-                arrTablet=response.body();
-                adapter.setData(arrTablet);
-                adapter.notifyDataSetChanged();
-
-
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<List<Tablet>> call,@NonNull Throwable t) {
-                Log.e(Constant.TAG, "error: " + call.toString());
-            }
-        });
         adapter=new RecyclerTabletAdapter(getActivity(),arrTablet);
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickRecyclerTablet(this);
         return view;
     }
 
+    private void getRatingTablet() {
+        APIUtils.getJsonReponse().getRatingTablet().enqueue(new Callback<List<Rating>>() {
+            @Override
+            public void onResponse(Call<List<Rating>> call, Response<List<Rating>> response) {
+                arrRating = response.body();
 
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
 
+            @Override
+            public void onFailure(Call<List<Rating>> call, Throwable t) {
+
+            }
+        });
     }
 
-    @Override
-    public void onPageSelected(int position) {
-
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-
-    }
 
     @Override
     public void onClickItem(View view, int position) {
+
 
         Intent intent = new Intent(getContext(), DetailTabletActivity.class);
         Bundle bundle = new Bundle();
@@ -131,8 +132,40 @@ public class TabletFragment extends Fragment implements RecyclerTabletAdapter.on
         bundle.putString("urlBanner", tablet.getUrlBanner());
         bundle.putString("tendanhmuc", tablet.getTendanhmuc());
 
+
+        //    Log.d("SIÁZASA","SIZE: "+arrRatingByIDSp.size());
+        bundle.putParcelableArrayList("ratingTablet", (ArrayList<? extends Parcelable>) arrRating);
+        bundle.putParcelableArrayList("commentTablet", (ArrayList<? extends Parcelable>) HomeFragment.arrCommentTablet);
+
         intent.putExtra("bundle", bundle);
         getActivity().startActivity(intent);
 
+    }
+
+    @Override
+    public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
+        loadData();
+
+    }
+
+    private void loadData() {
+        APIUtils.getJsonReponse().getAllTablet().enqueue(new Callback<List<Tablet>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Tablet>> call, @NonNull Response<List<Tablet>> response) {
+                dialog.dismiss();
+                swipeRefreshLayout.setRefreshing(false);
+                arrTablet = response.body();
+                adapter.setData(arrTablet);
+                adapter.notifyDataSetChanged();
+
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<Tablet>> call, @NonNull Throwable t) {
+                Log.e(Constant.TAG, "error: " + call.toString());
+            }
+        });
     }
 }

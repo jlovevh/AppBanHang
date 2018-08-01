@@ -3,24 +3,41 @@ package com.tvt.projectcuoikhoa.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.tvt.projectcuoikhoa.R;
 import com.tvt.projectcuoikhoa.activities.DetailPhoneActivity;
+import com.tvt.projectcuoikhoa.activities.MainActivity;
+import com.tvt.projectcuoikhoa.activities.ShoppingCartActivity;
+import com.tvt.projectcuoikhoa.adapter.RecyclerPhoneAdapter;
 import com.tvt.projectcuoikhoa.adapter.RecyclerPhoneAdapter2;
 import com.tvt.projectcuoikhoa.api.APIUtils;
+import com.tvt.projectcuoikhoa.helper.EndlessRecyclerViewScrollListener;
 import com.tvt.projectcuoikhoa.helper.GridDividerDecoration;
 import com.tvt.projectcuoikhoa.helper.ItemClickListener;
 import com.tvt.projectcuoikhoa.model.Phone;
+import com.tvt.projectcuoikhoa.model.Rating;
 import com.tvt.projectcuoikhoa.utils.Constant;
 
 import java.util.ArrayList;
@@ -33,17 +50,22 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PhoneFragment extends Fragment implements ItemClickListener {
+public class PhoneFragment extends Fragment implements ItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private RecyclerPhoneAdapter2 adapter;
-    private List<Phone> arrPhone =new ArrayList<>();
+    private List<Phone> arrPhone = new ArrayList<>();
     private RecyclerView recyclerView;
     private ProgressDialog progressDialog;
-    private int current_page = 1;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private int index = 1;
+    public List<Rating> arrRating = new ArrayList<>();
+    public List<Rating> arrRatingByIDSp = new ArrayList<>();
+    public Rating rating;
 
-    public  static PhoneFragment newInstance(){
+    public static PhoneFragment newInstance() {
         return new PhoneFragment();
     }
+
     @SuppressLint("ValidFragment")
     private PhoneFragment() {
         // Required empty public constructor
@@ -54,59 +76,86 @@ public class PhoneFragment extends Fragment implements ItemClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =inflater.inflate(R.layout.fragment_phone, container, false);
-        progressDialog=new ProgressDialog(getContext(),R.style.AppCompatAlertDialogStyle);
+        View view = inflater.inflate(R.layout.fragment_phone, container, false);
+        progressDialog = new ProgressDialog(getContext(), R.style.AppCompatAlertDialogStyle);
         progressDialog.setMessage("Loading....");
         progressDialog.show();
-        recyclerView=view.findViewById(R.id.recyclerPhone);
+        recyclerView = view.findViewById(R.id.recyclerPhone);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshPhone);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_dark,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+        swipeRefreshLayout.setOnRefreshListener(this);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
-//        recyclerView.addItemDecoration(new GridDividerDecoration(getActivity()));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.addItemDecoration(new GridDividerDecoration(getActivity()));
 
 
         loadData();
+        getRatingPhone();
         adapter = new RecyclerPhoneAdapter2(getContext(), arrPhone);
 
         adapter.setItemClickListener(this);
         recyclerView.setAdapter(adapter);
 
-//        recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener(new GridLayoutManager(getContext(),2)) {
+
+        //        adapter.setLoadMoreListener(new RecyclerPhoneAdapter.OnLoadMoreListener() {
 //            @Override
-//            public void onLoadMore(final int current_page) {
-//                if(arrPhone.size()<=6){
-//
-//                    new Handler().postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            recyclerView.post(new Runnable() {
-//                                @Override
-//                                public void run() {
-//
-//                                    arrPhone.add(null);
-//                                    adapter.notifyItemInserted(arrPhone.size()-1);
-//                                    Log.d("aaaaaaa","ArrPhone: " +arrPhone.size());
-//                                }
-//                            });
-//
-//                            loadMoreData(current_page);
-//                        }
-//                    },5000);
-//                }
+//            public void onLoadMore() {
+//                recyclerView.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        index++;
+//                        loadMore(index);
+//                    }
+//                },5000);
 //            }
 //        });
         return view;
     }
+
+
+//    private void loadMore(int index) {
+//        arrPhone.add(null);
+//        adapter.notifyItemChanged(arrPhone.size()-1);
+//        APIUtils.getJsonReponse().getALLPhone(index).enqueue(new Callback<List<Phone>>() {
+//            @Override
+//            public void onResponse(Call<List<Phone>> call, Response<List<Phone>> response) {
+//                if (response.isSuccessful()){
+//                    arrPhone.remove(arrPhone.size()-1);
+//
+//                    List<Phone> result =response.body();
+//
+//                    if (result.size()>0){
+//                        arrPhone.addAll(result);
+//                    }else {
+//                        adapter.setMoreDataAvailable(false);
+//                        Toast.makeText(getContext(), "No more Data", Toast.LENGTH_SHORT).show();
+//                    }
+//                    adapter.notifyDatasetChanged();
+//                }else {
+//                    Log.e("Lỗi","Load more error");
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<Phone>> call, Throwable t) {
+//
+//            }
+//        });
+//
+//    }
 
     private void loadData() {
         APIUtils.getJsonReponse().getALLPhone().enqueue(new Callback<List<Phone>>() {
             @Override
             public void onResponse(@NonNull Call<List<Phone>> call, @NonNull Response<List<Phone>> response) {
                 progressDialog.dismiss();
-//                arrPhone.remove(arrPhone.size());
-//                adapter.notifyItemRemoved(arrPhone.size());
-                arrPhone=response.body();
-
-//                Log.d(Constant.TAG,"Size: "+arrPhone.size());
+                swipeRefreshLayout.setRefreshing(false);
+                arrPhone = response.body();
                 adapter.setData(arrPhone);
                 adapter.notifyDataSetChanged();
             }
@@ -118,31 +167,20 @@ public class PhoneFragment extends Fragment implements ItemClickListener {
         });
     }
 
+    private void getRatingPhone() {
+        APIUtils.getJsonReponse().getRatingPhone().enqueue(new Callback<List<Rating>>() {
+            @Override
+            public void onResponse(Call<List<Rating>> call, Response<List<Rating>> response) {
+                arrRating = response.body();
 
-//    private void loadMoreData(int page) {
-//
-//        APIUtils.getJsonReponse().getALLPhone().enqueue(new Callback<List<Phone>>() {
-//            @Override
-//            public void onResponse(@NonNull Call<List<Phone>> call, @NonNull Response<List<Phone>> response) {
-//                recyclerView.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        arrPhone.remove(arrPhone.size()-1);
-//                        adapter.notifyItemRemoved(arrPhone.size());
-//                    }
-//                });
-//                arrPhone=response.body();
-//                adapter.setData(arrPhone);
-//                adapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onFailure(@NonNull Call<List<Phone>> call, @NonNull Throwable t) {
-//                Log.d(Constant.TAG, "Error" + call.toString());
-//            }
-//        });
-//    }
+            }
 
+            @Override
+            public void onFailure(Call<List<Rating>> call, Throwable t) {
+
+            }
+        });
+    }
 
 
     @Override
@@ -151,7 +189,6 @@ public class PhoneFragment extends Fragment implements ItemClickListener {
         Intent intent = new Intent(getContext(), DetailPhoneActivity.class);
         Bundle bundle = new Bundle();
         Phone phone = arrPhone.get(position);
-
         bundle.putString("id", phone.getId());
         bundle.putString("name", phone.getName());
         bundle.putString("price", phone.getPrice());
@@ -176,9 +213,20 @@ public class PhoneFragment extends Fragment implements ItemClickListener {
         bundle.putString("detail", phone.getChitietcauhinh());
         bundle.putString("urlBanner", phone.getUrlBanner());
         bundle.putString("tendanhmuc", phone.getTendanhmuc());
+        bundle.putParcelableArrayList("ratingPhone", (ArrayList<? extends Parcelable>) arrRating);
+        bundle.putParcelableArrayList("commentPhone", (ArrayList<? extends Parcelable>) HomeFragment.arrComment);
 
         intent.putExtra("bundle", bundle);
         getActivity().startActivity(intent);
 
     }
+
+    @Override
+    public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
+        loadData();
+
+    }
+
+
 }

@@ -59,6 +59,7 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
     implementation 'com.cepheuen.elegant-number-button:lib:1.0.2'
     implementation 'com.balysv:material-ripple:1.0.2'
+    implementation 'com.github.mirrajabi:search-dialog:1.2.2'
 
 }
 apply plugin: 'com.google.gms.google-services'

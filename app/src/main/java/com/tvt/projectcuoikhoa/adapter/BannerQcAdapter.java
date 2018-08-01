@@ -20,7 +20,7 @@ public class BannerQcAdapter extends PagerAdapter {
     private Context context;
     private List<BannerQc> arrBannerQc;
 
-    public BannerQcAdapter( Context context, List<BannerQc> arrBannerQc) {
+    public BannerQcAdapter(Context context, List<BannerQc> arrBannerQc) {
         this.context = context;
         this.arrBannerQc = arrBannerQc;
 
@@ -41,9 +41,9 @@ public class BannerQcAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
 
-        View view =LayoutInflater.from(context).inflate(R.layout.item_banner_qc,container,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_banner_qc, container, false);
 
-        ImageView imgBannerQc=view.findViewById(R.id.img_banner_qc);
+        ImageView imgBannerQc = view.findViewById(R.id.img_banner_qc);
 
         Picasso.with(context).load(arrBannerQc.get(position).getUrlBanner()).error(R.mipmap.ic_launcher).into(imgBannerQc);
 

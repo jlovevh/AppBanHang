@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.tvt.projectcuoikhoa.R;
@@ -134,8 +136,12 @@ public class RecyclerViewTinTucAdapter extends RecyclerView.Adapter<RecyclerView
                 public void onItemClick(View view, int position) {
                     Intent intent = new Intent(context, NewsActivity.class);
                     intent.putExtra("title",tinMoi.getTieude());
+                    intent.putExtra("image", tinMoi.getAnhtieude());
+                    Toast.makeText(context, "" + tinMoi.getAnhtieude(), Toast.LENGTH_SHORT).show();
                     intent.putExtra("baiviet",tinMoi.getBaiviet());
                     intent.putExtra("create",tinMoi.getCreateAt());
+                    intent.putExtra("mota", tinMoi.getMota());
+                    intent.putExtra("tendanhmuc", tinMoi.getTendanhmuctintuc());
                     context.startActivity(intent);
                 }
             });
@@ -161,8 +167,12 @@ public class RecyclerViewTinTucAdapter extends RecyclerView.Adapter<RecyclerView
                 public void onItemClick(View view, int position) {
                     Intent intent = new Intent(context, NewsActivity.class);
                     intent.putExtra("title",tinMoi.getTieude());
+                    intent.putExtra("image", tinMoi.getAnhtieude());
+                    Toast.makeText(context, "" + tinMoi.getAnhtieude(), Toast.LENGTH_SHORT).show();
                     intent.putExtra("baiviet",tinMoi.getBaiviet());
                     intent.putExtra("create",tinMoi.getCreateAt());
+                    intent.putExtra("mota", tinMoi.getMota());
+                    intent.putExtra("tendanhmuc", tinMoi.getTendanhmuctintuc());
                     context.startActivity(intent);
                 }
             });

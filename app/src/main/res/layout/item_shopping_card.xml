@@ -3,6 +3,9 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
     android:orientation="vertical">
 
 
@@ -43,14 +46,14 @@
         <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
 
             android:id="@+id/number_button"
-            android:layout_width="120dp"
+            android:layout_width="100dp"
             android:layout_height="30dp"
-
+            app:textSize="6sp"
+            app:layout_insetEdge="bottom"
             android:layout_gravity="bottom|end"
-
-            app:backGroundColor="@color/colorPrimary"
+            app:backGroundColor="@color/colorPrimaryDark"
             app:finalNumber="10"
-            app:initialNumber="0" />
+            app:initialNumber="1" />
 
 
     </android.support.design.widget.CoordinatorLayout>

@@ -3,7 +3,9 @@ package com.tvt.projectcuoikhoa.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
     @SerializedName("id")
     @Expose
@@ -105,4 +107,15 @@ public class User {
         this.createAt = createAt;
     }
 
+    public User(String id, String username, String name, String email, String phone, String password, String address, String image, String createAt) {
+        this.id = id;
+        this.username = username;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
+        this.address = address;
+        this.image = image;
+        this.createAt = createAt;
+    }
 }

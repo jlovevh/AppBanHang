@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:text="CẤU HÌNH OPPO F7"
         android:textSize="18sp"
+        android:background="#F5F5F5"
         android:padding="10dp"
         android:textColor="@color/black" />
 

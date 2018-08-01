@@ -4,47 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="35dp"
     android:background="@drawable/background3"
+    android:padding="35dp"
     tools:context=".activities.SignUpActivity">
 
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="55dp"
+        android:background="@android:color/transparent"
         android:foreground="?android:attr/selectableItemBackground"
         app:cardBackgroundColor="#ffffff"
         app:cardCornerRadius="4dp"
         app:cardElevation="0dp"
-        android:background="@android:color/transparent"
-        app:cardUseCompatPadding="false"
-        android:layout_marginTop="55dp"
-        android:layout_height="wrap_content">
+        app:cardUseCompatPadding="false">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="20dp"
             android:background="@android:color/transparent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="20dp">
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/colorPrimary"
+                android:layout_marginTop="30dp"
                 android:backgroundTint="@color/colorPrimary"
-                app:hintTextAppearance="@style/MyAppearance"
                 android:hint="UserName"
-                android:layout_marginTop="30dp">
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/MyAppearance">
 
                 <EditText
-                    android:inputType="text"
                     android:id="@+id/edt_user"
-                    android:drawablePadding="8dp"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:textColor="@color/colorPrimary"
-                    android:drawableEnd="@drawable/ic_person_add_black_24dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:drawableEnd="@drawable/ic_person_add_black_24dp"
+                    android:drawablePadding="8dp"
+                    android:inputType="text"
+                    android:textColor="@color/colorPrimary" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -52,108 +52,111 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:textColorHint="@color/colorPrimary"
                 android:backgroundTint="@color/colorPrimary"
+                android:textColorHint="@color/colorPrimary"
+                app:hintAnimationEnabled="true"
                 app:hintTextAppearance="@style/MyAppearance"
-                app:passwordToggleEnabled="true"
-                app:hintAnimationEnabled="true">
+                app:passwordToggleEnabled="true">
 
                 <EditText
-                    android:inputType="textPassword"
                     android:id="@+id/pass"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:textColor="@color/colorPrimary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Password" />
+                    android:backgroundTint="@color/colorPrimary"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:textColor="@color/colorPrimary" />
 
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/colorPrimary"
+                android:layout_marginTop="10dp"
                 android:backgroundTint="@color/colorPrimary"
-                app:hintTextAppearance="@style/MyAppearance"
-                android:layout_marginTop="10dp">
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/MyAppearance">
 
                 <EditText
-                    android:inputType="text"
                     android:id="@+id/name"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:textColor="@color/colorPrimary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorPrimary"
                     android:drawableRight="@drawable/ic_account_circle_24dp"
-                    android:hint="Name" />
+                    android:hint="Name"
+                    android:inputType="text"
+                    android:textColor="@color/colorPrimary" />
 
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/colorPrimary"
+                android:layout_marginTop="10dp"
                 android:backgroundTint="@color/colorPrimary"
-                app:hintTextAppearance="@style/MyAppearance"
-                android:layout_marginTop="10dp">
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/MyAppearance">
 
                 <EditText
-                    android:inputType="textEmailAddress"
                     android:id="@+id/edtemail"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:textColor="@color/colorPrimary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorPrimary"
                     android:drawableEnd="@drawable/ic_email_black_24dp"
-                    android:hint="Email" />
+                    android:hint="Email"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/colorPrimary" />
             </android.support.design.widget.TextInputLayout>
 
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/colorPrimary"
+                android:layout_marginTop="10dp"
                 android:backgroundTint="@color/colorPrimary"
-                app:hintTextAppearance="@style/MyAppearance"
-                android:layout_marginTop="10dp">
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/MyAppearance">
 
                 <EditText
+                    android:id="@+id/edtPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:drawableEnd="@drawable/ic_phone_24dp"
                     android:hint="Phone Number"
                     android:inputType="phone"
-                    android:id="@+id/edtPhone"
-                    android:drawableEnd="@drawable/ic_phone_24dp"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:textColor="@color/colorPrimary"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:textColor="@color/colorPrimary" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/colorPrimary"
+                android:layout_marginTop="10dp"
                 android:backgroundTint="@color/colorPrimary"
-                app:hintTextAppearance="@style/MyAppearance"
-                android:layout_marginTop="10dp">
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/MyAppearance">
 
                 <EditText
-                    android:inputType="text"
-                    android:hint="Address"
-                    android:drawableEnd="@drawable/ic_location_on_24dp"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:textColor="@color/colorPrimary"
                     android:id="@+id/edtAddress"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:drawableEnd="@drawable/ic_location_on_24dp"
+                    android:hint="Address"
+                    android:inputType="text"
+                    android:textColor="@color/colorPrimary" />
 
             </android.support.design.widget.TextInputLayout>
 
 
             <Button
                 android:id="@+id/btnSignUp"
-                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/custom_button_sign_up"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="Sign Up" />
 
         </LinearLayout>
@@ -164,11 +167,11 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
-        app:civ_border_width="2dp"
-        app:civ_border_color="#FF000000"
         android:contentDescription="@string/image"
         android:scaleType="centerCrop"
-        android:src="@drawable/iu" />
+        android:src="@drawable/iu"
+        app:civ_border_color="#FF000000"
+        app:civ_border_width="2dp" />
 
 
 </FrameLayout>

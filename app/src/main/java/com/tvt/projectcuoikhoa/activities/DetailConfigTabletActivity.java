@@ -1,5 +1,6 @@
 package com.tvt.projectcuoikhoa.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ public class DetailConfigTabletActivity extends AppCompatActivity {
     @BindView(R.id.web_view_detail_cauhinh_tab)
     WebView webView;
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

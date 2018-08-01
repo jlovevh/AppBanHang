@@ -1,12 +1,17 @@
 package com.tvt.projectcuoikhoa.activities;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.PopupMenu;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +20,16 @@ import android.view.animation.AnimationUtils;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.RatingBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,10 +39,19 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.tvt.projectcuoikhoa.R;
+import com.tvt.projectcuoikhoa.adapter.ListCommentAdapter;
+import com.tvt.projectcuoikhoa.adapter.ListRatingAdapter;
+import com.tvt.projectcuoikhoa.api.APIUtils;
+import com.tvt.projectcuoikhoa.api.PostAndUpdateCartToService;
+import com.tvt.projectcuoikhoa.database.ShoppingCartHelper;
+import com.tvt.projectcuoikhoa.dialog.CommentDialog;
 import com.tvt.projectcuoikhoa.fragment.HomeFragment;
 import com.tvt.projectcuoikhoa.model.Cart;
+import com.tvt.projectcuoikhoa.model.Comment;
+import com.tvt.projectcuoikhoa.model.Rating;
 import com.tvt.projectcuoikhoa.utils.NumberFormatCurency;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -38,14 +59,38 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class DetailTabletActivity extends AppCompatActivity implements ViewPagerEx.OnPageChangeListener {
+public class DetailTabletActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private String id, name, price, status, image, evaluation, promo1, promo2, promo3, tag, createAt, gioithieu, manhinh,
+    private String name, price, status, image, evaluation, promo1, promo2, promo3, tag, createAt, gioithieu, manhinh,
             cameraTruoc, cameraSau, ram, storage, cpu, gpu, ketNoi, detail, tenDanhMuc;
     private String urlBanner;
     private List<String> arrString;
-    private int count = 0;
+    private int stars;
+    private LinearLayout linearLayoutSend, linearLayoutInfor;
+    private TextView tvRating, tvEmty, tvSumStar5, tvSumStar4, tvSumStar3, tvSumStar2, tvSumStar1, tvSumDanhGia, tv_average_rating;
+    private ProgressBar progressBar5, progressBar4, progressBar3, progressBar2, progressBar1;
+    private RatingBar ratingBar, average_rating;
+    private Button btnSenDanhGia;
+    private EditText edtEmailInfor, edtHotenInfor, edtPhone, edtNhanXet;
+    private List<Rating> arrRating = new ArrayList<>();
+    private List<Rating> arrRatingR = new ArrayList<>();
+
+    private List<Comment> arrComment = new ArrayList<>();
+    private List<Comment> arrCommentCon = new ArrayList<>();
+    private ListView listView;
+    private ListRatingAdapter adapter;
+    private Button btnSend;
+    private EditText edtComment;
+    private Button btnSendComment;
+    private TextView tv_name_rating;
+    private RatingBar ratingBarSum;
+    private TextView tvSum;
+
+    public static String id;
     @BindView(R.id.tv_name_tab)
     TextView tvName;
     @BindView(R.id.tv_price_tab)
@@ -98,6 +143,9 @@ public class DetailTabletActivity extends AppCompatActivity implements ViewPager
     Button btnBuyTablet;
     @BindView(R.id.counttxt_tablet)
     TextView tvCount;
+    private ShoppingCartHelper shoppingCartHelper;
+    private ListView listViewComment;
+    private ListCommentAdapter adapterComment;
 
     @OnClick(R.id.tv_all_cauhinh_tab)
     void submit() {
@@ -119,17 +167,45 @@ public class DetailTabletActivity extends AppCompatActivity implements ViewPager
 
     @OnClick(R.id.btn_buy_tablet)
     void buyTablet() {
-        Animation animation = AnimationUtils.loadAnimation(this, R.anim.shake_anim_image);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_number_product, null);
+        final Spinner spinner = view.findViewById(R.id.spinner);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.number));
+        spinner.setAdapter(arrayAdapter);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        new AlertDialog.Builder(this)
+                .setTitle("Thông báo")
+                .setView(view)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (!spinner.getSelectedItem().toString().equals("Please select the number of products...")) {
+
+                            addItemToCard(spinner);
+                        }
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
+
+    private void addItemToCard(final Spinner spinner) {
+        Animation animation = AnimationUtils.loadAnimation(DetailTabletActivity.this, R.anim.shake_anim_image);
         imgCart.startAnimation(animation);
-        final int sl = ++count;
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 if (HomeFragment.arrCart.size() > 0) {
                     boolean exists = false;
+                    int sl = Integer.parseInt(spinner.getSelectedItem().toString());
                     for (int i = 0; i < HomeFragment.arrCart.size(); i++) {
                         if (HomeFragment.arrCart.get(i).getId_sp() == Integer.parseInt(id)) {
-                            HomeFragment.arrCart.get(i).setSoluong(sl);
+                            HomeFragment.arrCart.get(i).setSoluong(sl + HomeFragment.arrCart.get(i).getSoluong());
                             if (HomeFragment.arrCart.get(i).getSoluong() >= 10) {
                                 HomeFragment.arrCart.get(i).setSoluong(10);
                                 HomeFragment.arrCart.get(i).setPrice(10 * Integer.parseInt(price));
@@ -137,30 +213,70 @@ public class DetailTabletActivity extends AppCompatActivity implements ViewPager
                             }
                             HomeFragment.arrCart.get(i).setPrice(HomeFragment.arrCart.get(i).getSoluong() * Integer.parseInt(price));
                             exists = true;
+
+                            Log.d("SSSSSSSSSSSSSSSSS", "tablet2: " + HomeFragment.arrCart.get(i).getSoluong());
                         }
+//                        switch (MainActivity.key){
+//                            case 1:
+//                                shoppingCartHelper.updateColumn(new Cart(Integer.parseInt(id), image, HomeFragment.arrCart.get(i).getPrice(), name, MainActivity.id, HomeFragment.arrCart.get(i).getSoluong()));
+//                                break;
+//                            case 2:
+//                                shoppingCartHelper.updateColumn(new Cart(Integer.parseInt(id), image, HomeFragment.arrCart.get(i).getPrice(), name, MainActivity.idFB, HomeFragment.arrCart.get(i).getSoluong()));
+//                                break;
+//                            case 3:
+//                                shoppingCartHelper.updateColumn(new Cart(Integer.parseInt(id), image, HomeFragment.arrCart.get(i).getPrice(), name, MainActivity.idGG, HomeFragment.arrCart.get(i).getSoluong()));
+//                                break;
+//                        }
+                        PostAndUpdateCartToService.updateCart(HomeFragment.arrCart.get(i).getSoluong(), HomeFragment.arrCart.get(i).getPrice(), HomeFragment.arrCart.get(i).getId_sp());
 
                     }
                     if (exists == false) {
+
+                        int soluong = Integer.parseInt(spinner.getSelectedItem().toString());
+                        int giamoi = soluong * Integer.parseInt(price);
                         if (MainActivity.key == 1) {
-                            HomeFragment.arrCart.add(new Cart(Integer.parseInt(id), image, Integer.parseInt(price), name, Integer.parseInt(MainActivity.id), sl));
+                            Cart cart = new Cart(Integer.parseInt(id), image, giamoi, name, MainActivity.id, soluong);
+                            HomeFragment.arrCart.add(cart);
+                            PostAndUpdateCartToService.postCartToService(cart);
+                            Log.d("SSSSSSSSSSSSSSSSS", "tablet3: " + cart.getSoluong());
+                            //   shoppingCartHelper.insertCart(cart);
                             tvCount.setText(String.valueOf(HomeFragment.arrCart.size()));
                         } else if (MainActivity.key == 2) {
-                            HomeFragment.arrCart.add(new Cart(Integer.parseInt(id), image, Integer.parseInt(price), name, 0, sl));
+                            Cart cart = new Cart(Integer.parseInt(id), image, giamoi, name, MainActivity.idFB, soluong);
+                            HomeFragment.arrCart.add(cart);
+                            PostAndUpdateCartToService.postCartToService(cart);
+                            //   shoppingCartHelper.insertCart(cart);
                             tvCount.setText(String.valueOf(HomeFragment.arrCart.size()));
                         } else if (MainActivity.key == 3) {
-                            HomeFragment.arrCart.add(new Cart(Integer.parseInt(id), image, Integer.parseInt(price), name, 0, sl));
+                            Cart cart = new Cart(Integer.parseInt(id), image, giamoi, name, MainActivity.idGG, soluong);
+                            HomeFragment.arrCart.add(cart);
+                            //    shoppingCartHelper.insertCart(cart);
+                            PostAndUpdateCartToService.postCartToService(cart);
                             tvCount.setText(String.valueOf(HomeFragment.arrCart.size()));
                         }
+//
                     }
                 } else {
+                    int sl = Integer.parseInt(spinner.getSelectedItem().toString());
+                    int giamoi = sl * Integer.parseInt(price);
                     if (MainActivity.key == 1) {
-                        HomeFragment.arrCart.add(new Cart(Integer.parseInt(id), image, Integer.parseInt(price), name, Integer.parseInt(MainActivity.id), sl));
+                        Cart cart = new Cart(Integer.parseInt(id), image, giamoi, name, MainActivity.id, sl);
+                        HomeFragment.arrCart.add(cart);
+                        Log.d("SSSSSSSSSSSSSSSSS", "tablet1: " + cart.getSoluong());
+                        PostAndUpdateCartToService.postCartToService(cart);
+                        //  shoppingCartHelper.insertCart(cart);
                         tvCount.setText(String.valueOf(HomeFragment.arrCart.size()));
                     } else if (MainActivity.key == 2) {
-                        HomeFragment.arrCart.add(new Cart(Integer.parseInt(id), image, Integer.parseInt(price), name, 0, sl));
+                        Cart cart = new Cart(Integer.parseInt(id), image, giamoi, name, MainActivity.idFB, sl);
+                        HomeFragment.arrCart.add(cart);
+                        PostAndUpdateCartToService.postCartToService(cart);
+                        //  shoppingCartHelper.insertCart(cart);
                         tvCount.setText(String.valueOf(HomeFragment.arrCart.size()));
                     } else if (MainActivity.key == 3) {
-                        HomeFragment.arrCart.add(new Cart(Integer.parseInt(id), image, Integer.parseInt(price), name, 0, sl));
+                        Cart cart = new Cart(Integer.parseInt(id), image, giamoi, name, MainActivity.idGG, sl);
+                        HomeFragment.arrCart.add(cart);
+                        PostAndUpdateCartToService.postCartToService(cart);
+                        //  shoppingCartHelper.insertCart(cart);
                         tvCount.setText(String.valueOf(HomeFragment.arrCart.size()));
                     }
 
@@ -177,10 +293,78 @@ public class DetailTabletActivity extends AppCompatActivity implements ViewPager
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_tablet);
-
+        shoppingCartHelper = new ShoppingCartHelper(this);
         ButterKnife.bind(this);
+        initViews();
+        linearLayoutSend = findViewById(R.id.linear_send);
+        linearLayoutInfor = findViewById(R.id.linear_infor);
+        ratingBar = findViewById(R.id.ratingBar_danh_gia);
 
+        final TextView tvRating = findViewById(R.id.tvRating);
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public void onClick(View v) {
+
+                if (btnSend.getText().toString().equals("Gửi đánh giá của bạn")) {
+                    linearLayoutSend.setVisibility(View.VISIBLE);
+                    tvRating.setVisibility(View.GONE);
+                    btnSend.setText("Đóng lại");
+                    ratingBar.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            if (event.getAction() == MotionEvent.ACTION_UP) {
+                                float touchPositionX = event.getX();
+                                float width = ratingBar.getWidth();
+                                float starsf = (touchPositionX / width) * 5.0f;
+                                stars = (int) starsf + 1;
+                                ratingBar.setRating(stars);
+                                tvRating.setVisibility(View.VISIBLE);
+                                linearLayoutInfor.setVisibility(View.VISIBLE);
+                                switch (stars) {
+                                    case 1:
+                                        tvRating.setText("Không thích");
+                                        break;
+                                    case 2:
+                                        tvRating.setText("Tạm được");
+                                        break;
+                                    case 3:
+                                        tvRating.setText("Bình thường");
+                                        break;
+                                    case 4:
+                                        tvRating.setText("Rất tốt");
+                                        break;
+                                    case 5:
+                                        tvRating.setText("Tuyệt vời");
+                                        break;
+
+                                }
+
+
+                                v.setPressed(false);
+                            }
+                            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                                v.setPressed(true);
+                            }
+
+                            if (event.getAction() == MotionEvent.ACTION_CANCEL) {
+                                v.setPressed(false);
+                            }
+
+
+                            return true;
+                        }
+                    });
+                } else {
+                    linearLayoutSend.setVisibility(View.GONE);
+                    btnSend.setText("Gửi đánh giá của bạn");
+                    linearLayoutInfor.setVisibility(View.GONE);
+                }
+            }
+        });
         getIntents();
+        setRating();
+
         tvName.setText(name);
         tvCameraSau.setText(cameraSau);
         tvPrice.setText(NumberFormatCurency.numBerForMat(Integer.parseInt(price)));
@@ -194,10 +378,12 @@ public class DetailTabletActivity extends AppCompatActivity implements ViewPager
         tvCpu.setText(cpu);
         tvKetNoi.setText(ketNoi);
         tvGpu.setText(gpu);
-        tvNameDetail.setText(getResources().getString(R.string.detail) + " " + name);
-        tvNamePhone.setText(getResources().getString(R.string.detail2) + " " + name);
+        String nameUper = name.toUpperCase();
+        tvNameDetail.setText(getResources().getString(R.string.detail) + " " + nameUper);
+        tvNamePhone.setText(getResources().getString(R.string.detail2) + " " + nameUper);
         tvTenDm.setText(tenDanhMuc + "/");
         nameUrl.setText(name);
+        tv_name_rating.setText(nameUper);
         tvNameToolbar.setText(name);
         addWebView();
 
@@ -206,20 +392,113 @@ public class DetailTabletActivity extends AppCompatActivity implements ViewPager
         sliderLayout.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
         sliderLayout.setCustomAnimation(new DescriptionAnimation());
         sliderLayout.setDuration(4000);
-        sliderLayout.addOnPageChangeListener(this);
         sliderLayout.setCustomIndicator(pagerIndicator);
 
         for (String url : arrString) {
-//            TextSliderView textSliderView = new TextSliderView(this);
-//            // initialize a SliderLayout
-//            textSliderView
-//                    .image(url)
-//                    .setOnSliderClickListener(this);
-
             DefaultSliderView defaultSliderView = new DefaultSliderView(this);
             defaultSliderView.image(url);
             sliderLayout.addSlider(defaultSliderView);
         }
+
+
+    }
+
+    private void initViews() {
+        linearLayoutSend = findViewById(R.id.linear_send);
+        linearLayoutInfor = findViewById(R.id.linear_infor);
+        ratingBar = findViewById(R.id.ratingBar_danh_gia);
+        tvRating = findViewById(R.id.tvRating);
+        edtEmailInfor = findViewById(R.id.edt_infor_email);
+        edtHotenInfor = findViewById(R.id.edt_infor_hoten);
+        edtNhanXet = findViewById(R.id.edt_infor_danh_gia);
+        edtPhone = findViewById(R.id.edt_infor_sdt);
+        btnSenDanhGia = findViewById(R.id.btn_send2);
+        tvEmty = findViewById(R.id.tv_emty);
+        tvSumStar1 = findViewById(R.id.tv_danhgia_1s);
+        tvSumStar2 = findViewById(R.id.tv_danhgia_2s);
+        tvSumStar3 = findViewById(R.id.tv_danhgia_3s);
+        tvSumStar4 = findViewById(R.id.tv_danhgia_4s);
+        tvSumStar5 = findViewById(R.id.tv_danhgia_5s);
+        progressBar1 = findViewById(R.id.progress_bar_1s);
+        progressBar2 = findViewById(R.id.progress_bar_2s);
+        progressBar3 = findViewById(R.id.progress_bar_3s);
+        progressBar4 = findViewById(R.id.progress_bar_4s);
+        progressBar5 = findViewById(R.id.progress_bar_5s);
+        tvSumDanhGia = findViewById(R.id.tv_sum_ela);
+        tv_average_rating = findViewById(R.id.tv_average_rating);
+        average_rating = findViewById(R.id.average_rating);
+        tv_name_rating = findViewById(R.id.tv_name_rating);
+        btnSend = findViewById(R.id.btn_send);
+        listView = findViewById(R.id.list_rating);
+        listViewComment = findViewById(R.id.list_comment);
+        edtComment = findViewById(R.id.edt_comment);
+        btnSendComment = findViewById(R.id.btn_gui);
+        tvSum = findViewById(R.id.sum_danhgia);
+        ratingBarSum = findViewById(R.id.sum_rating);
+        btnSendComment.setOnClickListener(this);
+        btnSenDanhGia.setOnClickListener(this);
+    }
+
+    private void setRating() {
+        int sumDanhgia = arrRatingR.size();
+        int sao5 = 0, sao4 = 0, sao3 = 0, sao2 = 0, sao1 = 0;
+        for (int i = 0; i < arrRatingR.size(); i++) {
+            if (Integer.parseInt(arrRatingR.get(i).getDanhgia()) == 5) {
+                sao5 += 1;
+            } else {
+                sao5 += 0;
+            }
+
+
+            if (Integer.parseInt(arrRatingR.get(i).getDanhgia()) == 4) {
+                sao4 += 1;
+            } else {
+                sao4 += 0;
+            }
+
+            if (Integer.parseInt(arrRatingR.get(i).getDanhgia()) == 3) {
+                sao3 += 1;
+            } else {
+                sao3 += 0;
+            }
+
+            if (Integer.parseInt(arrRatingR.get(i).getDanhgia()) == 2) {
+                sao2 += 1;
+            } else {
+                sao2 += 0;
+            }
+
+            if (Integer.parseInt(arrRatingR.get(i).getDanhgia()) == 1) {
+                sao1 += 1;
+            } else {
+                sao1 += 0;
+            }
+        }
+        tvSumDanhGia.setText(sumDanhgia + " đánh giá");
+        tvSumStar5.setText(sao5 + " đánh giá");
+        tvSumStar4.setText(sao4 + " đánh giá");
+        tvSumStar3.setText(sao3 + " đánh giá");
+        tvSumStar2.setText(sao2 + " đánh giá");
+        tvSumStar1.setText(sao1 + " đánh giá");
+        double tong = (sao5 * 5) + (sao4 * 4) + (sao3 * 3) + (sao2 * 2) + (sao1);
+        double sum = (tong) / (sumDanhgia);
+        double a = Math.ceil(sum);
+        DecimalFormat df = new DecimalFormat("#.0");
+        tv_average_rating.setText(String.valueOf(df.format(a)) + "/5");
+        average_rating.setRating((float) a);
+        tvSum.setText(sumDanhgia + " dánh giá");
+        average_rating.setRating((float) a);
+        int progress5 = (int) ((sao5 * 5) / tong * 100);
+        int progress4 = (int) ((sao4 * 4) / tong * 100);
+        int progress3 = (int) ((sao3 * 3) / tong * 100);
+        int progress2 = (int) ((sao2 * 2) / tong * 100);
+        int progress1 = (int) ((sao1) / tong * 100);
+
+        progressBar5.setProgress(progress5);
+        progressBar4.setProgress(progress4);
+        progressBar3.setProgress(progress3);
+        progressBar2.setProgress(progress2);
+        progressBar1.setProgress(progress1);
 
 
     }
@@ -251,7 +530,7 @@ public class DetailTabletActivity extends AppCompatActivity implements ViewPager
         webView.setHorizontalScrollBarEnabled(false);
 
 
-        LinearLayout.LayoutParams rl = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams rl = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         tvMore.setLayoutParams(rl);
         tvMore.setText("Đọc thêm");
         tvMore.setBackgroundResource(R.color.white);
@@ -266,8 +545,14 @@ public class DetailTabletActivity extends AppCompatActivity implements ViewPager
         tvMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setDimensions(webView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                linearLayout.removeView(tvMore);
+                if (tvMore.getText().equals("Đọc thêm")) {
+                    tvMore.setText("Rút Gọn");
+                    setDimensions(webView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+                } else {
+                    tvMore.setText("Đọc thêm");
+                    setDimensions(webView, ViewGroup.LayoutParams.MATCH_PARENT, 600);
+                }
 
             }
         });
@@ -314,24 +599,88 @@ public class DetailTabletActivity extends AppCompatActivity implements ViewPager
 
         String[] urlBaner = urlBanner.split(";");
         Collections.addAll(arrString, urlBaner);
-        Log.v("UrlBanner", "Size: " + arrString.size());
+        arrRating = bundle.getParcelableArrayList("ratingTablet");
 
+        if (arrRating != null) {
+            getRating(arrRating);
+        }
 
-    }
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
+        if (arrComment != null) {
+            getComment(arrComment);
+        }
 
     }
+
+    private void getComment(List<Comment> arrComment) {
+        for (int i = 0; i < arrComment.size(); i++) {
+            if (Integer.parseInt(id) == Integer.parseInt(arrComment.get(i).getIdSP())) {
+                Comment comment = arrComment.get(i);
+                arrCommentCon.add(comment);
+            }
+        }
+        adapterComment = new ListCommentAdapter(this, arrCommentCon);
+        listViewComment.setAdapter(adapterComment);
+        listViewComment.setOnTouchListener(new View.OnTouchListener() {
+            // Setting on Touch Listener for handling the touch inside ScrollView
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // Disallow the touch request for parent scroll on touch of child view
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
+        setListViewHeightBasedOnChildren(listViewComment);
+    }
+
+    private void getRating(List<Rating> arrRating) {
+        for (int i = 0; i < arrRating.size(); i++) {
+            if (Integer.parseInt(id) == Integer.parseInt(arrRating.get(i).getIdSP())) {
+                Rating rating = arrRating.get(i);
+                arrRatingR.add(rating);
+            }
+        }
+
+        Log.v("UrlBanner", "SizeTablet: " + arrRatingR.size());
+
+        adapter = new ListRatingAdapter(this, arrRatingR);
+        listView.setAdapter(adapter);
+        listView.setOnTouchListener(new View.OnTouchListener() {
+            // Setting on Touch Listener for handling the touch inside ScrollView
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // Disallow the touch request for parent scroll on touch of child view
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
+
+        setListViewHeightBasedOnChildren(listView);
+    }
+
+    /**** Method for Setting the Height of the ListView dynamically.
+     **** Hack to fix the issue of not showing all the items of the ListView
+     **** when placed inside a ScrollView  ****/
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null)
+            return;
+
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+        int totalHeight = 0;
+        View view = null;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            view = listAdapter.getView(i, view, listView);
+            if (i == 0)
+                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += view.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+    }
+
 
     @Override
     protected void onStop() {
@@ -339,6 +688,81 @@ public class DetailTabletActivity extends AppCompatActivity implements ViewPager
         sliderLayout.stopAutoCycle();
     }
 
+    private void showPopup(View view) {
 
+        PopupMenu popupMenu = new PopupMenu(this, view, Gravity.START);
+        popupMenu.show();
+
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_send2:
+                if (edtHotenInfor.getText().toString().isEmpty()) {
+                    tvEmty.setText("Vui lòng nhập họ tên");
+                } else if (edtNhanXet.getText().toString().isEmpty()) {
+                    tvEmty.setText("Vui lòng nhập nội dung đánh giá về sản phẩm");
+                } else if (edtEmailInfor.getText().toString().isEmpty()) {
+                    tvEmty.setText("Vui lòng nhập email");
+                } else if (edtPhone.getText().toString().isEmpty()) {
+                    tvEmty.setText("Vui lòng nhập số điện thoại");
+                } else {
+
+                    posetRating(id, edtHotenInfor.getText().toString(),
+                            edtEmailInfor.getText().toString(), edtPhone.getText().toString(),
+                            stars, edtNhanXet.getText().toString());
+                    linearLayoutInfor.setVisibility(View.GONE);
+                    linearLayoutSend.setVisibility(View.GONE);
+                    edtEmailInfor.setText("");
+                    edtPhone.setText("");
+                    edtNhanXet.setText("");
+                    edtHotenInfor.setText("");
+                }
+
+
+                break;
+            case R.id.btn_gui:
+                if (edtComment.getText().toString().isEmpty()) {
+                    Toast.makeText(this, "Vui lòng nhập nội dung bình luận", Toast.LENGTH_SHORT).show();
+                } else {
+                    showDialogs(id, edtComment.getText().toString());
+                }
+
+                break;
+        }
+    }
+
+    private void showDialogs(String id, String comment) {
+
+        CommentDialog commentDialog = new CommentDialog(this, id, comment);
+        commentDialog.show();
+        edtComment.setText("");
+
+    }
+
+    private void posetRating(String idsp, String name_infor, String email, String sdt, int star, String nhanxet) {
+
+        APIUtils.getJsonReponse().postRating(idsp, name_infor, email, sdt, star, nhanxet).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String mess = response.body();
+                if (response.isSuccessful()) {
+                    if (mess.equals("success")) {
+                        Toast.makeText(DetailTabletActivity.this, "Đánh giá thành công.Vui lòng refresh trang để cập nhật", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(DetailTabletActivity.this, "Lỗi!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(DetailTabletActivity.this, "Lỗi!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }
 

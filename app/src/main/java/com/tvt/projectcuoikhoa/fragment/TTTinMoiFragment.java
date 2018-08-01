@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,10 +31,12 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TTTinMoiFragment extends Fragment {
+public class TTTinMoiFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private List<News> arrTinMoi;
     private RecyclerViewTinTucAdapter adapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private ProgressDialog progressDialog;
 
     @SuppressLint("StaticFieldLeak")
     private static TTTinMoiFragment tinMoiFragment;
@@ -60,15 +63,40 @@ public class TTTinMoiFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_tt_tin_moi, container, false);
-        final ProgressDialog progressDialog=new ProgressDialog(getContext(),R.style.AppCompatAlertDialogStyle);
+        progressDialog = new ProgressDialog(getContext(), R.style.AppCompatAlertDialogStyle);
         progressDialog.setMessage("Loading....");
         progressDialog.show();
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshNews1);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_dark,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+        swipeRefreshLayout.setOnRefreshListener(this);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerTinMoi);
         arrTinMoi=new ArrayList<>();
+        loadData();
+
+        adapter = new RecyclerViewTinTucAdapter(getActivity(), arrTinMoi);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL);
+        recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView.setAdapter(adapter);
+        return view;
+    }
+
+    @Override
+    public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
+        loadData();
+    }
+
+    private void loadData() {
         APIUtils.getJsonReponse().getTinMoi().enqueue(new Callback<List<News>>() {
             @Override
             public void onResponse(@NonNull Call<List<News>> call, @NonNull Response<List<News>> response) {
                 progressDialog.dismiss();
+                swipeRefreshLayout.setRefreshing(false);
                 arrTinMoi=response.body();
 
                 adapter.setData(arrTinMoi);
@@ -81,14 +109,5 @@ public class TTTinMoiFragment extends Fragment {
                 Log.d(Constant.TAG, "error" + call.toString());
             }
         });
-
-        adapter=new RecyclerViewTinTucAdapter(getActivity(),arrTinMoi);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
-        DividerItemDecoration dividerItemDecoration =new DividerItemDecoration(getActivity(),LinearLayoutManager.VERTICAL);
-        recyclerView.addItemDecoration(dividerItemDecoration);
-        recyclerView.setAdapter(adapter);
-        return view;
     }
-
 }

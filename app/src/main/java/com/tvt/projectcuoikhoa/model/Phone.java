@@ -88,6 +88,34 @@ public class Phone implements Parcelable {
     public Phone() {
     }
 
+    public Phone(String id, String name, String price, String status, String image, String evaluation, String anhkhuyenmai, String promo1, String promo2, String promo3, String gioithieu, String tag, String createAt, String tendanhmuc, String urlBanner, String manhinh, String cameraTruoc, String cameraSau, String ram, String bonhotrong, String cpu, String gpu, String dungluongpin, String hedieuhanh, String chitietcauhinh) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.status = status;
+        this.image = image;
+        this.evaluation = evaluation;
+        this.anhkhuyenmai = anhkhuyenmai;
+        this.promo1 = promo1;
+        this.promo2 = promo2;
+        this.promo3 = promo3;
+        this.gioithieu = gioithieu;
+        this.tag = tag;
+        this.createAt = createAt;
+        this.tendanhmuc = tendanhmuc;
+        this.urlBanner = urlBanner;
+        this.manhinh = manhinh;
+        this.cameraTruoc = cameraTruoc;
+        this.cameraSau = cameraSau;
+        this.ram = ram;
+        this.bonhotrong = bonhotrong;
+        this.cpu = cpu;
+        this.gpu = gpu;
+        this.dungluongpin = dungluongpin;
+        this.hedieuhanh = hedieuhanh;
+        this.chitietcauhinh = chitietcauhinh;
+    }
+
     public String getAnhkhuyenmai() {
         return anhkhuyenmai;
     }

@@ -8,30 +8,57 @@
     android:background="@color/white"
     tools:context=".activities.NewsActivity">
 
-    <TextView
-        android:id="@+id/content_title"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:textSize="22sp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/content_create"
-        android:layout_width="wrap_content"
-        android:textSize="18sp"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center"
-        android:textColor="@color/dark_gray"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_news"
+            android:layout_width="match_parent"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:theme="@style/ToolbarColoredBackArrow2"
+            android:layout_height="?attr/actionBarSize">
 
-        android:layout_height="wrap_content" />
 
-    <WebView
-        android:id="@+id/web_view"
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </WebView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/content_title"
+                android:layout_width="match_parent"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/content_create"
+                android:layout_width="wrap_content"
+                android:textSize="16sp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="start"
+                android:textColor="@color/dark_gray"
+
+                android:layout_height="wrap_content" />
+
+            <WebView
+                android:id="@+id/web_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </WebView>
+
+        </LinearLayout>
+    </ScrollView>
 
 
 </LinearLayout>

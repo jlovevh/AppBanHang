@@ -11,8 +11,8 @@ import java.util.List;
 
 public class NewsAdapter extends FragmentStatePagerAdapter {
 
-    private List<Fragment> arrFragment=new ArrayList<>();
-    private List<String> arrTitle =new ArrayList<>();
+    private List<Fragment> arrFragment = new ArrayList<>();
+    private List<String> arrTitle = new ArrayList<>();
     private Context context;
 
     public NewsAdapter(FragmentManager fm) {
@@ -22,14 +22,11 @@ public class NewsAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
 
-
-
         return arrFragment.get(position);
     }
 
     @Override
     public int getCount() {
-
 
         return arrFragment.size();
     }
@@ -40,11 +37,12 @@ public class NewsAdapter extends FragmentStatePagerAdapter {
 
         return arrTitle.get(position);
     }
-    public  void  addFragment(Fragment fragment,String title){
+
+    public void addFragment(Fragment fragment, String title) {
+
         arrFragment.add(fragment);
         arrTitle.add(title);
     }
-
 
 
 }

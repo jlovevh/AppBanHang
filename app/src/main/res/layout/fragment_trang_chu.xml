@@ -53,13 +53,22 @@
                 android:layout_height="wrap_content" />
 
             <include
-                layout="@layout/tablet_moi_nhat"
+                layout="@layout/tablet_news"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <include
                 layout="@layout/layout_tin_cong_nghe"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </include>
+
+
+            <include
+                layout="@layout/about_layout"
+                android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
                 android:layout_height="wrap_content">
 
             </include>

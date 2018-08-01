@@ -24,7 +24,7 @@
     <string name="hint_email">Email</string>
     <string name="btn_login">Login</string>
     <string name="btn_link_to_register">OR CONNECT WITH</string>
-    <string name="btn_forgot_password">Forgot password</string>
+    <string name="btn_forgot_password"><u>Forgot password?</u></string>
     <string name="fb">FACEBOOK</string>
     <string name="gg">Google</string>
     <string name="title1">ĐIỆN THOẠI KHUYẾN MẠI HOT</string>
@@ -67,8 +67,8 @@
     <string name="gpu">GPU:</string>
     <string name="dlpin">Dung lượng pin:</string>
     <string name="tv_cauhinh">Xem cấu hình chi tiết</string>
-    <string name="detail">ĐẶC ĐIỂM NỔI BẬT</string>
-    <string name="detail2">CẤU HÌNH</string>
+    <string name="detail">ĐẶC ĐIỂM NỔI BẬT CỦA</string>
+    <string name="detail2">CẤU HÌNH CỦA</string>
     <string name="ocung">Ổ cứng</string>
     <string name="dohoa">Card màn hình</string>
     <string name="ketnoi">Cổng kết nối</string>
@@ -79,6 +79,16 @@
     <string name="cart">Giỏ hàng trống</string>
     <string name="a">Không có sản phẩm nào trong giỏ hàng của bạn</string>
     <string name="back">Quay lại trang chủ</string>
+    <string name="please_wait">Please wait...</string>
+    <string name="spinner">Chọn số lượng sản phẩm mà bạn muốn mua?</string>
+    <string name="ok">Ok</string>
+    <string name="submit">Submit</string>
+    <string name="share">Share</string>
+    <string name="settings">Settings</string>
+    <string name="search">Type name</string>
+    <string name="nhanxet"><![CDATA[ĐÁNH GIÁ &amp; NHẬN XÉT]]></string>
+    <string name="channel_name">Channel name</string>
+    <string name="channel_description">order successfully</string>
 
     <string-array name="tentintuc">
 
@@ -91,6 +101,20 @@
     <string-array name="choice">
         <item>Gallery</item>
         <item>Camera</item>
+    </string-array>
+
+    <string-array name="number">
+        <item>Please select the number of products...</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
     </string-array>
 
 

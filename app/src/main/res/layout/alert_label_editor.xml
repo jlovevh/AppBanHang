@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:padding="10dp">
+
+        <EditText
+            android:id="@+id/edt_id_user"
+            android:hint="Nhập User ID"
+            android:inputType="number"
+            android:background="@drawable/edittext_custom"
+            android:padding="10dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/edtName"
+            android:hint="Nhập họ và tên"
+            android:inputType="text"
+            android:background="@drawable/edittext_custom"
+            android:padding="10dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/edtEmail"
+            android:inputType="textEmailAddress"
+            android:hint="Nhập email"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edittext_custom"
+            android:padding="10dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/edtPhone"
+            android:inputType="phone"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edittext_custom"
+            android:padding="10dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:hint="Nhập số điện thoại"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/edt_address"
+            android:inputType="text"
+            android:hint="Nhập địa chỉ"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edittext_custom"
+            android:padding="10dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+</FrameLayout>

@@ -1,50 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:orientation="vertical"
     tools:context=".activities.NewsActivity">
 
-    <LinearLayout
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/white">
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_new"
+            android:layout_width="match_parent"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:theme="@style/ToolbarColoredBackArrow2"
+            android:layout_height="?attr/actionBarSize">
+
+
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/white">
 
-            <TextView
-                android:id="@+id/content_title"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:textSize="22sp"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/content_create"
-                android:layout_width="wrap_content"
-                android:textSize="18sp"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="end"
-                android:layout_marginRight="10dp"
-                android:textColor="@color/dark_gray"
+                <TextView
+                    android:id="@+id/content_title"
+                    android:layout_width="match_parent"
+                    android:textSize="22sp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content" />
 
-                android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/content_create"
+                    android:layout_width="wrap_content"
+                    android:textSize="18sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="start"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/dark_gray"
+
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <WebView
+                android:id="@+id/web_view_tin_tuc"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </WebView>
+
         </LinearLayout>
 
-        <WebView
-            android:id="@+id/web_view_tin_tuc"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
-        </WebView>
+    </ScrollView>
 
-    </LinearLayout>
 
-</ScrollView>
+</LinearLayout>

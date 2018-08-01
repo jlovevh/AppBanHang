@@ -1,19 +1,34 @@
 package com.tvt.projectcuoikhoa.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Cart {
 
+    @SerializedName("id_sp")
+    @Expose
     private int id_sp;
+    @SerializedName("url_image")
+    @Expose
     private String url_image;
+    @SerializedName("price")
+    @Expose
     private int price;
+    @SerializedName("name")
+    @Expose
     private String name;
-    private int id_user;
+    @SerializedName("id_user")
+    @Expose
+    private String id_user;
+    @SerializedName("soluong")
+    @Expose
     private int soluong;
 
 
     public Cart() {
     }
 
-    public Cart(int id_sp, String url_image, int price, String name, int id_user, int soluong) {
+    public Cart(int id_sp, String url_image, int price, String name, String id_user, int soluong) {
 
         this.id_sp = id_sp;
         this.url_image = url_image;
@@ -56,11 +71,11 @@ public class Cart {
         this.name = name;
     }
 
-    public int getId_user() {
+    public String getId_user() {
         return id_user;
     }
 
-    public void setId_user(int id_user) {
+    public void setId_user(String id_user) {
         this.id_user = id_user;
     }
 

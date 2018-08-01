@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:textSize="18sp"
-        android:textStyle="bold"
+        android:background="#F5F5F5"
         android:text="ĐẶC ĐIỂM NỔI BẬT IPHONE X 64GB"
         android:padding="10dp" />
 

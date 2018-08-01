@@ -8,9 +8,9 @@
     tools:context=".activities.LoginActivity">
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="@drawable/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background3"
         android:orientation="vertical"
         android:padding="@dimen/activity_horizontal_margin">
 
@@ -18,19 +18,20 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="@dimen/logo_w_h"
             android:layout_height="@dimen/logo_w_h"
-            android:contentDescription="@string/image"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="40dp"
+            android:contentDescription="@string/image"
             android:scaleType="centerCrop"
             android:src="@drawable/iu" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/colorPrimary"
+            android:layout_marginTop="30dp"
             android:backgroundTint="@color/colorPrimary"
+            android:textColorHint="@color/colorPrimary"
             app:hintTextAppearance="@style/MyAppearance"
-            android:layout_marginTop="30dp">
+            tools:ignore="UnusedAttribute">
 
             <EditText
                 android:id="@+id/email"
@@ -46,10 +47,10 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/colorPrimary"
+            android:layout_marginTop="20dp"
             android:backgroundTint="@color/colorPrimary"
-            app:hintTextAppearance="@style/MyAppearance"
-            android:layout_marginTop="20dp">
+            android:textColorHint="@color/colorPrimary"
+            app:hintTextAppearance="@style/MyAppearance">
 
             <EditText
                 android:id="@+id/password"
@@ -65,22 +66,23 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
 
             <CheckBox
                 android:id="@+id/checkBox"
-                android:text="@string/ck_user"
-                android:textColor="@color/white"
-                android:layout_gravity="start"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="@string/ck_user"
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/tv_reset_password"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|center"
+                android:textStyle="italic"
                 android:text="@string/btn_forgot_password"
                 android:textColor="@color/white" />
 
@@ -88,15 +90,26 @@
 
         <!-- Login Button -->
 
-        <Button
-            android:id="@+id/btn_login"
+        <com.balysv.materialripple.MaterialRippleLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@color/redPhone"
-            android:text="@string/btn_login"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="#9d9a9a"
+            app:mrl_rippleDelayClick="false"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@color/redPhone"
+                android:text="@string/btn_login"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+        </com.balysv.materialripple.MaterialRippleLayout>
 
 
         <!-- Link to Login Screen -->
@@ -112,7 +125,6 @@
                 android:layout_height="1dp"
                 android:layout_gravity="center"
                 android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@color/gray" />
 
@@ -129,57 +141,59 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
                 android:background="@color/dark_gray" />
 
         </LinearLayout>
 
-
-        <!--<com.shaishavgandhi.loginbuttons.FacebookButton-->
-        <!--android:layout_marginTop="30dp"-->
-        <!--android:id="@+id/btn_loginFB"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Sign in with Facebook"-->
-        <!--android:layout_marginStart="5dp"-->
-        <!--android:layout_marginLeft="5dp"-->
-        <!--android:layout_marginRight="5dp"-->
-        <!--android:layout_marginEnd="5dp"-->
-        <!--app:iconCenterAligned="false"-->
-        <!--app:iconSize="30dp"-->
-        <!--app:roundedCorner="false">-->
-
-        <!--</com.shaishavgandhi.loginbuttons.FacebookButton>-->
-
-        <com.facebook.login.widget.LoginButton android:id="@+id/loginButton"
-            android:layout_marginTop="20dp"
-            xmlns:facebook="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
-
-            android:layout_height="wrap_content" />
-
-
-        <com.google.android.gms.common.SignInButton
-            android:layout_marginTop="10dp"
-            android:id="@+id/sign_in_button"
+        <com.balysv.materialripple.MaterialRippleLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Sign in with Google">
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="@android:color/transparent"
+            app:mrl_rippleDelayClick="false"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
 
-        </com.google.android.gms.common.SignInButton>
+            <com.facebook.login.widget.LoginButton xmlns:facebook="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/loginButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:paddingBottom="15dp"
+                android:paddingTop="10dp"
+                android:textSize="15sp" />
+        </com.balysv.materialripple.MaterialRippleLayout>
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="#585858"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/sign_in_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Sign in with Google">
+
+            </com.google.android.gms.common.SignInButton>
+        </com.balysv.materialripple.MaterialRippleLayout>
 
 
         <TextView
             android:id="@+id/tv_sign_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
             android:text="Not account yet ?"
             android:textColor="@color/white"
-            android:textSize="18sp"
-            android:layout_marginTop="5dp"
-            android:layout_gravity="center" />
+            android:textSize="18sp" />
 
 
     </LinearLayout>
