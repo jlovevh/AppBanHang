@@ -2,6 +2,7 @@ package com.tvt.projectcuoikhoa.activities;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -12,8 +13,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
@@ -23,8 +26,10 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.common.oob.SignUp;
 import com.tvt.projectcuoikhoa.R;
@@ -47,9 +52,9 @@ import retrofit2.Response;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    private static final int CAMERA_REQUEST = 1010;
+    public static final int CAMERA_REQUEST = 1010;
     private static final int PERMISSION_MULTI_REQUEST = 111;
-    private static final int REQUEST_CODE_GALLERY = 123;
+    public static final int REQUEST_CODE_GALLERY = 123;
     private ImageView imgUser;
     private String realPath = "";
     private Button btnSignUp;
@@ -185,15 +190,26 @@ public class SignUpActivity extends AppCompatActivity {
         APIUtils.getJsonReponse().signUp(username, password, name, email, Integer.parseInt(phone), address, image).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
+
                 String message = response.body();
                 Log.d("AAA", "Message2: " + message);
+                assert message != null;
                 if (message.equals("success")) {
-                    Toast.makeText(SignUpActivity.this, "Register successfully", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(SignUpActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+//                        edtAddress.setText("");
+//                        edtEmail.setText("");
+//                        edtUser.setText("");
+//                        edtName.setText("");
+//                        edtPhone.setText("");
+//                        edtPass.setText("");
+                    showDialogs(email);
+                } else if (message.equals("error")) {
+                    Toast.makeText(SignUpActivity.this, "Email  already use.Please check email and input verified code", Toast.LENGTH_SHORT).show();
+                    showDialogs(email);
+                } else if (message.equals("ok")) {
+                    Toast.makeText(SignUpActivity.this, "Tài khoản đã được đăng ký.Vui lòng đăng nhập", Toast.LENGTH_SHORT).show();
                 }
+
+
             }
 
             @Override
@@ -201,6 +217,76 @@ public class SignUpActivity extends AppCompatActivity {
                 Log.d("AAA", "Error2: " + t.getMessage());
             }
         });
+    }
+
+    private void showDialogs(final String email) {
+
+//        final AlertDialog.Builder builder=new AlertDialog.Builder(this);
+//        builder.setTitle("Thông báo");
+//        builder.setMessage("Verified code sent to your email .Please Check email and add code here..");
+//        builder.setIcon(R.drawable.ic_verified_user_black_24dp);
+//
+//        final EditText input = new EditText(SignUpActivity.this);
+//        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+//                LinearLayout.LayoutParams.MATCH_PARENT,
+//                LinearLayout.LayoutParams.MATCH_PARENT);
+//        input.setLayoutParams(lp);
+//        builder.setView(input);
+//        builder.setNegativeButton("Submit", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//
+//            }
+//        });
+//
+//        builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                    dialog.dismiss();
+//            }
+//        });
+//
+//        builder.show();
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(this);
+        builder.title("Thông báo");
+        builder.content("Verified code sent to your email .Please Check email and add code here");
+        builder.inputType(InputType.TYPE_CLASS_NUMBER);
+        builder.inputRange(0, 6);
+        builder.positiveText("Submit");
+        builder.input("Verified code", "", false, new MaterialDialog.InputCallback() {
+            @Override
+            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                if (input.toString().isEmpty()) {
+                    dialog.getActionButton(DialogAction.POSITIVE).setEnabled(false);
+                } else {
+                    dialog.getActionButton(DialogAction.POSITIVE).setEnabled(true);
+                    APIUtils.getJsonReponse().verifitionUser(email, input.toString()).enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            if (response.isSuccessful()) {
+                                String mess = response.body();
+                                Log.d("AAA", "Message3: " + mess);
+                                assert mess != null;
+                                if (mess.equals("success")) {
+                                    Toast.makeText(SignUpActivity.this, "Register successfully", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+                                } else {
+                                    Toast.makeText(SignUpActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+
+                        }
+                    });
+                }
+            }
+        });
+        builder.show();
     }
 
 

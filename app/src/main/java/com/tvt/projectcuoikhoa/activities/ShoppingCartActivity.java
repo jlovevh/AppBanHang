@@ -3,6 +3,7 @@ package com.tvt.projectcuoikhoa.activities;
 import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -216,13 +217,16 @@ public class ShoppingCartActivity extends AppCompatActivity {
     }
 
     private void showNotification() {
+        Intent intent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 1122, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationManager notificationManager = null;
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("you have successfully ordered")
                 .setContentText("Wish you happy shopping")
                 .setSmallIcon(R.drawable.ic_shopping_cart_white_24dp)
                 .setAutoCancel(true)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = getString(R.string.channel_name);
@@ -261,11 +265,13 @@ public class ShoppingCartActivity extends AppCompatActivity {
     void backHome() {
         Intent intent = new Intent(ShoppingCartActivity.this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 
     @OnClick(R.id.img_back_phone_cart)
     void back() {
         finish();
+        overridePendingTransition(0, R.anim.anim_exit3);
     }
 
     @Override

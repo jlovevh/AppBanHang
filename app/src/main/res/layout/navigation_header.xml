@@ -3,15 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="176dp"
     android:orientation="vertical"
-    android:background="@android:color/holo_blue_dark">
+    android:background="@color/colorPrimaryDark">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_header"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10sp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:src="@drawable/iu" />
 
     <TextView
@@ -21,16 +21,19 @@
         android:layout_gravity="bottom"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
+        android:fontFamily="sans-serif-medium"
         android:layout_marginStart="10sp"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:text="@string/name2"
         android:textSize="18sp" />
 
     <TextView
         android:id="@+id/email_header"
+        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
+        android:fontFamily="sans-serif"
         android:layout_marginStart="10sp"
         android:text="@string/email"
         android:textSize="15sp" />

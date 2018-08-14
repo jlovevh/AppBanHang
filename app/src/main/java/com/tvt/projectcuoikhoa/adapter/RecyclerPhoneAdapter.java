@@ -7,10 +7,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.balysv.materialripple.MaterialRippleLayout;
 import com.bumptech.glide.Glide;
 import com.tvt.projectcuoikhoa.R;
 import com.tvt.projectcuoikhoa.helper.ItemClickListener;
@@ -131,12 +134,13 @@ import java.util.Locale;
 //
 //}
 
-public class RecyclerPhoneAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    public final int VIEW_ITEM = 0;
-    public final int VIEW_PROG = 1;
-    static Context context;
+public class RecyclerPhoneAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
+    private final int VIEW_ITEM = 0;
+    private final int VIEW_PROG = 1;
+    private Context context;
     private List<Phone> mDataset;
-    public OnLoadMoreListener loadMoreListener;
+    private List<Phone> arrPhone;
+    private OnLoadMoreListener loadMoreListener;
     private static ItemClickListener itemClickListener;
     boolean isLoading = false, isMoreDataAvailable = true;
 
@@ -145,9 +149,43 @@ public class RecyclerPhoneAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     public void setData(List<Phone> arr) {
-        this.mDataset.addAll(arr)
-        ;
+        this.mDataset.addAll(arr);
         notifyDataSetChanged();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    arrPhone = mDataset;
+                } else {
+                    List<Phone> filteredList = new ArrayList<>();
+                    for (Phone row : mDataset) {
+
+                        // name match condition. this might differ depending on your requirement
+                        // here we are looking for name or phone number match
+                        if (row.getName().toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(row);
+                        }
+                    }
+
+                    arrPhone = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = arrPhone;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                arrPhone = (ArrayList<Phone>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -178,13 +216,14 @@ public class RecyclerPhoneAdapter extends RecyclerView.Adapter<RecyclerView.View
     public RecyclerPhoneAdapter(Context context, List<Phone> mDataset) {
         this.context = context;
         this.mDataset = mDataset;
+        this.arrPhone = mDataset;
     }
 
     public void setMoreDataAvailable(boolean moreDataAvailable) {
         isMoreDataAvailable = moreDataAvailable;
     }
 
-    public void notifyDatasetChanged() {
+    public void notifyDatasetChange() {
         notifyDataSetChanged();
         isLoading = false;
     }
@@ -198,15 +237,25 @@ public class RecyclerPhoneAdapter extends RecyclerView.Adapter<RecyclerView.View
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         if (viewType == VIEW_ITEM) {
-            View v = LayoutInflater.from(parent.getContext())
+            View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_phone, parent, false);
 
-            return new ViewHolder(v);
+            return new ViewHolder(MaterialRippleLayout.on(view)
+                    .rippleOverlay(true)
+                    .rippleAlpha(0.2f)
+                    .rippleColor(0xFF585858)
+                    .rippleHover(true)
+                    .create());
         } else {
-            View v = LayoutInflater.from(parent.getContext())
+            View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_load_more, parent, false);
 
-            return new ProgressViewHolder(v);
+            return new ProgressViewHolder(MaterialRippleLayout.on(view)
+                    .rippleOverlay(true)
+                    .rippleAlpha(0.2f)
+                    .rippleColor(0xFF585858)
+                    .rippleHover(true)
+                    .create());
         }
     }
 
@@ -217,7 +266,7 @@ public class RecyclerPhoneAdapter extends RecyclerView.Adapter<RecyclerView.View
             Phone phone = mDataset.get(position);
             itemHolder.tvName.setText(phone.getName());
             int price = Integer.parseInt(phone.getPrice());
-            String str1 = String.valueOf(price);
+            String str1 = NumberFormatCurency.numBerForMat(price);
             itemHolder.tvPrice.setText(str1);
             Glide.with(context).load(phone.getImage()).error(R.mipmap.ic_launcher).into(itemHolder.img_phone);
             itemHolder.tvStatus.setText(phone.getStatus());

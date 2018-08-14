@@ -35,14 +35,29 @@
                 app:theme="@style/ToolbarColoredBackArrow2">
 
 
+                <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="MOBILE SHOP"-->
+                <!--android:textColor="@color/white"-->
+                <!--android:textSize="18sp"-->
+                <!--android:fontFamily="sans-serif"-->
+                <!--android:layout_gravity="start"-->
+                <!--android:id="@+id/toolbar_title" />-->
+                <com.mancj.materialsearchbar.MaterialSearchBar
+
+                    android:id="@+id/searchBar"
+                    app:mt_navIconEnabled="true"
+                    app:mt_placeholder="MOBILE SHOP"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp" />
+
+
             </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
-        <View
-            android:id="@+id/anchor_dropdown"
-            android:layout_width="match_parent"
-            android:layout_height="0dp" />
 
     </android.support.design.widget.AppBarLayout>
 

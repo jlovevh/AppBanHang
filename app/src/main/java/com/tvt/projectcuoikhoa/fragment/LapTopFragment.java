@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.tvt.projectcuoikhoa.R;
 import com.tvt.projectcuoikhoa.activities.DetailLaptopActivity;
 import com.tvt.projectcuoikhoa.adapter.RecyclerLapTopAdapter;
+import com.tvt.projectcuoikhoa.adapter.RecyclerPhoneAdapter;
 import com.tvt.projectcuoikhoa.api.APIUtils;
 import com.tvt.projectcuoikhoa.helper.MyDividerItemDecoration;
 import com.tvt.projectcuoikhoa.model.LapTop;
@@ -43,13 +44,14 @@ public class LapTopFragment extends Fragment implements RecyclerLapTopAdapter.it
     private ProgressDialog dialog;
     private SwipeRefreshLayout swipeRefreshLayout;
     public List<Rating> arrRating = new ArrayList<>();
-    public List<Rating> arrRatingByIDSp = new ArrayList<>();
+    private int index = 1;
     public Rating rating;
 
     @SuppressLint("ValidFragment")
     private LapTopFragment() {
         // Required empty public constructor
     }
+
     public static Fragment newInstance() {
 
         return new LapTopFragment();
@@ -60,20 +62,20 @@ public class LapTopFragment extends Fragment implements RecyclerLapTopAdapter.it
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view=inflater.inflate(R.layout.fragment_lap_top, container, false);
-        dialog=new ProgressDialog(getActivity(),R.style.AppCompatAlertDialogStyle);
+        View view = inflater.inflate(R.layout.fragment_lap_top, container, false);
+        dialog = new ProgressDialog(getActivity(), R.style.AppCompatAlertDialogStyle);
         dialog.setMessage("Loading...");
         dialog.show();
-        recyclerView=view.findViewById(R.id.recyclerLaptop);
+        recyclerView = view.findViewById(R.id.recyclerLaptop);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLaptop);
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_dark,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-        swipeRefreshLayout.setOnRefreshListener(this);
-        arrLapTop=new ArrayList<>();
+
+        arrLapTop = new ArrayList<>();
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new MyDividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL, 2));
 
 
@@ -84,17 +86,89 @@ public class LapTopFragment extends Fragment implements RecyclerLapTopAdapter.it
         adapter = new RecyclerLapTopAdapter(getActivity(), arrLapTop);
         recyclerView.setAdapter(adapter);
         adapter.setItemOnClickListenerLaptop(this);
+
+        adapter.setLoadMoreListener(new RecyclerLapTopAdapter.OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                recyclerView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        index++;
+                        loadMore(index);
+
+                    }
+                }, 5000);
+            }
+        });
         return view;
     }
 
+    private void refreshData(int index) {
+        APIUtils.getJsonReponse().getALLLapTopByPage(index).enqueue(new Callback<List<LapTop>>() {
+            @Override
+            public void onResponse(Call<List<LapTop>> call, Response<List<LapTop>> response) {
+                if (response.isSuccessful()) {
+                    swipeRefreshLayout.setRefreshing(false);
+
+                    arrLapTop.addAll(response.body());
+                    Log.d("REFRESHD", "DD: " + arrLapTop.size());
+
+                } else {
+                    Log.e("Lỗi", "Load more error");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<LapTop>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void loadMore(final int index) {
+
+        arrLapTop.add(null);
+        adapter.notifyItemChanged(arrLapTop.size() - 1);
+        APIUtils.getJsonReponse().getALLLapTopByPage(index).enqueue(new Callback<List<LapTop>>() {
+            @Override
+            public void onResponse(Call<List<LapTop>> call, Response<List<LapTop>> response) {
+                if (response.isSuccessful()) {
+                    //   swipeRefreshLayout.setRefreshing(false);
+                    arrLapTop.remove(arrLapTop.size() - 1);
+                    adapter.notifyItemRemoved(arrLapTop.size());
+                    List<LapTop> result = response.body();
+
+                    if (result.size() > 0) {
+                        arrLapTop.addAll(result);
+                        Log.d("SÁIASADAD", "SIZE: " + result.size());
+                    } else {
+                        adapter.setMoreDataAvailable(false);
+                        refreshData(index);
+                        Toast.makeText(getContext(), "No more data", Toast.LENGTH_SHORT).show();
+                    }
+
+                    adapter.notifyDatasetChange();
+                } else {
+                    Log.e("Lỗi", "Load more error");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<LapTop>> call, Throwable t) {
+
+            }
+        });
+
+        swipeRefreshLayout.setOnRefreshListener(this);
+    }
+
     private void loadData() {
-        APIUtils.getJsonReponse().getALLLapTop().enqueue(new Callback<List<LapTop>>() {
+        APIUtils.getJsonReponse().getALLLapTopByPage(index).enqueue(new Callback<List<LapTop>>() {
             @Override
             public void onResponse(@NonNull Call<List<LapTop>> call, @NonNull Response<List<LapTop>> response) {
                 dialog.dismiss();
-                swipeRefreshLayout.setRefreshing(false);
-                arrLapTop=response.body();
-                adapter.setData(arrLapTop);
+                arrLapTop.addAll(response.body());
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -162,7 +236,9 @@ public class LapTopFragment extends Fragment implements RecyclerLapTopAdapter.it
     @Override
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(true);
-        loadData();
+        refreshData(index);
+
+        getRatingLaptop();
 
     }
 }

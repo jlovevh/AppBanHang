@@ -19,7 +19,7 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginTop="20dp"
+
             android:layout_gravity="center_horizontal"
             android:contentDescription="@string/image"
             android:scaleType="centerCrop"
@@ -28,7 +28,7 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:backgroundTint="@color/colorPrimary"
             android:textColorHint="@color/colorPrimary"
             app:hintTextAppearance="@style/MyAppearance"
@@ -104,7 +104,7 @@
                 android:id="@+id/btn_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:background="@color/redPhone"
                 android:text="@string/btn_login"
                 android:textColor="@color/white"

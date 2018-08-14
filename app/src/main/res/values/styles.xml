@@ -84,5 +84,27 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="NavigationDrawerStyle">
+        <item name="android:textSize">20sp</item><!-- text size in menu-->
+        <item name="android:listPreferredItemHeightSmall">40dp</item><!-- item size in menu-->
+        <item name="listPreferredItemHeightSmall">40dp</item><!-- item size in menu-->
+    </style>
 
+
+    <style name="BaseAppTheme" parent="android:Theme.Material">
+        <!-- enable window content transitions -->
+        <item name="android:windowActivityTransitions">true</item>
+
+        <!-- specify enter and exit transitions -->
+        <item name="android:windowEnterTransition">@transition/explode</item>
+        <item name="android:windowExitTransition">@transition/explode</item>
+
+        <!-- specify shared element transitions -->
+        <item name="android:windowSharedElementEnterTransition">
+            @transition/change_image_transform
+        </item>
+        <item name="android:windowSharedElementExitTransition">
+            @transition/change_image_transform
+        </item>
+    </style>
 </resources>

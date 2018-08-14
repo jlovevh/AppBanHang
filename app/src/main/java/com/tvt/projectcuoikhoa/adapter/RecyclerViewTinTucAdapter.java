@@ -137,7 +137,6 @@ public class RecyclerViewTinTucAdapter extends RecyclerView.Adapter<RecyclerView
                     Intent intent = new Intent(context, NewsActivity.class);
                     intent.putExtra("title",tinMoi.getTieude());
                     intent.putExtra("image", tinMoi.getAnhtieude());
-                    Toast.makeText(context, "" + tinMoi.getAnhtieude(), Toast.LENGTH_SHORT).show();
                     intent.putExtra("baiviet",tinMoi.getBaiviet());
                     intent.putExtra("create",tinMoi.getCreateAt());
                     intent.putExtra("mota", tinMoi.getMota());
@@ -168,7 +167,6 @@ public class RecyclerViewTinTucAdapter extends RecyclerView.Adapter<RecyclerView
                     Intent intent = new Intent(context, NewsActivity.class);
                     intent.putExtra("title",tinMoi.getTieude());
                     intent.putExtra("image", tinMoi.getAnhtieude());
-                    Toast.makeText(context, "" + tinMoi.getAnhtieude(), Toast.LENGTH_SHORT).show();
                     intent.putExtra("baiviet",tinMoi.getBaiviet());
                     intent.putExtra("create",tinMoi.getCreateAt());
                     intent.putExtra("mota", tinMoi.getMota());

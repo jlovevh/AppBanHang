@@ -9,6 +9,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
+import android.text.Html;
+import android.transition.Fade;
+import android.transition.Visibility;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -140,8 +143,6 @@ public class DetailPhoneActivity extends AppCompatActivity implements View.OnCli
     LinearLayout linearLayout;
     @BindView(R.id.tv_ten_danh_muc)
     TextView tvTenDm;
-    @BindView(R.id.name_phone)
-    TextView nameUrl;
     @BindView(R.id.img_back_phone)
     ImageView imgBack;
     @BindView(R.id.tv_name_toolbar_phone)
@@ -311,6 +312,7 @@ public class DetailPhoneActivity extends AppCompatActivity implements View.OnCli
         ButterKnife.bind(this);
         initViews();
         // adapter=new ListRatingAdapter(this,arrRating);
+        tvCount.setText(String.valueOf(HomeFragment.arrCart.size()));
         btnSend.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ClickableViewAccessibility")
             @Override
@@ -400,7 +402,7 @@ public class DetailPhoneActivity extends AppCompatActivity implements View.OnCli
         tvCount.setText(String.valueOf(HomeFragment.arrCart.size()));
         getIntents();
 
-
+        getIntentSearch();
         setRating();
         tvName.setText(name);
         tvCameraSau.setText(cameraSau);
@@ -419,9 +421,11 @@ public class DetailPhoneActivity extends AppCompatActivity implements View.OnCli
         String nameUper = name.toUpperCase();
         tvNameDetail.setText(getResources().getString(R.string.detail) + " " + nameUper);
         tvNamePhone.setText(nameUper);
-        tvTenDm.setText(tenDanhMuc + "/");
-        nameUrl.setText(name);
-        tv_name_rating.setText(nameUper);
+
+        String nameUrl = "<font color='#33b5e5'>" + name + "</font>";
+        String ten = "Trang chủ/" + tenDanhMuc + " /";
+        tvTenDm.setText(Html.fromHtml(ten + nameUrl));
+        tv_name_rating.setText(getResources().getString(R.string.nhanxet) + " " + nameUper);
         tvNameToolbar.setText(name);
         addWebView();
 
@@ -439,6 +443,17 @@ public class DetailPhoneActivity extends AppCompatActivity implements View.OnCli
         }
 
 
+    }
+
+
+    private void getIntentSearch() {
+
+//        Intent intent =getIntent();
+//        String idSP=intent.getStringExtra("idSPPhone");
+//        Toast.makeText(this, ""+idSP, Toast.LENGTH_SHORT).show();
+//        if (Integer.parseInt(id)==Integer.parseInt(idSP)){
+//
+//        }
     }
 
     private void setRating() {
@@ -488,7 +503,7 @@ public class DetailPhoneActivity extends AppCompatActivity implements View.OnCli
         double a = Math.ceil(sum);
         DecimalFormat df = new DecimalFormat("#.0");
         tv_average_rating.setText(String.valueOf(df.format(a)) + "/5");
-        tvSum.setText(sumDanhgia + " dánh giá");
+        tvSum.setText(sumDanhgia + " đánh giá");
         average_rating.setRating((float) a);
         ratingBarSum.setRating((float) a);
         int progress5 = (int) ((sao5 * 5) / tong * 100);
@@ -638,6 +653,7 @@ public class DetailPhoneActivity extends AppCompatActivity implements View.OnCli
         arrString = new ArrayList<>();
 
         arrRating = bundle.getParcelableArrayList("ratingPhone");
+        Log.d("RATINGSIZE", "SIZE: " + arrRating.size());
         if (arrRating != null) {
             getRating(arrRating);
         }

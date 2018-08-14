@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@android:color/holo_blue_light</color>
-    <color name="colorPrimaryDark">@android:color/holo_blue_dark</color>
+    <color name="colorPrimary">#3777E2</color>
+    <color name="colorPrimaryDark">#3C85FB</color>
     <color name="colorAccent">#FF4081</color>
     <color name="item_nav_bottom">#ffffff</color>
     <color name="black">#000000</color>

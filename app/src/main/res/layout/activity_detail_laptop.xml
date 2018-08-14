@@ -58,6 +58,7 @@
 
 
         <ImageView
+            android:onClick="showPopup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center"
@@ -80,28 +81,17 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Trang chủ/"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
+
 
                 <TextView
                     android:id="@+id/tv_ten_danh_muc_lap"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Lap top/"
+                    android:text="Trang chủ/Lap top/I Phone X 256GB Silver"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
-                <TextView
-                    android:id="@+id/name_lap"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="I phone X 256GB Silver"
-                    android:textColor="@android:color/holo_blue_dark"
-                    android:textSize="16sp" />
+
             </LinearLayout>
 
 

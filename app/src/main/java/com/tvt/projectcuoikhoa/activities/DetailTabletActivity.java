@@ -9,9 +9,11 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
+import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -131,8 +133,6 @@ public class DetailTabletActivity extends AppCompatActivity implements View.OnCl
     LinearLayout linearLayout;
     @BindView(R.id.tv_ten_danh_muc_tablet)
     TextView tvTenDm;
-    @BindView(R.id.name_tablet)
-    TextView nameUrl;
     @BindView(R.id.img_back_tablet)
     ImageView imgBack;
     @BindView(R.id.tv_name_toolbar_tablet)
@@ -381,9 +381,10 @@ public class DetailTabletActivity extends AppCompatActivity implements View.OnCl
         String nameUper = name.toUpperCase();
         tvNameDetail.setText(getResources().getString(R.string.detail) + " " + nameUper);
         tvNamePhone.setText(getResources().getString(R.string.detail2) + " " + nameUper);
-        tvTenDm.setText(tenDanhMuc + "/");
-        nameUrl.setText(name);
-        tv_name_rating.setText(nameUper);
+        String nameUrl = "<font color='#33b5e5'>" + name + "</font>";
+        String ten = "Trang chủ/" + tenDanhMuc + " /";
+        tvTenDm.setText(Html.fromHtml(ten + nameUrl));
+        tv_name_rating.setText(getResources().getString(R.string.nhanxet) + " " + nameUper);
         tvNameToolbar.setText(name);
         addWebView();
 
@@ -486,7 +487,7 @@ public class DetailTabletActivity extends AppCompatActivity implements View.OnCl
         DecimalFormat df = new DecimalFormat("#.0");
         tv_average_rating.setText(String.valueOf(df.format(a)) + "/5");
         average_rating.setRating((float) a);
-        tvSum.setText(sumDanhgia + " dánh giá");
+        tvSum.setText(sumDanhgia + " đánh giá");
         average_rating.setRating((float) a);
         int progress5 = (int) ((sao5 * 5) / tong * 100);
         int progress4 = (int) ((sao4 * 4) / tong * 100);
@@ -688,12 +689,7 @@ public class DetailTabletActivity extends AppCompatActivity implements View.OnCl
         sliderLayout.stopAutoCycle();
     }
 
-    private void showPopup(View view) {
 
-        PopupMenu popupMenu = new PopupMenu(this, view, Gravity.START);
-        popupMenu.show();
-
-    }
 
 
     @Override
@@ -732,6 +728,23 @@ public class DetailTabletActivity extends AppCompatActivity implements View.OnCl
 
                 break;
         }
+    }
+
+    public void showPopup(View view) {
+        PopupMenu popupMenu = new PopupMenu(this, view, Gravity.START);
+        popupMenu.inflate(R.menu.menu_share2);
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.share_detail:
+                        Toast.makeText(DetailTabletActivity.this, "A", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+                return false;
+            }
+        });
+        popupMenu.show();
     }
 
     private void showDialogs(String id, String comment) {

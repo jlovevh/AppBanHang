@@ -7,6 +7,7 @@ import com.tvt.projectcuoikhoa.model.LapTop;
 import com.tvt.projectcuoikhoa.model.News;
 import com.tvt.projectcuoikhoa.model.Phone;
 import com.tvt.projectcuoikhoa.model.Rating;
+import com.tvt.projectcuoikhoa.model.SanPham;
 import com.tvt.projectcuoikhoa.model.Tablet;
 import com.tvt.projectcuoikhoa.model.User;
 
@@ -46,14 +47,20 @@ public interface JsonReponse {
     Call<List<News>> getTinTucCuocSong();
 
 
-//    @POST(value = "sanpham/dienthoai.php")
-//    Call<List<Phone>> getALLPhone(@Query("page") int page);
+    @POST(value = "sanpham/dienthoai.php")
+    Call<List<Phone>> getALLPhone(@Query("page") int page);
 
-    @GET(value = "sanpham/dienthoai.php")
-    Call<List<Phone>> getALLPhone();
+//    @GET(value = "sanpham/dienthoai.php")
+//    Call<List<Phone>> getALLPhone();
+
+    @GET(value = "sanpham/sanpham.php")
+    Call<List<SanPham>> getAllSanPham();
 
     @GET(value = "sanpham/laptop.php")
     Call<List<LapTop>> getALLLapTop();
+
+    @GET(value = "sanpham/laptop.php")
+    Call<List<LapTop>> getALLLapTopByPage(@Query("page") int page);
 
     @GET(value = "sanpham/tablet.php")
     Call<List<Tablet>> getAllTablet();
@@ -157,5 +164,44 @@ public interface JsonReponse {
 
     @GET(value = "getBinhluanTablet.php")
     Call<List<Comment>> getCommentTablet();
+
+    @FormUrlEncoded
+    @POST(value = "confirmaccount.php")
+    Call<String> verifitionUser(@Field("email") String email,
+                                @Field("otp") String otp);
+
+    @FormUrlEncoded
+    @POST(value = "resetpassword.php")
+    Call<String> getCodeFromEmail(@Field("email") String email);
+
+
+    @FormUrlEncoded
+    @POST(value = "checkotppassword.php")
+    Call<String> checkotpAndUpdatePassword(@Field("email") String email,
+                                           @Field("pass") String newpass,
+                                           @Field("confimpass") String confirmpass,
+                                           @Field("otp") String otp);
+
+
+    @FormUrlEncoded
+    @POST(value = "updateUser.php")
+    Call<String> updateUser(@Field("id") String id,
+                            @Field("name") String name,
+                            @Field("email") String email,
+                            @Field("username") String username,
+                            @Field("pass") String pass,
+                            @Field("phone") String phone,
+                            @Field("diachi") String diachi,
+                            @Field("urlanhmoi") String urlanhmoi);
+//    @Field("urlanhcu") String urlanhcu
+
+    @GET(value = "sanpham/tabletSearch.php")
+    Call<List<Tablet>> getTabletSearch();
+
+    @GET(value = "sanpham/laptopSearch.php")
+    Call<List<LapTop>> getlaptopSearch();
+
+    @GET(value = "sanpham/phoneSearch.php")
+    Call<List<Phone>> getPhoneSearch();
 
 }

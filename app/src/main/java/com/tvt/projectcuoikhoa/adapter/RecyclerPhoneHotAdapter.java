@@ -1,7 +1,11 @@
 package com.tvt.projectcuoikhoa.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +18,7 @@ import com.tvt.projectcuoikhoa.R;
 import com.tvt.projectcuoikhoa.helper.ItemClickListener;
 import com.tvt.projectcuoikhoa.model.Phone;
 import com.tvt.projectcuoikhoa.utils.NumberFormatCurency;
+import com.tvt.projectcuoikhoa.helper.*;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -22,7 +27,7 @@ import java.util.Locale;
 
 public class RecyclerPhoneHotAdapter extends RecyclerView.Adapter<RecyclerPhoneHotAdapter.ViewHolder> {
 
-    private Context context;
+    private static Activity context;
     private List<Phone> phoneHotList;
 
 
@@ -32,7 +37,7 @@ public class RecyclerPhoneHotAdapter extends RecyclerView.Adapter<RecyclerPhoneH
         this.itemClickListener = itemClickListener;
     }
 
-    public RecyclerPhoneHotAdapter(Context context, List<Phone> phoneHotList) {
+    public RecyclerPhoneHotAdapter(Activity context, List<Phone> phoneHotList) {
         this.context = context;
         this.phoneHotList = phoneHotList;
     }
@@ -85,8 +90,11 @@ public class RecyclerPhoneHotAdapter extends RecyclerView.Adapter<RecyclerPhoneH
                 @Override
                 public void onClick(View v) {
                     itemClickListener.onItemClick(v, getAdapterPosition());
+
                 }
             });
         }
     }
+
+
 }

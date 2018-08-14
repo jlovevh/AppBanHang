@@ -2,12 +2,15 @@ package com.tvt.projectcuoikhoa.fragment;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.ActivityOptions;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.NestedScrollView;
@@ -15,10 +18,14 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Explode;
+import android.transition.Slide;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -98,18 +105,18 @@ public class HomeFragment extends Fragment implements ItemClickListener, Recycle
     public static List<Cart> arrCart;
 
 
-    List<Rating> arrRating = new ArrayList<>();
+    public static List<Rating> arrRating = new ArrayList<>();
 
-    List<Rating> arrRatingLaptop = new ArrayList<>();
+    public static List<Rating> arrRatingLaptop = new ArrayList<>();
 
-    List<Rating> arrRatingTablet = new ArrayList<>();
+    public static List<Rating> arrRatingTablet = new ArrayList<>();
 
 
     public static List<Comment> arrComment = new ArrayList<>();
     public static List<Comment> arrCommentLap = new ArrayList<>();
     public static List<Comment> arrCommentTablet = new ArrayList<>();
 
-
+    private static HomeFragment homeFragment;
     private HomeFragment() {
         // Required empty public constructor
     }
@@ -120,13 +127,19 @@ public class HomeFragment extends Fragment implements ItemClickListener, Recycle
 
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @TargetApi(Build.VERSION_CODES.M)
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_trang_chu, container, false);
+
         initViews(view);
         getPhoneHot();
         getLaptopNew();
@@ -140,6 +153,7 @@ public class HomeFragment extends Fragment implements ItemClickListener, Recycle
         getCommentPhone();
         getCommentLaptop();
         getCommentTablet();
+
 
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -235,7 +249,7 @@ public class HomeFragment extends Fragment implements ItemClickListener, Recycle
 
             @Override
             public void onFailure(@NonNull Call<List<BannerQc>> call, @NonNull Throwable t) {
-                Log.d(Constant.TAG, t.getMessage());
+                Log.d(Constant.TAG, "error" + t.getMessage());
             }
         });
 
@@ -266,6 +280,7 @@ public class HomeFragment extends Fragment implements ItemClickListener, Recycle
                     intent.putExtra("baiviet", news.getBaiviet());
                     intent.putExtra("create", news.getCreateAt());
                     intent.putExtra("tendanhmuc", news.getTendanhmuctintuc());
+                    intent.putExtra("image", news.getAnhtieude());
                     getContext().startActivity(intent);
                 } else {
                     Intent intent = new Intent(getContext(), NewsActivity.class);
@@ -273,6 +288,7 @@ public class HomeFragment extends Fragment implements ItemClickListener, Recycle
                     intent.putExtra("baiviet", news.getBaiviet());
                     intent.putExtra("create", news.getCreateAt());
                     intent.putExtra("tendanhmuc", news.getTendanhmuctintuc());
+                    intent.putExtra("image", news.getAnhtieude());
                     getContext().startActivity(intent);
                 }
             }
@@ -318,7 +334,7 @@ public class HomeFragment extends Fragment implements ItemClickListener, Recycle
         arrLaptop = new ArrayList<>();
         phoneHotList = new ArrayList<>();
 
-        adapterPhone = new RecyclerPhoneHotAdapter(getContext(), phoneHotList);
+        adapterPhone = new RecyclerPhoneHotAdapter(getActivity(), phoneHotList);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new GridDividerDecoration(getActivity()));
@@ -413,6 +429,7 @@ public class HomeFragment extends Fragment implements ItemClickListener, Recycle
         });
 
     }
+
 
     private void getPhoneHot() {
 
@@ -530,6 +547,8 @@ public class HomeFragment extends Fragment implements ItemClickListener, Recycle
         bundle.putParcelableArrayList("ratingPhone", (ArrayList<? extends Parcelable>) arrRating);
         bundle.putParcelableArrayList("commentPhone", (ArrayList<? extends Parcelable>) arrComment);
         intent.putExtra("bundle", bundle);
+//        getActivity().startActivity(intent,
+//                ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
         getActivity().startActivity(intent);
 
 

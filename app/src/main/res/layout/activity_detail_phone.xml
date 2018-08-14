@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="60dp"
+            android:transitionName="profile"
             android:text="I phone X 256GB Silver"
             android:textColor="@color/white"
             android:textSize="18sp" />
@@ -94,28 +95,17 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Trang chủ/"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
+
 
                 <TextView
                     android:id="@+id/tv_ten_danh_muc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Điện thoại/"
+                    android:text="Trang chủ/Điện thoại/I phone X 256GB Silver"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
-                <TextView
-                    android:id="@+id/name_phone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="I phone X 256GB Silver"
-                    android:textColor="@android:color/holo_blue_dark"
-                    android:textSize="16sp" />
+
             </LinearLayout>
 
 

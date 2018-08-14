@@ -1,16 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.AccountFragment">
+    android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
-    <android.support.v7.widget.RecyclerView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="176dp"
+        android:orientation="vertical"
+        android:background="@drawable/background3">
 
-    </android.support.v7.widget.RecyclerView>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_user1"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10sp"
+            android:layout_marginTop="50dp"
+            android:src="@drawable/iu" />
 
+        <EditText
+            android:hint="name"
+            android:inputType="text"
+            android:id="@+id/name_user"
+            android:background="@android:color/transparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:enabled="false"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10sp"
+            android:textColor="@color/white"
+            android:text="@string/name2"
+            android:textSize="18sp" />
 
-</FrameLayout>
+        <EditText
+            android:hint="email"
+            android:enabled="false"
+            android:inputType="textEmailAddress"
+            android:background="@android:color/transparent"
+            android:id="@+id/email_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/white"
+            android:layout_marginStart="10sp"
+            android:text="@string/email"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/edtUserName"
+        android:inputType="text"
+        android:hint="User name"
+        android:enabled="false"
+        android:background="@drawable/button_custom2"
+        android:padding="8dp"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/edtPassword"
+        android:inputType="textPassword"
+        android:hint="Password"
+        android:enabled="false"
+        android:background="@drawable/button_custom2"
+        android:padding="8dp"
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/edtsdt"
+        android:inputType="phone"
+        android:hint="Số điện thoại"
+        android:enabled="false"
+        android:background="@drawable/button_custom2"
+        android:padding="8dp"
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/edtDiachi"
+        android:hint="Địa chỉ"
+        android:inputType="text"
+        android:enabled="false"
+        android:background="@drawable/button_custom2"
+        android:padding="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp" />
+
+    <Button
+        android:id="@+id/btnEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sửa"
+        android:background="@drawable/button_custom4"
+        android:textColor="@color/white"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp" />
+
+</LinearLayout>

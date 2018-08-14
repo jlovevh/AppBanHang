@@ -37,7 +37,6 @@ public class RecyclerLaptopNewAdapter extends RecyclerView.Adapter<RecyclerLapto
 
     public void setData(List<LapTop> arrLapTop) {
 
-        this.arrLapTop.clear();
         this.arrLapTop.addAll(arrLapTop);
         notifyDataSetChanged();
     }

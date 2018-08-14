@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:text="HỎI ĐÁP" />
 
     <View
@@ -55,20 +55,16 @@
         android:id="@+id/btn_gui"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_marginRight="15dp"
+        android:layout_gravity="end"
+        android:layout_marginEnd="15dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/button_custom6"
-        android:padding="10dp"
         android:text="Gửi câu hỏi"
         android:textColor="@color/white" />
 
     <ListView
         android:id="@+id/list_comment"
         android:layout_margin="10dp"
-        android:clickable="false"
-        android:nestedScrollingEnabled="false"
-        android:scrollbars="none"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp">
