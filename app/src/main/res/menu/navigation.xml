@@ -17,6 +17,10 @@
     <item android:id="@+id/nav_pk"
         android:title="@string/pk"
         android:icon="@drawable/ic_headset_black_24dp"/>
+    <item
+        android:id="@+id/action_giohang"
+        android:icon="@drawable/ic_shopping_cart_white_24dp"
+        android:title="@string/giohang" />
     <item android:id="@+id/nav_support"
         android:title="@string/hotro"
         android:icon="@drawable/ic_phone_iphone_black_24dp"/>
@@ -26,5 +30,6 @@
     <item android:id="@+id/nav_exit"
         android:title="@string/exit"
         android:icon="@drawable/ic_exit_to_app_black_24dp"/>
+
 
 </menu>

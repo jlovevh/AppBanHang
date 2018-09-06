@@ -314,7 +314,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     intent.putExtra("user", user);
                     intent.putExtra(key, 1);
                     startActivity(intent);
-                    overridePendingTransition(R.anim.anim_enter, 0);
+                    overridePendingTransition(R.anim.slide_left, 0);
                     if (checkBox.isChecked()) {
 
                         sharepreferenceUtils.saveEmail(email);

@@ -74,7 +74,7 @@ public class TabletFragment extends Fragment implements RecyclerTabletAdapter.on
         swipeRefreshLayout.setOnRefreshListener(this);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
-//        recyclerView.addItemDecoration(new GridDividerDecoration(getContext()));
+        recyclerView.addItemDecoration(new GridDividerDecoration(getContext()));
 
         loadData();
         getRatingTablet();

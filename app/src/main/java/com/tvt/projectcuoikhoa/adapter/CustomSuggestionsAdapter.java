@@ -46,20 +46,73 @@ public class CustomSuggestionsAdapter extends SuggestionsAdapter<Product, Custom
         Picasso.with(context).load(product.getImage()).into(holder.imgAnh);
         holder.tvName.setText(product.getName());
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                itemSuggestionOnClick.onClickItemSuggesstion(position);
-//                Toast.makeText(context, ""+position, Toast.LENGTH_SHORT).show();
-            }
-        });
+
     }
 
     @Override
     public int getSingleViewHeight() {
-        return 80;
+        return 100;
     }
 
+    @Override
+    public void clearSuggestions() {
+        super.clearSuggestions();
+        suggestions.clear();
+    }
+
+    public CustomSuggestionsAdapter(LayoutInflater inflater) {
+        super(inflater);
+    }
+
+    @Override
+    public void addSuggestion(Product r) {
+        super.addSuggestion(r);
+    }
+
+    @Override
+    public void setSuggestions(List<Product> suggestions) {
+        super.setSuggestions(suggestions);
+    }
+
+    @Override
+    public void deleteSuggestion(int position, Product r) {
+        super.deleteSuggestion(position, r);
+    }
+
+    @Override
+    public List<Product> getSuggestions() {
+        return super.getSuggestions();
+    }
+
+    @Override
+    public int getMaxSuggestionsCount() {
+        return super.getMaxSuggestionsCount();
+    }
+
+    @Override
+    public void setMaxSuggestionsCount(int maxSuggestionsCount) {
+        super.setMaxSuggestionsCount(maxSuggestionsCount);
+    }
+
+    @Override
+    protected LayoutInflater getLayoutInflater() {
+        return super.getLayoutInflater();
+    }
+
+    @Override
+    public void onBindViewHolder(SuggestionHolder holder, int position) {
+        super.onBindViewHolder(holder, position);
+    }
+
+    @Override
+    public int getListHeight() {
+        return super.getListHeight();
+    }
+
+    @Override
+    public int getItemCount() {
+        return super.getItemCount();
+    }
 
     @NonNull
     @Override
@@ -68,7 +121,7 @@ public class CustomSuggestionsAdapter extends SuggestionsAdapter<Product, Custom
         return new SuggestionHolder(view);
     }
 
-    public static class SuggestionHolder extends RecyclerView.ViewHolder {
+    public class SuggestionHolder extends RecyclerView.ViewHolder {
 
         TextView tvName, tvGia;
         ImageView imgAnh;
@@ -79,6 +132,14 @@ public class CustomSuggestionsAdapter extends SuggestionsAdapter<Product, Custom
             imgAnh = itemView.findViewById(R.id.img_search);
             tvName = itemView.findViewById(R.id.name_search);
             tvGia = itemView.findViewById(R.id.gia_sp);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Product product = suggestions.get(getAdapterPosition());
+                    itemSuggestionOnClick.onClickItemSuggesstion(product);
+                }
+            });
         }
     }
 
@@ -111,6 +172,6 @@ public class CustomSuggestionsAdapter extends SuggestionsAdapter<Product, Custom
 
     public interface itemSuggestionOnClick {
 
-        void onClickItemSuggesstion(int position);
+        void onClickItemSuggesstion(Product product);
     }
 }

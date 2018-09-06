@@ -11,33 +11,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background3"
+        android:gravity="center"
         android:orientation="vertical"
-        android:padding="@dimen/activity_horizontal_margin">
+        android:padding="10dp">
 
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="@dimen/logo_w_h"
-            android:layout_height="@dimen/logo_w_h"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="40dp"
-            android:contentDescription="@string/image"
-            android:scaleType="centerCrop"
-            android:src="@drawable/iu" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:textColorHint="@color/colorPrimary"
-            app:hintTextAppearance="@style/MyAppearance"
-            tools:ignore="UnusedAttribute">
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:textColorHint="@color/colorPrimaryDark"
+            app:hintTextAppearance="@style/MyAppearance">
 
             <EditText
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:hint="@string/hint_email"
                 android:inputType="textEmailAddress"
                 android:textColor="@android:color/white"
@@ -47,9 +37,9 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:textColorHint="@color/colorPrimary"
+            android:layout_marginTop="5dp"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:textColorHint="@color/colorPrimaryDark"
             app:hintTextAppearance="@style/MyAppearance">
 
             <EditText
@@ -82,9 +72,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|center"
-                android:textStyle="italic"
                 android:text="@string/btn_forgot_password"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textStyle="italic" />
 
         </FrameLayout>
 
@@ -103,11 +93,11 @@
                 android:id="@+id/btn_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:background="@color/redPhone"
                 android:text="@string/btn_login"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
         </com.balysv.materialripple.MaterialRippleLayout>
 
@@ -117,7 +107,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <View
@@ -133,6 +123,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
+                android:fontFamily="sans-serif"
                 android:text="@string/btn_link_to_register"
                 android:textColor="@android:color/white"
                 android:textSize="15sp" />
@@ -161,7 +152,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:paddingBottom="15dp"
+                android:paddingBottom="10dp"
                 android:paddingTop="10dp"
                 android:textSize="15sp" />
         </com.balysv.materialripple.MaterialRippleLayout>
@@ -178,7 +169,7 @@
                 android:id="@+id/sign_in_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:text="Sign in with Google">
 
             </com.google.android.gms.common.SignInButton>
@@ -190,7 +181,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="5dp"
+            android:fontFamily="sans-serif"
+            android:layout_marginTop="20dp"
             android:text="Not account yet ?"
             android:textColor="@color/white"
             android:textSize="18sp" />

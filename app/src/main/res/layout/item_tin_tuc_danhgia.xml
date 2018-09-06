@@ -14,9 +14,10 @@
     <TextView
         android:id="@+id/tv_title_tin_tuc_danhgia"
         android:layout_width="match_parent"
-        android:textColor="@color/black"
+        android:textColor="#4E4E4E"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:fontFamily="sans-serif"
         android:layout_marginTop="8dp"
         android:layout_height="wrap_content" />
 

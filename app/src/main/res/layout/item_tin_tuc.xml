@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="8dp"
@@ -17,24 +18,27 @@
         android:layout_width="match_parent"
         android:layout_height="110dp"
         android:orientation="vertical">
-        
+
         <TextView
-            android:textSize="15sp"
-            android:textColor="@color/black"
             android:id="@+id/tv_title_tin_tuc"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
-            android:layout_height="wrap_content" />
+            android:fontFamily="sans-serif"
+            android:text="ssss"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_create_at"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="30dp"
+            android:fontFamily="sans-serif"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-        
+
 
     </LinearLayout>
 

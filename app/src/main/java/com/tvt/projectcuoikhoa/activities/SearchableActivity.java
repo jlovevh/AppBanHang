@@ -138,23 +138,23 @@ public class SearchableActivity extends AppCompatActivity implements SearchView.
     }
 
     @Override
-    public void onSearchSelected(SanPham sanPham) {
+    public void onSearchSelected(SanPham sanPham, int position) {
 
-        if (Integer.parseInt(sanPham.getDanhmucId()) == 1) {
-            Intent intent = new Intent(SearchableActivity.this, DetailPhoneActivity.class);
-            intent.putExtra("id", sanPham.getIdSp());
-            startActivity(intent);
-        } else if (Integer.parseInt(sanPham.getDanhmucId()) == 2) {
-            Intent intent = new Intent(SearchableActivity.this, DetailLaptopActivity.class);
-            intent.putExtra("id", sanPham.getIdSp());
-            startActivity(intent);
-        } else if (Integer.parseInt(sanPham.getDanhmucId()) == 3) {
-            Intent intent = new Intent(SearchableActivity.this, DetailTabletActivity.class);
-            intent.putExtra("id", sanPham.getIdSp());
-            startActivity(intent);
-        }
+//        if (Integer.parseInt(sanPham.getDanhmucId()) == 1) {
+//            Intent intent = new Intent(SearchableActivity.this, DetailPhoneActivity.class);
+//            intent.putExtra("id", sanPham.getIdSp());
+//            startActivity(intent);
+//        } else if (Integer.parseInt(sanPham.getDanhmucId()) == 2) {
+//            Intent intent = new Intent(SearchableActivity.this, DetailLaptopActivity.class);
+//            intent.putExtra("id", sanPham.getIdSp());
+//            startActivity(intent);
+//        } else if (Integer.parseInt(sanPham.getDanhmucId()) == 3) {
+//            Intent intent = new Intent(SearchableActivity.this, DetailTabletActivity.class);
+//            intent.putExtra("id", sanPham.getIdSp());
+//            startActivity(intent);
+//        }
 
-        Toast.makeText(this, "" + sanPham.getIdSp(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "" + position, Toast.LENGTH_SHORT).show();
 
     }
 }

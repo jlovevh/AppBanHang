@@ -1,18 +1,12 @@
 package com.tvt.projectcuoikhoa.activities;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.app.SearchManager;
-import android.content.Context;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.os.Build;
+
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -20,57 +14,35 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.transition.Explode;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewAnimationUtils;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.TranslateAnimation;
-import android.widget.Button;
-import android.widget.EditText;
+
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.AccessToken;
-import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.mancj.materialsearchbar.MaterialSearchBar;
-import com.mancj.materialsearchbar.adapter.SuggestionsAdapter;
 import com.squareup.picasso.Picasso;
 import com.tvt.projectcuoikhoa.R;
 import com.tvt.projectcuoikhoa.adapter.CustomSuggestionsAdapter;
-import com.tvt.projectcuoikhoa.adapter.RecyclerPhoneAdapter2;
-import com.tvt.projectcuoikhoa.adapter.ViewPagerAdapter;
 import com.tvt.projectcuoikhoa.api.APIUtils;
-import com.tvt.projectcuoikhoa.api.Rename;
-import com.tvt.projectcuoikhoa.database.FBSqliteOpenHelper;
 import com.tvt.projectcuoikhoa.database.ShoppingCartHelper;
 import com.tvt.projectcuoikhoa.fragment.AccountFragment;
 import com.tvt.projectcuoikhoa.fragment.HomeFragment;
@@ -86,7 +58,6 @@ import com.tvt.projectcuoikhoa.model.Phone;
 import com.tvt.projectcuoikhoa.model.Product;
 import com.tvt.projectcuoikhoa.model.Tablet;
 import com.tvt.projectcuoikhoa.model.User;
-import com.tvt.projectcuoikhoa.model.UserFB;
 import com.tvt.projectcuoikhoa.utils.SharepreferenceUtils;
 
 import java.util.ArrayList;
@@ -98,7 +69,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, NavigationView.OnNavigationItemSelectedListener, MaterialSearchBar.OnSearchActionListener, CustomSuggestionsAdapter.itemSuggestionOnClick {
 
-    private Toolbar toolbar;
+    private LinearLayout toolbar;
     public static BottomNavigationView bottomNavigationView;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
@@ -138,11 +109,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 //        load default fragment
         loadFragment(HomeFragment.newInstance());
-//        fragment = HomeFragment.newInstance();
-//        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//        fragmentTransaction.add(R.id.layout, fragment);
-//        fragmentTransaction.addToBackStack(null);
-//        fragmentTransaction.commit();
+
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -153,17 +120,19 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
         adapter.setSuggestions(arrProduct);
-        searchBar.setCustomSuggestionAdapter(adapter);
+
         //searchBar.setLastSuggestions(arrProduct);
         adapter.setItemSuggestionOnClick(MainActivity.this);
         searchBar.setMaxSuggestionCount(2);
+        searchBar.setCustomSuggestionAdapter(adapter);
 
         searchBar.setOnSearchActionListener(this);
         searchBar.setCardViewElevation(10);
         searchBar.addTextChangeListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //  searchBar.hideSuggestionsList();
+                searchBar.getLastSuggestions();
+
             }
 
             @Override
@@ -171,9 +140,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 Log.d("LOG_TAG", getClass().getSimpleName() + " text changed " + searchBar.getText());
                 // send the entered text to our filter and let it manage everything
                 // searchBar.showSuggestionsList();
+
                 adapter.getFilter().filter(searchBar.getText());
                 adapter.setItemSuggestionOnClick(MainActivity.this);
-
+                adapter.notifyDataSetChanged();
 
             }
 
@@ -185,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
     }
+
 
     private void getDataSearch() {
 
@@ -490,13 +461,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         navigationView = findViewById(R.id.nav_layout);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-
-        getSupportActionBar().setHomeButtonEnabled(false);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setTitleTextColor(Color.WHITE);
-
 
         View navHeaderView = navigationView.getHeaderView(0);
         tvEmail = navHeaderView.findViewById(R.id.email_header);
@@ -544,6 +508,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 bottomNavigationView.getMenu().getItem(1).setChecked(true);
 
                 break;
+
+            case R.id.action_giohang:
+                Intent intent = new Intent(MainActivity.this, ShoppingCartActivity.class);
+                startActivity(intent);
+                break;
             case R.id.nav_laptop:
 
                 fragment = LapTopFragment.newInstance();
@@ -587,23 +556,23 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Drawable drawable = item.getIcon();
+        if (drawable instanceof Animatable) {
+            ((Animatable) drawable).start();
+        }
+        switch (item.getItemId()) {
 
-//        switch (item.getItemId()) {
-//            case R.id.action_giohang:
-//                Intent intent = new Intent(MainActivity.this, ShoppingCartActivity.class);
-//                startActivity(intent);
-//                break;
 //            case R.id.action_search:
 //                Intent intentS = new Intent(MainActivity.this, SearchableActivity.class);
 //                startActivity(intentS);
 //                break;
-//        }
+        }
         return true;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // getMenuInflater().inflate(R.menu.main_menu, menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
 
 
         return true;
@@ -675,129 +644,133 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     @Override
-    public void onClickItemSuggesstion(int position) {
-        for (int i = 0; i < arrPhone.size(); i++) {
-            if (arrProduct.get(position).getDmSP().equals("Điện Thoại") && Integer.parseInt(arrProduct.get(position).getIdSP()) == Integer.parseInt(arrPhone.get(i).getId())) {
-                Intent intent = new Intent(MainActivity.this, DetailPhoneActivity.class);
-                Bundle bundle = new Bundle();
-                Phone phone = arrPhone.get(i);
-                bundle.putString("id", phone.getId());
-                bundle.putString("name", phone.getName());
-                bundle.putString("price", phone.getPrice());
-                bundle.putString("status", phone.getStatus());
-                bundle.putString("image", phone.getImage());
-                bundle.putString("evaluation", phone.getEvaluation());
-                bundle.putString("promo1", phone.getPromo1());
-                bundle.putString("promo2", phone.getPromo2());
-                bundle.putString("promo3", phone.getPromo3());
-                bundle.putString("tag", phone.getTag());
-                bundle.putString("createAt", phone.getCreateAt());
-                bundle.putString("gioithieu", phone.getGioithieu());
-                bundle.putString("manhinh", phone.getManhinh());
-                bundle.putString("cameraT", phone.getCameraTruoc());
-                bundle.putString("cameraS", phone.getCameraSau());
-                bundle.putString("ram", phone.getRam());
-                bundle.putString("bonhotrong", phone.getBonhotrong());
-                bundle.putString("cpu", phone.getCpu());
-                bundle.putString("gpu", phone.getGpu());
-                bundle.putString("dlpin", phone.getDungluongpin());
-                bundle.putString("hdh", phone.getHedieuhanh());
-                bundle.putString("detail", phone.getChitietcauhinh());
-                bundle.putString("urlBanner", phone.getUrlBanner());
-                bundle.putString("tendanhmuc", phone.getTendanhmuc());
-                bundle.putParcelableArrayList("ratingPhone", (ArrayList<? extends Parcelable>) HomeFragment.arrRating);
-                bundle.putParcelableArrayList("commentPhone", (ArrayList<? extends Parcelable>) HomeFragment.arrComment);
-                intent.putExtra("bundle", bundle);
-                Toast.makeText(this, "" + position + i, Toast.LENGTH_SHORT).show();
-                startActivity(intent);
-                break;
+    public void onClickItemSuggesstion(Product product) {
+        if (product.getDmSP().contains("Điện Thoại")) {
+
+            Log.d("iddmsp", "" + product.getDmSP());
+            for (int i = 0; i < arrPhone.size(); i++) {
+                if (Integer.parseInt(product.getIdSP()) == Integer.parseInt(arrPhone.get(i).getId())) {
+                    Log.d("iddmsp", "id " + product.getIdSP() + "   : " + arrPhone.get(i).getId());
+                    Intent intent = new Intent(MainActivity.this, DetailPhoneActivity.class);
+                    Bundle bundle = new Bundle();
+                    Phone phone = arrPhone.get(i);
+                    bundle.putString("id", phone.getId());
+                    bundle.putString("name", phone.getName());
+                    bundle.putString("price", phone.getPrice());
+                    bundle.putString("status", phone.getStatus());
+                    bundle.putString("image", phone.getImage());
+                    bundle.putString("evaluation", phone.getEvaluation());
+                    bundle.putString("promo1", phone.getPromo1());
+                    bundle.putString("promo2", phone.getPromo2());
+                    bundle.putString("promo3", phone.getPromo3());
+                    bundle.putString("tag", phone.getTag());
+                    bundle.putString("createAt", phone.getCreateAt());
+                    bundle.putString("gioithieu", phone.getGioithieu());
+                    bundle.putString("manhinh", phone.getManhinh());
+                    bundle.putString("cameraT", phone.getCameraTruoc());
+                    bundle.putString("cameraS", phone.getCameraSau());
+                    bundle.putString("ram", phone.getRam());
+                    bundle.putString("bonhotrong", phone.getBonhotrong());
+                    bundle.putString("cpu", phone.getCpu());
+                    bundle.putString("gpu", phone.getGpu());
+                    bundle.putString("dlpin", phone.getDungluongpin());
+                    bundle.putString("hdh", phone.getHedieuhanh());
+                    bundle.putString("detail", phone.getChitietcauhinh());
+                    bundle.putString("urlBanner", phone.getUrlBanner());
+                    bundle.putString("tendanhmuc", phone.getTendanhmuc());
+                    bundle.putParcelableArrayList("ratingPhone", (ArrayList<? extends Parcelable>) HomeFragment.arrRating);
+                    bundle.putParcelableArrayList("commentPhone", (ArrayList<? extends Parcelable>) HomeFragment.arrComment);
+                    intent.putExtra("bundle", bundle);
+                    startActivity(intent);
+                }
             }
-        }
 
+        } else if (product.getDmSP().contains("Laptop")) {
+            Log.d("iddmsp", "" + product.getDmSP());
+            for (int i = 0; i < arrLaptop.size(); i++) {
+                if (Integer.parseInt(product.getIdSP()) == Integer.parseInt(arrLaptop.get(i).getId())) {
+                    Log.d("iddmsp", "id " + product.getIdSP() + "   : " + arrLaptop.get(i).getId());
+                    Intent intent = new Intent(this, DetailLaptopActivity.class);
+                    Bundle bundle = new Bundle();
+                    LapTop lapTop = arrLaptop.get(i);
+                    bundle.putString("id", lapTop.getId());
+                    bundle.putString("name", lapTop.getName());
+                    bundle.putString("price", lapTop.getPrice());
+                    bundle.putString("status", lapTop.getStatus());
+                    bundle.putString("image", lapTop.getImage());
+                    bundle.putString("evaluation", lapTop.getEvaluation());
+                    bundle.putString("promo1", lapTop.getPromo1());
+                    bundle.putString("promo2", lapTop.getPromo2());
+                    bundle.putString("promo3", lapTop.getPromo3());
+                    bundle.putString("tag", lapTop.getTag());
+                    bundle.putString("createAt", lapTop.getCreateAt());
+                    bundle.putString("gioithieu", lapTop.getGioithieu());
+                    bundle.putString("manhinh", lapTop.getManhinh());
+                    bundle.putString("ocung", lapTop.getOcung());
+                    bundle.putString("dohoa", lapTop.getDohoa());
+                    bundle.putString("ram", lapTop.getRam());
+                    bundle.putString("ketnoi", lapTop.getKetnoi());
+                    bundle.putString("cpu", lapTop.getCpu());
+                    bundle.putString("tl", lapTop.getTrongluong());
+                    bundle.putString("hdh", lapTop.getHedieuhanh());
+                    bundle.putString("detail", lapTop.getChitietcauhinh());
+                    bundle.putString("urlBanner", lapTop.getUrlBanner());
+                    bundle.putString("tendanhmuc", lapTop.getTendanhmuc());
 
-        for (int i = 0; i < arrLaptop.size(); i++) {
-            if (arrProduct.get(position).getDmSP().equals("Laptop") && Integer.parseInt(arrProduct.get(position).getIdSP()) == Integer.parseInt(arrLaptop.get(i).getId())) {
-                Intent intent = new Intent(this, DetailLaptopActivity.class);
-                Bundle bundle = new Bundle();
-                LapTop lapTop = arrLaptop.get(position);
-                bundle.putString("id", lapTop.getId());
-                bundle.putString("name", lapTop.getName());
-                bundle.putString("price", lapTop.getPrice());
-                bundle.putString("status", lapTop.getStatus());
-                bundle.putString("image", lapTop.getImage());
-                bundle.putString("evaluation", lapTop.getEvaluation());
-                bundle.putString("promo1", lapTop.getPromo1());
-                bundle.putString("promo2", lapTop.getPromo2());
-                bundle.putString("promo3", lapTop.getPromo3());
-                bundle.putString("tag", lapTop.getTag());
-                bundle.putString("createAt", lapTop.getCreateAt());
-                bundle.putString("gioithieu", lapTop.getGioithieu());
-                bundle.putString("manhinh", lapTop.getManhinh());
-                bundle.putString("ocung", lapTop.getOcung());
-                bundle.putString("dohoa", lapTop.getDohoa());
-                bundle.putString("ram", lapTop.getRam());
-                bundle.putString("ketnoi", lapTop.getKetnoi());
-                bundle.putString("cpu", lapTop.getCpu());
-                bundle.putString("tl", lapTop.getTrongluong());
-                bundle.putString("hdh", lapTop.getHedieuhanh());
-                bundle.putString("detail", lapTop.getChitietcauhinh());
-                bundle.putString("urlBanner", lapTop.getUrlBanner());
-                bundle.putString("tendanhmuc", lapTop.getTendanhmuc());
+                    // Log.d("SIÁZASA","SIZE: "+arrRatingByIDSp.size());
+                    bundle.putParcelableArrayList("ratingLaptop", (ArrayList<? extends Parcelable>) HomeFragment.arrRating);
+                    bundle.putParcelableArrayList("commentlap", (ArrayList<? extends Parcelable>) HomeFragment.arrCommentLap);
 
-                // Log.d("SIÁZASA","SIZE: "+arrRatingByIDSp.size());
-                bundle.putParcelableArrayList("ratingLaptop", (ArrayList<? extends Parcelable>) HomeFragment.arrRating);
-                bundle.putParcelableArrayList("commentlap", (ArrayList<? extends Parcelable>) HomeFragment.arrCommentLap);
+                    intent.putExtra("bundle", bundle);
+                    startActivity(intent);
 
-                intent.putExtra("bundle", bundle);
-                Toast.makeText(this, "" + position, Toast.LENGTH_SHORT).show();
-                startActivity(intent);
-                break;
+                }
             }
-        }
+        } else if (product.getDmSP().contains("Máy Tính Bảng")) {
+            Log.d("iddmsp", "" + product.getDmSP());
+            for (int i = 0; i < arrTablet.size(); i++) {
+                if (Integer.parseInt(product.getIdSP()) == Integer.parseInt(arrTablet.get(i).getId())) {
+                    Log.d("iddmsp", "id " + product.getIdSP() + "   : " + arrTablet.get(i).getId());
+                    Intent intent = new Intent(this, DetailTabletActivity.class);
+                    Bundle bundle = new Bundle();
+                    Tablet tablet = arrTablet.get(i);
+                    bundle.putString("id", tablet.getId());
+                    bundle.putString("name", tablet.getName());
+                    bundle.putString("price", tablet.getPrice());
+                    bundle.putString("status", tablet.getStatus());
+                    bundle.putString("image", tablet.getImage());
+                    bundle.putString("evaluation", tablet.getEvaluation());
+                    bundle.putString("promo1", tablet.getPromo1());
+                    bundle.putString("promo2", tablet.getPromo2());
+                    bundle.putString("promo3", tablet.getPromo3());
+                    bundle.putString("tag", tablet.getTag());
+                    bundle.putString("createAt", tablet.getCreateAt());
+                    bundle.putString("gioithieu", tablet.getGioithieu());
+                    bundle.putString("manhinh", tablet.getManhinh());
+                    bundle.putString("cameraT", tablet.getCameraTruoc());
+                    bundle.putString("cameraS", tablet.getCameraSau());
+                    bundle.putString("ram", tablet.getRam());
+                    bundle.putString("bonhotrong", tablet.getBonhotrong());
+                    bundle.putString("cpu", tablet.getCpu());
+                    bundle.putString("gpu", tablet.getGpu());
+                    bundle.putString("ketnoi", tablet.getKetnoi());
+                    bundle.putString("detail", tablet.getChitietcauhinh());
+                    bundle.putString("urlBanner", tablet.getUrlBanner());
+                    bundle.putString("tendanhmuc", tablet.getTendanhmuc());
 
-        for (int i = 0; i < arrTablet.size(); i++) {
-            if (arrProduct.get(position).getDmSP().equals("Máy Tính Bảng") && Integer.parseInt(arrProduct.get(position).getIdSP()) == Integer.parseInt(arrTablet.get(i).getId())) {
-                Intent intent = new Intent(this, DetailTabletActivity.class);
-                Bundle bundle = new Bundle();
-                Tablet tablet = arrTablet.get(position);
-                bundle.putString("id", tablet.getId());
-                bundle.putString("name", tablet.getName());
-                bundle.putString("price", tablet.getPrice());
-                bundle.putString("status", tablet.getStatus());
-                bundle.putString("image", tablet.getImage());
-                bundle.putString("evaluation", tablet.getEvaluation());
-                bundle.putString("promo1", tablet.getPromo1());
-                bundle.putString("promo2", tablet.getPromo2());
-                bundle.putString("promo3", tablet.getPromo3());
-                bundle.putString("tag", tablet.getTag());
-                bundle.putString("createAt", tablet.getCreateAt());
-                bundle.putString("gioithieu", tablet.getGioithieu());
-                bundle.putString("manhinh", tablet.getManhinh());
-                bundle.putString("cameraT", tablet.getCameraTruoc());
-                bundle.putString("cameraS", tablet.getCameraSau());
-                bundle.putString("ram", tablet.getRam());
-                bundle.putString("bonhotrong", tablet.getBonhotrong());
-                bundle.putString("cpu", tablet.getCpu());
-                bundle.putString("gpu", tablet.getGpu());
-                bundle.putString("ketnoi", tablet.getKetnoi());
-                bundle.putString("detail", tablet.getChitietcauhinh());
-                bundle.putString("urlBanner", tablet.getUrlBanner());
-                bundle.putString("tendanhmuc", tablet.getTendanhmuc());
 
+                    //    Log.d("SIÁZASA","SIZE: "+arrRatingByIDSp.size());
+                    bundle.putParcelableArrayList("ratingTablet", (ArrayList<? extends Parcelable>) HomeFragment.arrRating);
+                    bundle.putParcelableArrayList("commentTablet", (ArrayList<? extends Parcelable>) HomeFragment.arrCommentTablet);
 
-                //    Log.d("SIÁZASA","SIZE: "+arrRatingByIDSp.size());
-                bundle.putParcelableArrayList("ratingTablet", (ArrayList<? extends Parcelable>) HomeFragment.arrRating);
-                bundle.putParcelableArrayList("commentTablet", (ArrayList<? extends Parcelable>) HomeFragment.arrCommentTablet);
+                    intent.putExtra("bundle", bundle);
+                    startActivity(intent);
 
-                intent.putExtra("bundle", bundle);
-                Toast.makeText(this, "" + position, Toast.LENGTH_SHORT).show();
-                startActivity(intent);
-                break;
+                }
             }
+
+
         }
-
-
-
 
 
     }

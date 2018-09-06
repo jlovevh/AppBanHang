@@ -58,7 +58,7 @@ public class ListSearchAdapter extends BaseAdapter implements Filterable {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         ViewHolder holder = null;
         if (convertView == null) {
@@ -84,7 +84,7 @@ public class ListSearchAdapter extends BaseAdapter implements Filterable {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listSearchListener.onSearchSelected(sanPham);
+                listSearchListener.onSearchSelected(sanPham, position);
             }
         });
         return convertView;
@@ -127,6 +127,6 @@ public class ListSearchAdapter extends BaseAdapter implements Filterable {
 
     public interface ListSearchListener {
 
-        void onSearchSelected(SanPham sanPham);
+        void onSearchSelected(SanPham sanPham, int position);
     }
 }

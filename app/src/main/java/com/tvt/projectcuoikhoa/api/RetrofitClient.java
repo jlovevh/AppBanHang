@@ -13,25 +13,24 @@ public class RetrofitClient {
 
     private static Retrofit retrofit;
 
-    public static Retrofit getClient(String base_url){
+    public static Retrofit getClient(String base_url) {
 
-        OkHttpClient okHttpClient =new OkHttpClient.Builder()
-                .readTimeout(2000, TimeUnit.MILLISECONDS)
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .readTimeout(5000, TimeUnit.MILLISECONDS)
                 .writeTimeout(2000, TimeUnit.MILLISECONDS)
                 .connectTimeout(2000, TimeUnit.MILLISECONDS)
                 .retryOnConnectionFailure(true)
                 .build();
 
-        Gson gson =new GsonBuilder().setLenient().create();
+        Gson gson = new GsonBuilder().setLenient().create();
 
-        if(retrofit==null){
+        if (retrofit == null) {
 
-            retrofit=new Retrofit.Builder()
+            retrofit = new Retrofit.Builder()
                     .baseUrl(base_url)
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
-
 
 
         }
