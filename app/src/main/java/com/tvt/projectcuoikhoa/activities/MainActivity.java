@@ -21,6 +21,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -30,6 +31,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -69,7 +71,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, NavigationView.OnNavigationItemSelectedListener, MaterialSearchBar.OnSearchActionListener, CustomSuggestionsAdapter.itemSuggestionOnClick {
 
-    private LinearLayout toolbar;
+    private Toolbar toolbar;
     public static BottomNavigationView bottomNavigationView;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
@@ -461,6 +463,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         navigationView = findViewById(R.id.nav_layout);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
+
+        setSupportActionBar(toolbar);
 
         View navHeaderView = navigationView.getHeaderView(0);
         tvEmail = navHeaderView.findViewById(R.id.email_header);
