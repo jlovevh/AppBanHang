@@ -39,7 +39,6 @@ import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
-import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.tvt.projectcuoikhoa.R;
 import com.tvt.projectcuoikhoa.adapter.ListCommentAdapter;
 import com.tvt.projectcuoikhoa.adapter.ListRatingAdapter;
@@ -149,7 +148,7 @@ public class DetailTabletActivity extends AppCompatActivity implements View.OnCl
 
     @OnClick(R.id.tv_all_cauhinh_tab)
     void submit() {
-        Intent intent = new Intent(DetailTabletActivity.this, DetailConfigTabletActivity.class);
+        Intent intent = new Intent(DetailTabletActivity.this, DetailCfTabletActivity.class);
         intent.putExtra("cauhinhchitiet", detail);
         startActivity(intent);
     }

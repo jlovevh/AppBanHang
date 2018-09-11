@@ -39,7 +39,6 @@ import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
-import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.tvt.projectcuoikhoa.R;
 import com.tvt.projectcuoikhoa.adapter.ListCommentAdapter;
 import com.tvt.projectcuoikhoa.adapter.ListRatingAdapter;
@@ -59,7 +58,6 @@ import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit2.Call;
@@ -160,7 +158,7 @@ public class DetailLaptopActivity extends AppCompatActivity implements View.OnCl
 
     @OnClick(R.id.tv_all_cauhinh_lap)
     void loadMore() {
-        Intent intent = new Intent(DetailLaptopActivity.this, DetailConfigLaptopActivity.class);
+        Intent intent = new Intent(DetailLaptopActivity.this, DetailCfLaptopActivity.class);
 
         intent.putExtra("cauhinhchitiet", detail);
         startActivity(intent);

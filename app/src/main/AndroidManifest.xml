@@ -64,9 +64,9 @@
         <activity android:name=".activities.DetailPhoneActivity" />
         <activity android:name=".activities.DetailLaptopActivity" />
         <activity android:name=".activities.DetailTabletActivity" />
-        <activity android:name=".activities.DetailConfigPhoneActivity" />
-        <activity android:name=".activities.DetailConfigLaptopActivity" />
-        <activity android:name=".activities.DetailConfigTabletActivity" />
+        <activity android:name=".activities.DetailCfPhoneActivity" />
+        <activity android:name=".activities.DetailCfLaptopActivity" />
+        <activity android:name=".activities.DetailCfTabletActivity" />
         <activity android:name=".activities.ShoppingCartActivity" />
         <activity
             android:name=".activities.SearchableActivity"

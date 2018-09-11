@@ -13,22 +13,22 @@ import com.tvt.projectcuoikhoa.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DetailConfigPhoneActivity extends AppCompatActivity {
+public class DetailCfLaptopActivity extends AppCompatActivity {
 
 
-    @BindView(R.id.web_view_detail_cauhinh)
+    @BindView(R.id.web_view_detail_cauhinh_lap)
     WebView webView;
-
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail_config_phone);
+        setContentView(R.layout.activity_detail_config_laptop);
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
         String detail = intent.getStringExtra("cauhinhchitiet");
+
         final WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setJavaScriptCanOpenWindowsAutomatically(true);

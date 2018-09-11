@@ -13,17 +13,16 @@ import com.tvt.projectcuoikhoa.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DetailConfigLaptopActivity extends AppCompatActivity {
+public class DetailCfTabletActivity extends AppCompatActivity {
 
-
-    @BindView(R.id.web_view_detail_cauhinh_lap)
+    @BindView(R.id.web_view_detail_cauhinh_tab)
     WebView webView;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail_config_laptop);
+        setContentView(R.layout.activity_detail_config_tablet);
         ButterKnife.bind(this);
 
         Intent intent = getIntent();

@@ -29,6 +29,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
                 android:background="@color/colorPrimaryDark"
                 android:minHeight="?attr/actionBarSize"
                 app:popupTheme="@style/AppTheme.PopupOverlay"

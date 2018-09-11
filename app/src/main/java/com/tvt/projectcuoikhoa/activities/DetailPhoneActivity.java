@@ -10,8 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
 import android.text.Html;
-import android.transition.Fade;
-import android.transition.Visibility;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -36,14 +34,11 @@ import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
-import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
-import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.tvt.projectcuoikhoa.R;
 import com.tvt.projectcuoikhoa.adapter.ListCommentAdapter;
 import com.tvt.projectcuoikhoa.adapter.ListRatingAdapter;
@@ -58,13 +53,8 @@ import com.tvt.projectcuoikhoa.model.Phone;
 import com.tvt.projectcuoikhoa.model.Rating;
 import com.tvt.projectcuoikhoa.utils.NumberFormatCurency;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -157,7 +147,7 @@ public class DetailPhoneActivity extends AppCompatActivity implements View.OnCli
 
     @OnClick(R.id.tv_all_cauhinh_phone)
     void submit() {
-        Intent intent = new Intent(DetailPhoneActivity.this, DetailConfigPhoneActivity.class);
+        Intent intent = new Intent(DetailPhoneActivity.this, DetailCfPhoneActivity.class);
         intent.putExtra("cauhinhchitiet", detail);
         startActivity(intent);
     }
