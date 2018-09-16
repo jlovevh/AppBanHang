@@ -32,6 +32,7 @@
             android:background="@android:color/holo_orange_dark"
             android:padding="3dp"
             android:textStyle="bold"
+            android:fontFamily="sans-serif"
             android:textSize="14sp"
             android:text="@string/tg"
             android:textColor="@color/white" />
@@ -47,8 +48,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:background="@drawable/laptop_button_custom"
                 android:padding="3dp"
+                android:fontFamily="sans-serif"
+                android:background="@drawable/laptop_button_custom"
                 android:layout_marginStart="10dp"
                 android:text="RAM 4GB" />
 
@@ -58,6 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:padding="3dp"
+                android:fontFamily="sans-serif"
                 android:background="@drawable/laptop_button_custom"
                 android:layout_marginStart="10dp"
                 android:text="Ổ CỨNG 500GB" />
@@ -71,6 +74,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
+            android:fontFamily="sans-serif"
             android:text="@string/dt"
             android:textColor="@color/black"
             android:textSize="16sp" />
@@ -81,6 +85,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_marginLeft="10dp"
+            android:fontFamily="sans-serif"
             android:textColor="@android:color/holo_red_light"
             android:layout_marginStart="10dp"
             android:text="@string/gia_lap_top" />

@@ -34,7 +34,9 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".activities.MainActivity">
+        <activity
+            android:name=".activities.MainActivity"
+            android:configChanges="orientation|screenSize">
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value=".SearchableActivity" />
@@ -47,8 +49,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.LoginActivity" />
-        <activity android:name=".activities.NewsActivity" />
+        <activity
+            android:name=".activities.LoginActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".activities.NewsActivity"
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -59,15 +65,33 @@
             android:authorities="com.facebook.app.FacebookContentProvider261629417938531"
             android:exported="true" />
 
-        <activity android:name=".activities.SignUpActivity" />
-        <activity android:name=".activities.NewsEvaluationActivity" />
-        <activity android:name=".activities.DetailPhoneActivity" />
-        <activity android:name=".activities.DetailLaptopActivity" />
-        <activity android:name=".activities.DetailTabletActivity" />
-        <activity android:name=".activities.DetailCfPhoneActivity" />
-        <activity android:name=".activities.DetailCfLaptopActivity" />
-        <activity android:name=".activities.DetailCfTabletActivity" />
-        <activity android:name=".activities.ShoppingCartActivity" />
+        <activity
+            android:name=".activities.SignUpActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".activities.NewsEvaluationActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".activities.DetailPhoneActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".activities.DetailLaptopActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".activities.DetailTabletActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".activities.DetailCfPhoneActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".activities.DetailCfLaptopActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".activities.DetailCfTabletActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".activities.ShoppingCartActivity"
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name=".activities.SearchableActivity"
             android:launchMode="singleTop">
@@ -79,7 +103,11 @@
             <!-- android:name="android.app.searchable" -->
             <!-- android:resource="@xml/searchable" /> -->
         </activity>
-        <activity android:name=".activities.ResetPasswordActivity"></activity>
+        <activity
+            android:name=".activities.ResetPasswordActivity"
+            android:configChanges="orientation|screenSize">
+
+        </activity>
     </application>
 
 </manifest>

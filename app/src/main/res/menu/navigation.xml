@@ -4,31 +4,40 @@
 
     <item android:id="@+id/nav_home"
         android:title="@string/home"
+        android:fontFamily="sans-serif"
         android:icon="@drawable/ic_home_black_24dp"/>
     <item android:id="@+id/nav_phone"
         android:title="@string/phone"
+        android:fontFamily="sans-serif"
         android:icon="@drawable/ic_phone_iphone_black_24dp"/>
     <item android:id="@+id/nav_laptop"
         android:title="@string/laptop"
+        android:fontFamily="sans-serif"
         android:icon="@drawable/ic_laptop_mac_black_24dp"/>
     <item android:id="@+id/nav_tablet"
         android:title="@string/tablet"
+        android:fontFamily="sans-serif"
         android:icon="@drawable/ic_tablet_mac_black_24dp"/>
     <item android:id="@+id/nav_pk"
         android:title="@string/pk"
+        android:fontFamily="sans-serif"
         android:icon="@drawable/ic_headset_black_24dp"/>
     <item
         android:id="@+id/action_giohang"
         android:icon="@drawable/ic_shopping_cart_white_24dp"
-        android:title="@string/giohang" />
+        android:title="@string/giohang"
+        android:fontFamily="sans-serif" />
     <item android:id="@+id/nav_support"
         android:title="@string/hotro"
+        android:fontFamily="sans-serif"
         android:icon="@drawable/ic_phone_iphone_black_24dp"/>
     <item android:id="@+id/nav_about"
         android:title="@string/about"
+        android:fontFamily="sans-serif"
         android:icon="@drawable/ic_info_outline_black_24dp"/>
     <item android:id="@+id/nav_exit"
         android:title="@string/exit"
+        android:fontFamily="sans-serif"
         android:icon="@drawable/ic_exit_to_app_black_24dp"/>
 
 

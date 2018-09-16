@@ -29,6 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:transitionName="profile"
+            android:fontFamily="sans-serif"
             android:layout_marginBottom="30dp"
             android:text="@string/dt"
             android:textColor="@color/black"
@@ -39,6 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
+            android:fontFamily="sans-serif"
             android:layout_marginBottom="10dp"
             android:textColor="@android:color/holo_red_dark"
             android:text="@string/gia_lap_top" />
@@ -49,6 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:textStyle="bold"
+            android:fontFamily="sans-serif"
             android:padding="3dp"
             android:background="@drawable/button_custom"
             android:layout_marginBottom="5dp"

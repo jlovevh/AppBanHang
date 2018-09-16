@@ -28,6 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Gọi miễn phí"
+                android:fontFamily="sans-serif"
                 android:textSize="18sp" />
 
             <TextView
@@ -36,6 +37,7 @@
                 android:layout_marginTop="5dp"
                 android:drawableStart="@drawable/ic_phone_red_500_24dp"
                 android:text="1800 6601"
+                android:fontFamily="sans-serif"
                 android:textColor="@color/red"
                 android:textSize="20sp" />
 
@@ -58,6 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Góp ý, phản ánh"
+                android:fontFamily="sans-serif"
                 android:textSize="18sp" />
 
             <TextView
@@ -66,6 +69,7 @@
                 android:layout_marginTop="5dp"
                 android:drawableStart="@drawable/ic_phone_red_500_24dp"
                 android:text="1800 6601"
+                android:fontFamily="sans-serif"
                 android:textColor="@color/red"
                 android:textSize="20sp" />
 
@@ -95,6 +99,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Thông tin khác"
+                android:fontFamily="sans-serif"
                 android:textColor="@android:color/holo_blue_dark"
                 android:textSize="16sp" />
 
@@ -117,6 +122,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Cửa hàng MobileShop"
+                android:fontFamily="sans-serif"
                 android:textColor="@android:color/holo_blue_dark"
                 android:textSize="16sp" />
 
@@ -136,6 +142,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
+        android:fontFamily="sans-serif"
         android:text="2007-2018 Công ty cổ phần bán lẻ kỹ thuật số MobileShop/ Địa chỉ:110 Minh Khai,Quận Hai Bà Trưng,Tp.Hà Nội/GPĐKKD số 0311609355 do sở KHĐT TP.Hà Nội cấp ngày 08/03/2012.GP số 47/Gp-TTĐT do sở TTTT TP.Hà Nội cấp ngày 02/07/2012.Điện thoại:02845675122.Email:mobileshop@mbs.com.vn.Chịu trách nhiệm nội dung: Trần Văn Tiến."
         android:textAlignment="textStart"
         android:textSize="14sp" />
