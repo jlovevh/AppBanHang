@@ -289,7 +289,9 @@ public class DetailPhoneActivity extends AppCompatActivity implements View.OnCli
     void anim() {
 
         Intent intent = new Intent(DetailPhoneActivity.this, ShoppingCartActivity.class);
+
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_left, 0);
 
     }
 

@@ -153,6 +153,7 @@ public class DetailLaptopActivity extends AppCompatActivity implements View.OnCl
     void gotoCart() {
         Intent intent = new Intent(DetailLaptopActivity.this, ShoppingCartActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_left, 0);
     }
 
 

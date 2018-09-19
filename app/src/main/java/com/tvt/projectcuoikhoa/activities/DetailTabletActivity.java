@@ -162,6 +162,7 @@ public class DetailTabletActivity extends AppCompatActivity implements View.OnCl
     void gotoCart() {
         Intent intent = new Intent(DetailTabletActivity.this, ShoppingCartActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_left, 0);
     }
 
     @OnClick(R.id.btn_buy_tablet)
