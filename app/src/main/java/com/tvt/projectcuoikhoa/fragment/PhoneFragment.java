@@ -63,7 +63,10 @@ public class PhoneFragment extends Fragment implements ItemClickListener, SwipeR
     private SearchView searchView;
 
     public static PhoneFragment newInstance() {
-        return new PhoneFragment();
+        Bundle args = new Bundle();
+        PhoneFragment fragment = new PhoneFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @SuppressLint("ValidFragment")

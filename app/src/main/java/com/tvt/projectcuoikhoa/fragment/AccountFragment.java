@@ -65,7 +65,10 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     private boolean isClick = false;
 
     public static AccountFragment newInstance() {
-        return new AccountFragment();
+        Bundle args = new Bundle();
+        AccountFragment fragment = new AccountFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
     @SuppressLint("ValidFragment")
     private AccountFragment() {

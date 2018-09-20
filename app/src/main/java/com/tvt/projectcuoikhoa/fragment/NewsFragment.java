@@ -25,7 +25,10 @@ public class NewsFragment extends Fragment {
 
 
     public static NewsFragment newInstance() {
-        return new NewsFragment();
+        Bundle args = new Bundle();
+        NewsFragment fragment = new NewsFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
     @SuppressLint("ValidFragment")
     private NewsFragment() {

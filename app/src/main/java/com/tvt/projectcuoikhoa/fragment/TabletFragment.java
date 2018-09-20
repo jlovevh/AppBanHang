@@ -53,8 +53,12 @@ public class TabletFragment extends Fragment implements RecyclerTabletAdapter.on
     private TabletFragment() {
         // Required empty public constructor
     }
-    public static Fragment newInstance() {
-        return new TabletFragment();
+
+    public static TabletFragment newInstance() {
+        Bundle args = new Bundle();
+        TabletFragment fragment = new TabletFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override

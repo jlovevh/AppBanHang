@@ -123,7 +123,10 @@ public class HomeFragment extends Fragment implements ItemClickListener, Recycle
 
     public static HomeFragment newInstance() {
 
-        return new HomeFragment();
+        Bundle args = new Bundle();
+        HomeFragment fragment = new HomeFragment();
+        fragment.setArguments(args);
+        return fragment;
 
     }
 

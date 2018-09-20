@@ -52,9 +52,12 @@ public class LapTopFragment extends Fragment implements RecyclerLapTopAdapter.it
         // Required empty public constructor
     }
 
-    public static Fragment newInstance() {
+    public static LapTopFragment newInstance() {
 
-        return new LapTopFragment();
+        Bundle args = new Bundle();
+        LapTopFragment fragment = new LapTopFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
 
